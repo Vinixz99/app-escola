@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificações - Escola Benedito Oliveira</title>
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- FontAwesome para os ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Topo da Tela -->
+        <header class="page-header">
+            <a href="dashboard" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+            <h2>Notificações</h2>
+            <button class="clear-all-btn">Limpar</button>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="page-content">
+            
+            <div class="notifications-timeline">
+                
+                <!-- Notificação 1: Entrada na Catraca (Recente/Não lida) -->
+                <div class="notification-item unread">
+                    <div class="noti-icon enter"><i class="fas fa-sign-in-alt"></i></div>
+                    <div class="noti-content">
+                        <div class="noti-header">
+                            <h4>Entrada Confirmada</h4>
+                            <span class="noti-time">07:15</span>
+                        </div>
+                        <p><strong>Lucas Oliveira</strong> passou na catraca de entrada principal e já está no recinto escolar.</p>
+                    </div>
+                </div>
+
+                <!-- Notificação 2: Refeição -->
+                <div class="notification-item">
+                    <div class="noti-icon meal"><i class="fas fa-utensils"></i></div>
+                    <div class="noti-content">
+                        <div class="noti-header">
+                            <h4>Lanche Retirado</h4>
+                            <span class="noti-time">Ontem, 09:48</span>
+                        </div>
+                        <p>A refeição do intervalo foi registrada com sucesso no refeitório central.</p>
+                    </div>
+                </div>
+
+                <!-- Notificação 3: Saída da Escola -->
+                <div class="notification-item">
+                    <div class="noti-icon leave"><i class="fas fa-sign-out-alt"></i></div>
+                    <div class="noti-content">
+                        <div class="noti-header">
+                            <h4>Saída Confirmada</h4>
+                            <span class="noti-time">Ontem, 12:22</span>
+                        </div>
+                        <p><strong>Lucas Oliveira</strong> passou na catraca de saída. Cartão de autorização validado.</p>
+                    </div>
+                </div>
+
+                <!-- Notificação 4: Comunicado urgente da diretoria -->
+                <div class="notification-item">
+                    <div class="noti-icon alert"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="noti-content">
+                        <div class="noti-header">
+                            <h4>Alerta de Segurança</h4>
+                            <span class="noti-time">10 Jun</span>
+                        </div>
+                        <p>A diretoria relembra que o uso do uniforme completo é obrigatório para o acesso pelas catracas.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+
+        <!-- Barra de Navegação Inferior -->
+         <nav class="bottom-nav">
+    <a href="/dashboard" class="nav-item">
+        <i class="fas fa-home"></i>
+        <span>Início</span>
+    </a>
+    <a href="/entrada_saida_historico" class="nav-item">
+        <i class="fas fa-history"></i>
+        <span>Histórico</span>
+    </a>
+    <a href="/qrcode" class="nav-item scan-btn">
+        <i class="fas fa-qrcode"></i>
+    </a>
+    <a href="/perfil_responsavel" class="nav-item">
+        <i class="fas fa-user-circle"></i>
+        <span>Perfil</span>
+    </a>
+    <a href="/" class="nav-item">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Sair</span>
+    </a>
+</nav>
+    </div>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

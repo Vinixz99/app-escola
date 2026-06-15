@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Entrada e Saída - Escola Benedito Oliveira</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="page-header header-vermelho" style="background-color: #b30000; color: white;">
+            <a href="/dashboard" class="back-btn" style="color: white;"><i class="fas fa-arrow-left"></i></a>
+            <h2>Entrada e Saída</h2>
+            <div style="width: 18px;"></div>
+        </header>
+
+        <!-- ABAS DE NAVEGAÇÃO DO TOPO (CORRIGIDO SEM ESTILO FIXO) -->
+<!-- ABAS DE NAVEGAÇÃO DO TOPO (STATUS ATIVO) -->
+<!-- ABAS DE NAVEGAÇÃO DO TOPO (HISTÓRICO ATIVO - FORÇADO) -->
+<div class="tabs-container" style="display: flex !important; background: #fff !important; border-bottom: 1px solid #eee !important; width: 100% !important;">
+    <a href="/entrada_saida" class="tab-item" style="flex: 1 !important; text-align: center !important; padding: 15px 0 !important; text-decoration: none !important; color: #666 !important; font-weight: normal !important; font-size: 16px !important; border-bottom: 3px solid transparent !important;">Status</a>
+    <a href="/entrada_saida/historico" class="tab-item active" style="flex: 1 !important; text-align: center !important; padding: 15px 0 !important; text-decoration: none !important; color: #b30000 !important; font-weight: bold !important; border-bottom: 3px solid #b30000 !important; font-size: 16px !important; pointer-events: none !important;">Histórico</a>
+</div>
+
+        <main class="page-content" style="padding: 20px;">
+            <div class="notifications-container" style="display: flex; flex-direction: column; gap: 12px;">
+                
+                <div class="notification-item" style="background: white; border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+                    <div class="notify-icon" style="width: 40px; height: 40px; background: #e8f5e9; color: #2e7d32; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    <div class="notify-details" style="flex: 1;">
+                        <div class="notify-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <h4 style="font-size: 14px; font-weight: 600; color: #333; margin: 0;">Entrada Registrada</h4>
+                            <span class="notify-time" style="font-size: 12px; color: #999;">12/06 - 07:15</span>
+                        </div>
+                        <p style="font-size: 13px; color: #666; margin: 0;">Portão Principal</p>
+                    </div>
+                </div>
+
+                <div class="notification-item" style="background: white; border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+                    <div class="notify-icon" style="width: 40px; height: 40px; background: #ffebee; color: #c62828; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div class="notify-details" style="flex: 1;">
+                        <div class="notify-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <h4 style="font-size: 14px; font-weight: 600; color: #333; margin: 0;">Saída Registrada</h4>
+                            <span class="notify-time" style="font-size: 12px; color: #999;">11/06 - 11:42</span>
+                        </div>
+                        <p style="font-size: 13px; color: #666; margin: 0;">Portão Principal (Liberado)</p>
+                    </div>
+                </div>
+
+                <div class="notification-item" style="background: white; border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+                    <div class="notify-icon" style="width: 40px; height: 40px; background: #e8f5e9; color: #2e7d32; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    <div class="notify-details" style="flex: 1;">
+                        <div class="notify-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <h4 style="font-size: 14px; font-weight: 600; color: #333; margin: 0;">Entrada Registrada</h4>
+                            <span class="notify-time" style="font-size: 12px; color: #999;">11/06 - 07:10</span>
+                        </div>
+                        <p style="font-size: 13px; color: #666; margin: 0;">Portão Principal</p>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="/dashboard" class="nav-item"><i class="fas fa-home"></i><span>Início</span></a>
+            <a href="/entrada_saida" class="nav-item active" style="color: #b30000;"><i class="fas fa-history"></i><span>Histórico</span></a>
+            <a href="/qrcode" class="nav-item scan-btn"><i class="fas fa-qrcode"></i></a>
+            <a href="/perfil" class="nav-item"><i class="fas fa-user-circle"></i><span>Perfil</span></a>
+            <a href="/" class="nav-item"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
+        </nav>
+    </div>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunicados - Escola Benedito Oliveira</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="page-header">
+            <a href="/dashboard" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+            <h2>Comunicados</h2>
+            <button class="filter-top-btn"><i class="fas fa-filter"></i></button>
+        </header>
+
+        <div class="sub-tabs">
+            <button class="tab-btn active">Todas</button>
+            <button class="tab-btn">Avisos</button>
+            <button class="tab-btn">Reuniões</button>
+            <button class="tab-btn">Avaliações</button>
+        </div>
+
+        <main class="page-content">
+            
+            <div class="comunicados-list">
+                
+                {% for comunicado in lista_comunicados %}
+                <div class="comunicado-card" data-categoria="{{ comunicado.tipo }}">
+                    
+                    <div class="comunicado-icon-box 
+                        {% if comunicado.tipo == 'Avisos' %}aviso
+                        {% elif comunicado.tipo == 'Reuniões' %}reuniao
+                        {% elif comunicado.tipo == 'Avaliações' %}prova
+                        {% else %}boletim{% endif %}">
+                        
+                        <i class="fas 
+                            {% if comunicado.tipo == 'Avisos' %}fa-bullhorn
+                            {% elif comunicado.tipo == 'Reuniões' %}fa-users
+                            {% elif comunicado.tipo == 'Avaliações' %}fa-file-signature
+                            {% else %}fa-graduation-cap{% endif %}">
+                        </i>
+                    </div>
+
+                    <div class="comunicado-body">
+                        <div class="comunicado-meta">
+                            <span class="badge-tipo {{ comunicado.badge_classe }}">{{ comunicado.badge_texto }}</span>
+                            <span class="comunicado-time">{{ comunicado.tempo }}</span>
+                        </div>
+                        <h3>{{ comunicado.titulo }}</h3>
+                        <p>{{ comunicado.mensagem }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="/dashboard" class="nav-item"><i class="fas fa-home"></i><span>Início</span></a>
+            <a href="/entrada_saida_historico" class="nav-item"><i class="fas fa-history"></i><span>Histórico</span></a>
+            <a href="/qrcode" class="nav-item scan-btn"><i class="fas fa-qrcode"></i></a>
+            <a href="/perfil_responsavel" class="nav-item"><i class="fas fa-user-circle"></i><span>Perfil</span></a>
+            <a href="/" class="nav-item"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
+        </nav>
+    </div>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

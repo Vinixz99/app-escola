@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code do Aluno - Escola Benedito Oliveira</title>
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- FontAwesome para os ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Topo da Tela -->
+        <header class="page-header">
+            <a href="dashboard" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+            <h2>Carteirinha Digital</h2>
+            <div style="width: 32px;"></div> <!-- Alinhamento do título -->
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="page-content qr-page-align">
+            
+            <!-- Identificação do Aluno -->
+            <div class="qr-student-header">
+                <div class="qr-avatar">
+                    <i class="fas fa-user-grad"></i>
+                </div>
+                <h3>Lucas Oliveira Santos</h3>
+                <p>8º Ano • Turma B</p>
+                <p class="qr-matricula">Matrícula: 2025001</p>
+            </div>
+
+            <!-- Box do QR Code Centralizado -->
+            <div class="qr-code-outer-box">
+                <div class="qr-scanner-frame">
+                    <!-- Linha animada simulando o scanner (opcional pelo CSS) -->
+                    <div class="scanner-line"></div>
+                    <!-- Imagem fictícia de QR Code usando uma API pública ou ícone grande -->
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=VERD-1180" alt="QR Code Aluno" class="qr-image-code">
+                </div>
+                <!-- ID de Segurança que você idealizou -->
+                <div class="qr-code-string-id">
+                    <span>ID: VERD-1180</span>
+                </div>
+            </div>
+
+            <!-- Informativo de uso e segurança -->
+            <div class="qr-instructions">
+                <p><i class="fas fa-info-circle"></i> Apresente este QR Code no leitor da catraca de entrada/saída ou no refeitório para registrar seu acesso.</p>
+                <button class="refresh-qr-btn">
+                    <i class="fas fa-sync-alt"></i> Atualizar Token de Segurança
+                </button>
+            </div>
+
+        </main>
+
+        <!-- Menu Inferior de Navegação Fixo -->
+        <nav class="bottom-nav">
+            <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Início</span>
+            </a>
+            <a href="entrada_saida.html" class="nav-item">
+                <i class="fas fa-history"></i>
+                <span>Histórico</span>
+            </a>
+            <a href="qrcode.html" class="nav-item scan-btn active">
+                <i class="fas fa-qrcode"></i>
+            </a>
+            <a href="perfil.html" class="nav-item">
+                <i class="fas fa-user-circle"></i>
+                <span>Perfil</span>
+            </a>
+            <a href="login.html" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sair</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

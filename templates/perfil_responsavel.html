@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Escola Benedito Oliveira</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="page-header">
+            <a href="dashboard" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+            <h2>Meu Perfil (Responsável)</h2>
+            <div style="width: 32px;"></div>
+        </header>
+
+        <main class="page-content">
+            <!-- Dados do Pai/Mãe -->
+            <div class="profile-main-card">
+                <div class="profile-avatar-large">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3>Marcos Vinícius Santos</h3>
+                <p style="font-size: 13px; color: #666;">Responsável Legal</p>
+            </div>
+
+            <div class="info-section-box">
+                <h3 class="section-title"><i class="fas fa-id-card"></i> Dados Cadastrais</h3>
+                <div class="info-field-item"><label>CPF</label><p>***.456.789-**</p></div>
+                <div class="info-field-item"><label>E-mail</label><p>marcos.vinicius@email.com</p></div>
+                <div class="info-field-item"><label>Telefone</label><p>(79) 99999-0000</p></div>
+            </div>
+
+            <div class="info-section-box">
+                <h3 class="section-title"><i class="fas fa-cog"></i> Configurações da Conta</h3>
+                <button class="profile-btn" style="background: white; justify-content: space-between; margin-bottom: 8px;">
+                    <span><i class="fas fa-lock" style="margin-right: 8px; color: #b30000;"></i> Alterar Senha</span>
+                    <i class="fas fa-chevron-right" style="color: #ccc;"></i>
+                </button>
+                <button class="profile-btn" style="background: white; justify-content: space-between;">
+                    <span><i class="fas fa-headset" style="margin-right: 8px; color: #b30000;"></i> Suporte da Secretaria</span>
+                    <i class="fas fa-chevron-right" style="color: #ccc;"></i>
+                </button>
+            </div>
+        </main>
+
+        <!-- Barra Inferior apontando para ela mesma como ativa -->
+        <nav class="bottom-nav">
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i><span>Início</span></a>
+            <a href="entrada_saida.html" class="nav-item"><i class="fas fa-history"></i><span>Histórico</span></a>
+            <a href="qrcode.html" class="nav-item scan-btn"><i class="fas fa-qrcode"></i></a>
+            <a href="perfil_responsavel.html" class="nav-item active"><i class="fas fa-user-circle"></i><span>Perfil</span></a>
+            <a href="login.html" class="nav-item"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
+        </nav>
+    </div>
+</body>
+</html>

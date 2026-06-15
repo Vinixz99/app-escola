@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Escola Benedito Oliveira</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="dash-hero">
+            <div class="hero-header-actions">
+                <button type="button" class="menu-top-btn"><i class="fas fa-bars"></i></button>
+                <button type="button" class="notification-top-btn"><i class="fas fa-bell"></i></button>
+            </div>
+            <div class="hero-content">
+                <img src="/img/logo.png" alt="Escudo Escola" class="school-big-logo">
+                <h1>Bem-vindo(a)!</h1>
+                <h2>Escola Benedito Oliveira</h2>
+                <p>Acompanhe tudo o que acontece na escola de forma prática e segura.</p>
+            </div>
+        </header>
+
+        <div class="dash-content-card">
+            <div class="welcome-user-box">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-text">
+                    <h3>Olá, Responsável</h3>
+                    <p>Acompanhe seu filho(a)</p>
+                </div>
+            </div>
+
+            <main class="dash-menu-grid">
+                <a href="/comunicados" class="menu-item">
+                    <div class="icon-box"><i class="fas fa-bullhorn"></i></div>
+                    <span>Comunicados</span>
+                </a>
+                <a href="/calendario" class="menu-item">
+    <div class="icon-box"><i class="fas fa-calendar-alt"></i></div>
+    <span>Calendário</span>
+</a>
+                <a href="/avaliacoes" class="menu-item">
+                    <div class="icon-box"><i class="fas fa-file-signature"></i></div>
+                    <span>Avaliações</span>
+                </a>
+                <a href="/entrada_saida" class="menu-item">
+                    <div class="icon-box"><i class="fas fa-door-open"></i></div>
+                    <span>Entrada e Saída</span>
+                </a>
+                <a href="/lanche" class="menu-item">
+                    <div class="icon-box"><i class="fas fa-utensils"></i></div>
+                    <span>Lanche Escolar</span>
+                </a>
+                <a href="/notificacoes" class="menu-item">
+                    <div class="icon-box"><i class="fas fa-bell"></i></div>
+                    <span>Notificações</span>
+                </a>
+                <a href="/boletim" class="menu-item">
+                    <div class="icon-box"><i class="fas fa-graduation-cap"></i></div>
+                    <span>Boletim Escolar</span>
+                </a>
+                <a href="/perfil" class="menu-item">
+                    <div class="icon-box"><i class="fas fa-id-card"></i></div>
+                    <span>Dados do Aluno</span>
+                </a>
+                <a href="/mais" class="menu-item">
+                    <div class="icon-box"><i class="fas fa-ellipsis-h"></i></div>
+                    <span>Mais</span>
+                </a>
+            </main>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="/dashboard" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Início</span>
+            </a>
+            <a href="/entrada_saida_historico" class="nav-item">
+                <i class="fas fa-history"></i>
+                <span>Histórico</span>
+            </a>
+            <a href="/qrcode" class="nav-item scan-btn">
+                <i class="fas fa-qrcode"></i>
+            </a>
+            <a href="/perfil_responsavel" class="nav-item">
+                <i class="fas fa-user-circle"></i>
+                <span>Perfil</span>
+            </a>
+            <a href="/" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sair</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

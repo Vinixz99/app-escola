@@ -1,0 +1,1677 @@
+/* ==========================================================================
+   1. RESET E CONFIGURAÇÕES GERAIS
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Container que simula o Celular com Rolagem Geral */
+.app-container {
+    width: 100%;
+    max-width: 410px;
+    height: 100vh;
+    max-height: 840px;
+    background-color: #f8f9fa; /* Fundo base igual ao do card branco */
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-y: auto; /* Ativa a rolagem fluida e conjunta de toda a tela */
+    border-radius: 30px;
+}
+
+/* Ocultar barra de rolagem para deixar o visual mais limpo (opcional) */
+.app-container::-webkit-scrollbar {
+    width: 0px;
+}
+
+/* ==========================================================================
+   2. TOPO VERMELHO INSTITUCIONAL (Se move junto na rolagem)
+   ========================================================================== */
+.dash-hero {
+    background: linear-gradient(180deg, #990000 0%, #cc0000 100%);
+    padding: 20px;
+    padding-bottom: 60px; /* Espaço para o card branco sobrepor elegantemente */
+    text-align: center;
+    color: white;
+}
+
+/* Botões superiores (Menu Hamburguer e Notificação) */
+.hero-header-actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.hero-header-actions button {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Conteúdo de Destaque (Escudo e Mensagem) */
+.school-big-logo {
+    width: 90px;
+    height: 90px;
+    background-color: white;
+    border-radius: 50%;
+    padding: 5px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.dash-hero h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.dash-hero h2 {
+    font-size: 16px;
+    font-weight: 400;
+    opacity: 0.9;
+    margin-bottom: 12px;
+}
+
+.dash-hero p {
+    font-size: 12px;
+    opacity: 0.75;
+    max-width: 280px;
+    margin: 0 auto;
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   3. PARTE BRANCA (CARD SOBREPOSTO)
+   ========================================================================== */
+.dash-content-card {
+    background-color: #f8f9fa;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    margin-top: -40px; /* Efeito de sobreposição por cima do vermelho */
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+    padding-bottom: 100px; /* Espaço de segurança para não sumir atrás do menu fixo */
+}
+
+/* Caixa de Boas-vindas ao Usuário */
+.welcome-user-box {
+    background-color: white;
+    border-radius: 18px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    margin-bottom: 20px;
+}
+
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666;
+    font-size: 18px;
+}
+
+.user-text h3 {
+    font-size: 15px;
+    color: #222;
+    font-weight: 600;
+}
+
+.user-text p {
+    font-size: 12px;
+    color: #777;
+}
+
+/* Grid de Botões (3 colunas iguais) */
+.dash-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.menu-item {
+    background-color: white;
+    border-radius: 16px;
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #333;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s ease;
+    border: 1px solid #f1f1f1;
+}
+
+.menu-item:active {
+    transform: scale(0.95);
+    background-color: #fafafa;
+}
+
+/* Ícones Circulares Vermelhos */
+.icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #fff1f1;
+    color: #b30000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.menu-item span {
+    font-size: 11px;
+    font-weight: 600;
+    color: #444;
+    line-height: 1.2;
+}
+
+/* ==========================================================================
+   4. BARRA DE NAVEGAÇÃO INFERIOR (Fica fixa na base do celular)
+   ========================================================================== */
+.bottom-nav {
+    position: fixed; /* Mantém a barra travada embaixo enquanto o resto rola */
+    bottom: 0;
+    width: 100%;
+    max-width: 410px; /* Segue o tamanho limite do celular fictício */
+    height: 75px;
+    background-color: #ffffff;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 10;
+    padding-bottom: 10px;
+    border-bottom-left-radius: 30px; /* Acompanha o formato do celular */
+    border-bottom-right-radius: 30px;
+}
+
+/* Se o app rodar em tela cheia no navegador, ajustamos a posição para colar na base do container */
+@media (min-height: 841px) {
+    .bottom-nav {
+        position: absolute;
+    }
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #a0a0a0;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.nav-item i {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.nav-item.active {
+    color: #b30000;
+}
+
+/* Botão central QR Code (Flutuante vermelho) */
+.nav-item.scan-btn {
+    background-color: #b30000;
+    color: white;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(179, 0, 0, 0.35);
+    transform: translateY(-12px);
+}
+
+.nav-item.scan-btn i {
+    font-size: 22px;
+    margin: 0;
+}
+
+/* ==========================================================================
+   5. TELA DE ENTRADA E SAÍDA E COMPONENTES
+   ========================================================================== */
+
+/* Header padrão para subpáginas */
+.page-header {
+    background-color: #b30000;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.back-btn {
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Abas (Tabs) superiores */
+.sub-tabs {
+    display: flex;
+    background-color: white;
+    border-bottom: 1px solid #eee;
+}
+
+.tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 15px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    text-align: center;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-btn.active {
+    color: #b30000;
+    border-bottom-color: #b30000;
+}
+
+/* Área de conteúdo interno */
+.page-content {
+    flex: 1;
+    padding: 20px;
+    padding-bottom: 95px; /* Margem para o menu inferior fixo */
+}
+
+/* Card de Mensagem de Sucesso */
+.status-card-box {
+    background-color: white;
+    border-radius: 16px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #e2f0d9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+.status-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.status-badge.success {
+    color: #2e7d32; /* Verde para sucesso */
+}
+
+.status-time-info h3 {
+    font-size: 16px;
+    color: #333;
+    font-weight: 700;
+}
+
+.status-time-info p {
+    font-size: 12px;
+    color: #777;
+}
+
+/* Card Dinâmico do Aluno baseado no Sistema de Cores */
+.student-release-card {
+    border-radius: 20px;
+    padding: 20px;
+    color: white;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 25px;
+}
+
+/* Variações das cores do seu projeto de cartões */
+.card-verde {
+    background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+}
+
+.card-amarelo {
+    background: linear-gradient(135deg, #f57f17 0%, #fbc02d 100%);
+}
+
+.card-vermelho {
+    background: linear-gradient(135deg, #c62828 0%, #e53935 100%);
+}
+
+.student-info-flex {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+
+.student-details h4 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.student-details p {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.student-details .matricula {
+    font-size: 11px;
+    opacity: 0.7;
+}
+
+/* Tag de Status de Saída destacada dentro do card */
+.release-status-tag {
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 8px 12px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.release-footer-info {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 10px;
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+/* Seção do Passo a Passo */
+.how-it-works-section h3 {
+    font-size: 14px;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.step-number {
+    background-color: #e0e0e0;
+    color: #555;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.step-text {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   6. TELA DE LANCHE ESCOLAR (MERENDA)
+   ========================================================================== */
+
+/* Card de Status do Lanche */
+.meal-status-card {
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #e2f0d9;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.meal-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.meal-badge.success {
+    color: #2e7d32; /* Verde institucional de sucesso */
+}
+
+.meal-time-info h3 {
+    font-size: 18px;
+    color: #222;
+    font-weight: 700;
+}
+
+.meal-time-info p {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+/* Detalhes do Cardápio do Dia dentro do card */
+.meal-menu-today {
+    background-color: #f4fbf4;
+    border-left: 4px solid #4caf50;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.meal-menu-today i {
+    color: #2e7d32;
+    font-size: 16px;
+    margin-top: 2px;
+}
+
+.meal-menu-today strong {
+    display: block;
+    font-size: 13px;
+    color: #2e7d32;
+    margin-bottom: 2px;
+}
+
+.meal-menu-today p {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.4;
+}
+
+/* Bloco do Perfil do Aluno no Lanche */
+.student-meal-profile {
+    background-color: white;
+    border-radius: 16px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid #eee;
+    margin-bottom: 25px;
+}
+
+.student-avatar-mini {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: #f5f5f5;
+    color: #666;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+}
+
+.student-meal-details h4 {
+    font-size: 14px;
+    color: #222;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.student-meal-details p {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 6px;
+}
+
+.status-badge-clean {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+/* Botão de Histórico */
+.view-history-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: #ffffff;
+    color: #b30000;
+    border: 1px solid #b30000;
+    padding: 14px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 15px;
+    transition: background 0.2s;
+}
+
+.view-history-btn:active {
+    background-color: #fff5f5;
+}
+
+/* ==========================================================================
+   7. TELA DO QR CODE (CARTEIRINHA DIGITAL)
+   ========================================================================== */
+
+/* Alinhamento vertical focado no centro da tela */
+.qr-page-align {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Cabeçalho do Aluno na Tela do QR Code */
+.qr-student-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+.qr-student-header h3 {
+    font-size: 18px;
+    color: #222;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.qr-student-header p {
+    font-size: 13px;
+    color: #666;
+}
+
+.qr-student-header .qr-matricula {
+    font-size: 11px;
+    color: #999;
+    margin-top: 2px;
+}
+
+/* Moldura e Box do QR Code */
+.qr-code-outer-box {
+    background-color: white;
+    padding: 25px;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+    text-align: center;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.qr-scanner-frame {
+    width: 200px;
+    height: 200px;
+    border: 2px solid #b30000;
+    border-radius: 16px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: #fafafa;
+}
+
+/* Linha verde de efeito scanner idêntica ao mockup */
+.scanner-line {
+    position: absolute;
+    width: 90%;
+    height: 2px;
+    background-color: #4caf50;
+    box-shadow: 0 0 8px #4caf50;
+    top: 50%;
+    left: 5%;
+    animation: scanAnimation 2.5s infinite ease-in-out;
+}
+
+@keyframes scanAnimation {
+    0% { top: 5%; }
+    50% { top: 90%; }
+    100% { top: 5%; }
+}
+
+.qr-image-code {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Exibição do ID textual formatado */
+.qr-code-string-id {
+    margin-top: 15px;
+    background-color: #f5f5f5;
+    padding: 6px 16px;
+    border-radius: 20px;
+    display: inline-block;
+    border: 1px solid #e0e0e0;
+}
+
+.qr-code-string-id span {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 14px;
+    color: #333;
+    letter-spacing: 1px;
+}
+
+/* Instruções e Botão de Atualizar Token */
+.qr-instructions {
+    text-align: center;
+    max-width: 300px;
+}
+
+.qr-instructions p {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.qr-instructions i {
+    color: #b30000;
+}
+
+.refresh-qr-btn {
+    background: transparent;
+    border: 1px dashed #b30000;
+    color: #b30000;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.refresh-qr-btn:active {
+    background-color: #fff1f1;
+}
+
+/* ==========================================================================
+   8. TELA DO BOLETIM ESCOLAR
+   ========================================================================== */
+
+/* Card de Resumo Superior */
+.boletim-summary-card {
+    background-color: white;
+    border-radius: 18px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.summary-label {
+    font-size: 11px;
+    color: #888;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.summary-value {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.summary-value.positive { color: #2e7d32; }
+.summary-value.negative { color: #c62828; }
+
+.summary-status.approved {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 12px;
+}
+
+.summary-divider {
+    width: 1px;
+    height: 30px;
+    background-color: #eee;
+}
+
+/* Tabela de Notas customizada para Mobile */
+.grades-container {
+    background-color: white;
+    border-radius: 18px;
+    border: 1px solid #eee;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.grades-table-header {
+    background-color: #f8f9fa;
+    padding: 12px 15px;
+    display: flex;
+    font-size: 12px;
+    font-weight: 700;
+    color: #666;
+    border-bottom: 1px solid #eee;
+}
+
+.col-disciplina { flex: 2; }
+.col-nota { flex: 1; text-align: center; }
+.col-faltas { flex: 1; text-align: center; }
+
+.grade-row {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.grade-row:last-child {
+    border-bottom: none;
+}
+
+.subject-info {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.subject-info span {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Ícones coloridinhos para as matérias */
+.subject-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+}
+.subject-icon.mat { background-color: #e3f2fd; color: #1e88e5; }
+.subject-icon.port { background-color: #fce4ec; color: #d81b60; }
+.subject-icon.cie { background-color: #e8f5e9; color: #4caf50; }
+.subject-icon.geo { background-color: #fff3e0; color: #fb8c00; }
+.subject-icon.edf { background-color: #f3e5f5; color: #8e24aa; }
+
+/* Valores das notas com cores dinâmicas */
+.grade-value {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.grade-value.positive { color: #2e7d32; }  /* Azul/Verde para nota boa */
+.grade-value.warning { color: #c62828; }   /* Vermelho para nota baixa */
+
+.absences-value {
+    flex: 1;
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+}
+
+/* ==========================================================================
+   9. TELA DE LOGIN
+   ========================================================================== */
+
+/* Fundo cinza suave específico para a página de login */
+.login-page-bg {
+    background-color: #ffffff;
+    justify-content: flex-start;
+}
+
+.login-container {
+    width: 100%;
+    padding: 30px 25px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* Cabeçalho do Login */
+.login-header {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+
+.login-logo {
+    width: 85px;
+    height: 85px;
+    margin-bottom: 12px;
+}
+
+.login-header h2 {
+    font-size: 18px;
+    color: #222;
+    font-weight: 700;
+}
+
+.login-header p {
+    font-size: 13px;
+    color: #666;
+    margin-top: 2px;
+}
+
+/* Seletor de Perfis */
+.profile-selector-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.input-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 2px;
+}
+
+.profile-btn {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    background-color: #f8f9fa;
+    color: #444;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s ease;
+}
+
+/* Destaque para o perfil selecionado (Vermelho como no Mockup) */
+.profile-btn.active {
+    background-color: #b30000;
+    color: white;
+    border-color: #b30000;
+    box-shadow: 0 4px 10px rgba(179, 0, 0, 0.2);
+}
+
+/* Campos de Input */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    font-size: 13px;
+    color: #333;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #b30000;
+    background-color: #fff;
+}
+
+/* Password wrapper para o botão do olho de mostrar senha */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-password-btn {
+    position: absolute;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: #777;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.forgot-password {
+    align-self: flex-start;
+    font-size: 12px;
+    color: #666;
+    text-decoration: none;
+    margin-top: -5px;
+    font-weight: 500;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Botão Entrar */
+.submit-login-btn {
+    background-color: #b30000;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 4px 12px rgba(179, 0, 0, 0.25);
+    transition: background 0.2s;
+}
+
+.submit-login-btn:active {
+    background-color: #8c0000;
+}
+
+/* Rodapé do Login */
+.login-footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 12px;
+    color: #666;
+}
+
+.login-footer a {
+    color: #b30000;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   10. TELA DE COMUNICADOS (AVISOS)
+   ========================================================================== */
+
+/* Botão de filtro no topo direito do header */
+.filter-top-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.comunicados-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Estrutura do Card de Aviso */
+.comunicado-card {
+    background-color: white;
+    border-radius: 16px;
+    padding: 15px;
+    display: flex;
+    gap: 15px;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+/* Quadrado do ícone com cores suaves baseadas na categoria */
+.comunicado-icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.comunicado-icon-box.aviso { background-color: #e8eaf6; color: #3f51b5; }
+.comunicado-icon-box.reuniao { background-color: #f3e5f5; color: #9c27b0; }
+.comunicado-icon-box.prova { background-color: #fde8e8; color: #e53935; }
+.comunicado-icon-box.boletim { background-color: #e8f5e9; color: #2e7d32; }
+
+/* Corpo de texto do aviso */
+.comunicado-body {
+    flex: 1;
+}
+
+.comunicado-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+/* Tags de identificação de texto */
+.badge-tipo {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.tipo-aviso { color: #3f51b5; }
+.tipo-reuniao { color: #9c27b0; }
+.tipo-prova { color: #e53935; }
+.tipo-boletim { color: #2e7d32; }
+
+.comunicado-time {
+    font-size: 11px;
+    color: #999;
+}
+
+.comunicado-body h3 {
+    font-size: 14px;
+    color: #222;
+    font-weight: 700;
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.comunicado-body p {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   11. TELA DE CALENDÁRIO ESCOLAR
+   ========================================================================== */
+
+/* Seletor do Mês */
+.calendar-month-selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 15px 20px;
+    border-radius: 14px;
+    margin-bottom: 15px;
+    border: 1px solid #eee;
+}
+
+.calendar-month-selector h3 {
+    font-size: 16px;
+    color: #333;
+    font-weight: 700;
+}
+
+.month-nav-btn {
+    background: transparent;
+    border: none;
+    color: #b30000;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+/* Caixa da Grade do Calendário */
+.calendar-grid-box {
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    margin-bottom: 25px;
+}
+
+/* Dias da semana (D, S, T...) */
+.week-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #999;
+    margin-bottom: 15px;
+}
+
+/* Dias do mês */
+.month-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: 12px;
+    text-align: center;
+    font-size: 13px;
+    color: #444;
+    font-weight: 600;
+}
+
+.month-days span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+    width: 32px;
+    margin: 0 auto;
+    border-radius: 50%;
+}
+
+.empty-day {
+    visibility: hidden;
+}
+
+/* Indicadores coloridos para os dias com eventos na grade */
+.event-day {
+    color: white !important;
+}
+.event-day.badge-reuniao { background-color: #9c27b0; }
+.event-day.badge-recesso { background-color: #e53935; }
+.event-day.badge-evento { background-color: #fb8c00; }
+
+/* Lista de Eventos Abaixo */
+.events-list-section h3 {
+    font-size: 14px;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+}
+
+.event-item-card {
+    background-color: white;
+    border-radius: 14px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 12px;
+    border: 1px solid #eee;
+    border-left: 4px solid #ccc;
+}
+
+/* Bordas laterais dinâmicas dos cards */
+.border-reuniao { border-left-color: #9c27b0; }
+.border-recesso { border-left-color: #e53935; }
+.border-evento { border-left-color: #fb8c00; }
+
+/* Badge da Data dentro do card */
+.event-date-badge {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.bg-reuniao { background-color: #9c27b0; }
+.bg-recesso { background-color: #e53935; }
+.bg-evento { background-color: #fb8c00; }
+
+.day-num {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.day-month {
+    font-size: 9px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+/* Texto descritivo do evento */
+.event-info-text h4 {
+    font-size: 14px;
+    color: #222;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.event-info-text p {
+    font-size: 12px;
+    color: #666;
+}
+
+.event-info-text i {
+    font-size: 11px;
+    color: #999;
+}
+
+/* ==========================================================================
+   12. TELA DE AVALIAÇÕES (AGENDA DE PROVAS/TRABALHOS)
+   ========================================================================== */
+
+.avaliacoes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Card Principal da Avaliação */
+.avaliacao-card {
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-left: 5px solid #ccc;
+}
+
+/* Cores das bordas laterais por urgência/status */
+.avaliacao-card.status-pendente { border-left-color: #fb8c00; } /* Laranja */
+.avaliacao-card.status-aviso { border-left-color: #1e88e5; }    /* Azul */
+
+/* Cabeçalho do Card */
+.av-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Badges de Tipo de Avaliação */
+.av-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.badge-trabalho { background-color: #fff3e0; color: #fb8c00; }
+.badge-prova { background-color: #ffebee; color: #e53935; }
+.badge-simulado { background-color: #e3f2fd; color: #1e88e5; }
+
+.av-date {
+    font-size: 12px;
+    color: #777;
+    font-weight: 500;
+}
+
+.av-date i {
+    margin-right: 4px;
+    color: #999;
+}
+
+/* Corpo do texto do Card */
+.av-body h3 {
+    font-size: 15px;
+    color: #222;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.av-subject {
+    font-size: 12px;
+    font-weight: 600;
+    color: #b30000; /* Vermelho institucional para a matéria */
+    margin-bottom: 8px;
+}
+
+.av-desc {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.4;
+}
+
+/* Rodapé do Card */
+.av-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px dashed #eee;
+    font-size: 12px;
+    color: #666;
+}
+
+.av-footer strong {
+    color: #222;
+}
+
+/* Indicador textual do canto inferior direito */
+.status-indicator {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+}
+
+.status-pendente .status-indicator { color: #fb8c00; }
+.status-aviso .status-indicator { color: #1e88e5; }
+
+/* ==========================================================================
+   13. TELA DE NOTIFICAÇÕES (ALERTAS PUSH EM TEMPO REAL)
+   ========================================================================== */
+
+/* Botão de limpar no topo direito */
+.clear-all-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.notifications-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Estrutura do Item de Notificação */
+.notification-item {
+    background-color: white;
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    gap: 14px;
+    border: 1px solid #f2f2f2;
+    position: relative;
+    transition: background 0.2s;
+}
+
+/* Efeito visual para mensagens não lidas (pontinho vermelho ou fundo suave) */
+.notification-item.unread {
+    background-color: #fff9f9;
+    border-color: #ffebed;
+}
+
+.notification-item.unread::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 7px;
+    height: 7px;
+    background-color: #b30000;
+    border-radius: 50%;
+}
+
+/* Ícones redondos com cores temáticas de evento */
+.noti-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.noti-icon.enter { background-color: #e8f5e9; color: #2e7d32; } /* Verde para Entrada */
+.noti-icon.leave { background-color: #fff3e0; color: #ef6c00; } /* Laranja para Saída */
+.noti-icon.meal { background-color: #e3f2fd; color: #1565c0; }  /* Azul para Lanche */
+.noti-icon.alert { background-color: #ffebee; color: #c62828; } /* Vermelho para Avisos */
+
+/* Alinhamento do conteúdo de texto */
+.noti-content {
+    flex: 1;
+    padding-right: 10px;
+}
+
+.noti-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+}
+
+.noti-header h4 {
+    font-size: 13px;
+    color: #222;
+    font-weight: 700;
+}
+
+.noti-time {
+    font-size: 11px;
+    color: #999;
+    font-weight: 500;
+}
+
+.noti-content p {
+    font-size: 12.5px;
+    color: #555;
+    line-height: 1.4;
+}
+
+.noti-content strong {
+    color: #222;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   14. TELA DE DADOS DO ALUNO / PERFIL
+   ========================================================================== */
+
+/* Card de Destaque Superior do Perfil */
+.profile-main-card {
+    background-color: white;
+    border-radius: 20px;
+    padding: 25px 20px;
+    text-align: center;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    margin-bottom: 20px;
+}
+
+.profile-avatar-large {
+    width: 75px;
+    height: 75px;
+    background-color: #fff1f1;
+    color: #b30000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    margin: 0 auto 12px auto;
+    box-shadow: 0 4px 10px rgba(179, 0, 0, 0.1);
+}
+
+.profile-main-card h3 {
+    font-size: 18px;
+    color: #222;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.profile-status-tag-active {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+/* Blocos de Seções Cadastrais */
+.info-section-box {
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid #eee;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
+}
+
+.section-title {
+    font-size: 13px;
+    color: #b30000; /* Vermelho institucional da escola */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #f5f5f5;
+    padding-bottom: 6px;
+}
+
+/* Campos de Ficha Técnica */
+.info-field-item {
+    margin-bottom: 12px;
+}
+
+.info-field-item:last-child {
+    margin-bottom: 0;
+}
+
+.info-field-item label {
+    font-size: 11px;
+    color: #888;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.info-field-item p {
+    font-size: 14px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Alerta médico destacado */
+.medical-alert {
+    color: #c62828 !important; /* Vermelho forte para chamar atenção da cantina/professores */
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #ffebee;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-top: 2px;
+    font-size: 13px !important;
+}
+
+/* ESTILOS ESPECÍFICOS DA TELA DE MENU (HAMBÚRGUER) */
+.menu-sections-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 10px;
+}
+
+.menu-section-card {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.menu-section-card:active {
+    transform: scale(0.98);
+    background-color: #fcfcfc;
+}
+
+.menu-section-card .section-icon-box {
+    width: 42px;
+    height: 42px;
+    background: #ffebee;
+    color: #b30000;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.menu-section-card .section-info {
+    flex: 1;
+}
+
+.menu-section-card .section-info h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 3px;
+}
+
+.menu-section-card .section-info p {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.3;
+}
+
+.menu-section-card .arrow-go {
+    color: #ccc;
+    font-size: 14px;
+}

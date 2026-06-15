@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Diretor - Escola Benedito Oliveira</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="page-header" style="background: #b30000;">
+            <div style="width: 32px;"></div>
+            <h2 style="color: #fff;">Painel do Diretor</h2>
+            <a href="/" class="back-btn" style="color: #fff; margin-right: 15px;"><i class="fas fa-sign-out-alt"></i></a>
+        </header>
+
+        <main class="page-content" style="padding: 20px;">
+            
+            <div style="background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px;">
+                <h3 style="color: #333; margin-bottom: 5px;">Olá, Diretor(a)!</h3>
+                <p style="color: #666; font-size: 14px;">Gerencie todas as áreas do aplicativo da escola por aqui.</p>
+            </div>
+
+            <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px;">
+                <h4 style="color: #b30000; margin-bottom: 15px;"><i class="fas fa-bullhorn"></i> Novo Comunicado</h4>
+                <form action="/criar_comunicado" method="POST">
+                    <div style="margin-bottom: 10px;">
+                        <select name="tipo" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;" required>
+                            <option value="Avisos">Aviso Geral</option>
+                            <option value="Reuniões">Reunião de Pais</option>
+                            <option value="Avaliações">Avaliação / Prova</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <input type="text" name="titulo" placeholder="Título do Comunicado" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <textarea name="mensagem" rows="2" placeholder="Mensagem..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; resize: none;" required></textarea>
+                    </div>
+                    <button type="submit" style="width: 100%; background: #b30000; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Disparar Comunicado</button>
+                </form>
+
+                <h5 style="margin: 15px 0 10px 0; color: #555;">Comunicados Ativos:</h5>
+                {% for c in lista_comunicados %}
+                <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 13px;">
+                    <span><strong>[{{ c.badge_texto }}]</strong> {{ c.titulo }}</span>
+                    <form action="/deletar_comunicado/{{ c.id }}" method="POST" style="margin:0;"><button type="submit" style="background:transparent; border:none; color:red; cursor:pointer;"><i class="fas fa-trash-alt"></i></button></form>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px;">
+                <h4 style="color: #b30000; margin-bottom: 15px;"><i class="fas fa-utensils"></i> Cardápio Semanal do Lanche</h4>
+                <form action="/atualizar_lanche" method="POST">
+                    <div style="margin-bottom: 8px; font-size: 13px;">
+                        <label>Segunda-feira:</label>
+                        <input type="text" name="segunda" value="{{ lanche.segunda }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                    </div>
+                    <div style="margin-bottom: 8px; font-size: 13px;">
+                        <label>Terça-feira:</label>
+                        <input type="text" name="terca" value="{{ lanche.terca }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                    </div>
+                    <div style="margin-bottom: 8px; font-size: 13px;">
+                        <label>Quarta-feira:</label>
+                        <input type="text" name="quarta" value="{{ lanche.quarta }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                    </div>
+                    <div style="margin-bottom: 8px; font-size: 13px;">
+                        <label>Quinta-feira:</label>
+                        <input type="text" name="quinta" value="{{ lanche.quinta }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                    </div>
+                    <div style="margin-bottom: 12px; font-size: 13px;">
+                        <label>Sexta-feira:</label>
+                        <input type="text" name="sexta" value="{{ lanche.sexta }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                    </div>
+                    <button type="submit" style="width: 100%; background: #2e7d32; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Salvar Cardápio</button>
+                </form>
+            </div>
+
+            <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px;">
+                <h4 style="color: #b30000; margin-bottom: 15px;"><i class="fas fa-calendar-alt"></i> Calendário de Eventos</h4>
+                <form action="/criar_evento" method="POST">
+                    <div style="margin-bottom: 10px;">
+                        <input type="date" name="data" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <input type="text" name="titulo" placeholder="Nome do Evento (Ex: Feriado de São João)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                    </div>
+                    <button type="submit" style="width: 100%; background: #b30000; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Adicionar ao Calendário</button>
+                </form>
+
+                <h5 style="margin: 15px 0 10px 0; color: #555;">Eventos Ativos:</h5>
+                {% for e in lista_eventos %}
+                <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 13px;">
+                    <span><strong>{{ e.data }}</strong> - {{ e.titulo }}</span>
+                    <form action="/deletar_evento/{{ e.id }}" method="POST" style="margin:0;"><button type="submit" style="background:transparent; border:none; color:red; cursor:pointer;"><i class="fas fa-trash-alt"></i></button></form>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px;">
+                <h4 style="color: #b30000; margin-bottom: 15px;"><i class="fas fa-file-signature"></i> Marcar Cronograma de Provas</h4>
+                <form action="/criar_prova" method="POST">
+                    <div style="margin-bottom: 10px;">
+                        <input type="text" name="disciplina" placeholder="Matéria (Ex: História)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <input type="text" name="conteudo" placeholder="Conteúdo (Ex: Capítulos 1 e 2 - Descobrimento)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <input type="date" name="data" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                    </div>
+                    <button type="submit" style="width: 100%; background: #b30000; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Agendar Prova</button>
+                </form>
+
+                <h5 style="margin: 15px 0 10px 0; color: #555;">Provas Agendadas:</h5>
+                {% for p in lista_provas %}
+                <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 13px;">
+                    <span><strong>{{ p.data }}</strong> - {{ p.disciplina }} ({{ p.conteudo }})</span>
+                    <form action="/deletar_prova/{{ p.id }}" method="POST" style="margin:0;"><button type="submit" style="background:transparent; border:none; color:red; cursor:pointer;"><i class="fas fa-trash-alt"></i></button></form>
+                </div>
+                {% endfor %}
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>

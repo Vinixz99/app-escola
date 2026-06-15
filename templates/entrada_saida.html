@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrada e Saída - Escola Benedito Oliveira</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="page-header">
+            <a href="/dashboard" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+            <h2>Entrada e Saída</h2>
+            <div style="width: 32px;"></div> 
+        </header>
+
+        <div class="tabs-container" style="display: flex; background: #fff; border-bottom: 1px solid #eee; width: 100%;">
+            <a href="/entrada_saida" class="tab-item active" style="flex: 1; text-align: center; padding: 15px 0; text-decoration: none; color: #b30000; font-weight: bold; border-bottom: 3px solid #b30000; font-size: 16px; pointer-events: none;">Status</a>
+            <a href="/entrada_saida_historico" class="tab-item" style="flex: 1; text-align: center; padding: 15px 0; text-decoration: none; color: #666; font-weight: normal; font-size: 16px;">Histórico</a>
+        </div>
+
+        <main class="page-content">
+            
+            <div class="status-card-box">
+                <div class="status-badge success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Entrada registrada com sucesso!</span>
+                </div>
+                <div class="status-time-info">
+                    <h3>12/06/2026 às 07:15</h3>
+                    <p>Portão Principal</p>
+                </div>
+            </div>
+
+            <div class="student-release-card card-verde">
+                <div class="student-info-flex">
+                    <div class="student-avatar-box">
+                        <i class="fas fa-user-gradient"></i>
+                    </div>
+                    <div class="student-details">
+                        <h4>Lucas Oliveira Santos</h4>
+                        <p>8º Ano • Turma B</p>
+                        <p class="matricula">Matrícula: 2025001</p>
+                    </div>
+                </div>
+                
+                <div class="release-status-tag">
+                    <i class="fas fa-walking"></i>
+                    <span>Sai sozinho (Cartão Verde)</span>
+                </div>
+                
+                <div class="release-footer-info">
+                    <p>Horário de liberação padrão: <strong>11:40</strong></p>
+                </div>
+            </div>
+
+            <div class="how-it-works-section">
+                <h3>Como funciona?</h3>
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-text">O aluno aproxima o QR Code do cartão físico na catraca da portaria.</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-text">O sistema valida a categoria do cartão e registra a data e horário exatos.</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-text">Você (responsável) recebe esta notificação instantânea no seu celular.</div>
+                </div>
+            </div>
+
+        </main>
+
+        <nav class="bottom-nav">
+    <a href="/dashboard" class="nav-item">
+        <i class="fas fa-home"></i>
+        <span>Início</span>
+    </a>
+    <a href="/entrada_saida_historico" class="nav-item">
+        <i class="fas fa-history"></i>
+        <span>Histórico</span>
+    </a>
+    <a href="/qrcode" class="nav-item scan-btn">
+        <i class="fas fa-qrcode"></i>
+    </a>
+    <a href="/perfil_responsavel" class="nav-item">
+        <i class="fas fa-user-circle"></i>
+        <span>Perfil</span>
+    </a>
+    <a href="/" class="nav-item">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Sair</span>
+    </a>
+</nav>
+    </div>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>
