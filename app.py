@@ -1,30 +1,59 @@
-from flask import Flask, render_template, request, send_from_directory, redirect
+from flask import Flask, render_template, request, send_from_directory, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__, template_folder='templates')
 
 # ==========================================================================
-# BANCO DE DADOS TEMPORÁRIO (Memória do Servidor)
+# CONFIGURAÇÃO DO BANCO DE DADOS (SQLite)
 # ==========================================================================
-comunicados_db = []
-proximo_comunicado_id = 1
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'escola.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Nova estrutura de Lanche (Segunda a Sexta) com dados padrão editáveis
-lanche_db = {
-    "segunda": "Suco de maracujá e biscoito integral",
-    "terca": "Fruta (banana/maçã) e iogurte",
-    "quarta": "Arroz doce com canela",
-    "quinta": "Sopa de legumes com frango",
-    "sexta": "Suco de uva e bolo de cenoura"
-}
+db = SQLAlchemy(app)
 
-# Nova estrutura de Calendário de Eventos
-calendario_db = []
-proximo_evento_id = 1
+# ==========================================================================
+# MODELOS DO BANCO DE DADOS (TABELAS)
+# ==========================================================================
 
-# Nova estrutura de Avaliações/Provas
-provas_db = []
-proximo_prova_id = 1
+class Comunicado(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tipo = db.Column(db.String(50), nullable=False)
+    badge_classe = db.Column(db.String(50), nullable=False)
+    badge_texto = db.Column(db.String(50), nullable=False)
+    tempo = db.Column(db.String(20), default="Agora")
+    titulo = db.Column(db.String(100), nullable=False)
+    mensagem = db.Column(db.Text, nullable=False)
+
+class LancheSemana(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    segunda = db.Column(db.String(200), default="Suco de maracujá e biscoito integral")
+    terca = db.Column(db.String(200), default="Fruta (banana/maçã) e iogurte")
+    quarta = db.Column(db.String(200), default="Arroz doce com canela")
+    quinta = db.Column(db.String(200), default="Sopa de legumes com frango")
+    sexta = db.Column(db.String(200), default="Suco de uva e bolo de cenoura")
+
+class Evento(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    data = db.Column(db.String(20), nullable=False)
+    titulo = db.Column(db.String(150), nullable=False)
+
+class Prova(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    disciplina = db.Column(db.String(100), nullable=False)
+    conteudo = db.Column(db.Text, nullable=False)
+    data = db.Column(db.String(20), nullable=False)
+
+
+# Helper function para garantir que o lanche da semana sempre exista no banco
+def obter_ou_criar_lanche():
+    lanche = LancheSemana.query.first()
+    if not lanche:
+        lanche = LancheSemana()
+        db.session.add(lanche)
+        db.session.commit()
+    return lanche
 
 
 # ==========================================================================
@@ -65,24 +94,37 @@ def dashboard():
 
 @app.route('/dashboard_diretor')
 def dashboard_diretor():
-    # Enviamos absolutamente TODOS os dados reais para o painel do diretor gerenciar
+    # Puxa todas as informações armazenadas no Banco de Dados
+    lista_comunicados = Comunicado.query.order_by(Comunicado.id.desc()).all()
+    lanche_registro = obter_ou_criar_lanche()
+    lista_eventos = Evento.query.all()
+    lista_provas = Prova.query.all()
+
+    # Transforma o lanche em dicionário para manter a compatibilidade com o seu HTML anterior
+    lanche_dict = {
+        "segunda": lanche_registro.segunda,
+        "terca": lanche_registro.terca,
+        "quarta": lanche_registro.quarta,
+        "quinta": lanche_registro.quinta,
+        "sexta": lanche_registro.sexta
+    }
+
     return render_template(
         'dashboard_diretor.html', 
-        lista_comunicados=comunicados_db,
-        lanche=lanche_db,
-        lista_eventos=calendario_db,
-        lista_provas=provas_db
+        lista_comunicados=lista_comunicados,
+        lanche=lanche_dict,
+        lista_eventos=lista_eventos,
+        lista_provas=lista_provas
     )
 
 
 # ==========================================================================
-# 3. AÇÕES DO DIRETOR (GERENCIAMENTO REAL)
+# 3. AÇÕES DO DIRETOR (GERENCIAMENTO NO BANCO DE DADOS)
 # ==========================================================================
 
 # --- GERENCIAR COMUNICADOS ---
 @app.route('/criar_comunicado', methods=['POST'])
 def criar_comunicado():
-    global proximo_comunicado_id
     tipo = request.form.get('tipo')
     titulo = request.form.get('titulo')
     mensagem = request.form.get('mensagem')
@@ -96,89 +138,83 @@ def criar_comunicado():
         badge_classe = "tipo-prova"
         badge_texto = "Avaliação / Prova"
 
-    novo_comunicado = {
-        "id": proximo_comunicado_id,
-        "tipo": tipo,
-        "badge_classe": badge_classe,
-        "badge_texto": badge_texto,
-        "tempo": "Agora",
-        "titulo": titulo,
-        "mensagem": mensagem
-    }
-    comunicados_db.insert(0, novo_comunicado)
-    proximo_comunicado_id += 1
+    novo_comunicado = Comunicado(
+        tipo=tipo,
+        badge_classe=badge_classe,
+        badge_texto=badge_texto,
+        titulo=titulo,
+        mensagem=mensagem
+    )
+    db.session.add(novo_comunicado)
+    db.session.commit()
     return redirect('/dashboard_diretor')
 
 @app.route('/deletar_comunicado/<int:id>', methods=['POST'])
 def deletar_comunicado(id):
-    global comunicados_db
-    comunicados_db = [c for c in comunicados_db if c.get('id') != id]
+    comunicado = Comunicado.query.get(id)
+    if comunicado:
+        db.session.delete(comunicado)
+        db.session.commit()
     return redirect('/dashboard_diretor')
 
 
 # --- GERENCIAR LANCHE ESCOLAR ---
 @app.route('/atualizar_lanche', methods=['POST'])
 def atualizar_lanche():
-    global lanche_db
-    # Substitui os lanches pelos valores digitados pelo diretor
-    lanche_db["segunda"] = request.form.get("segunda")
-    lanche_db["terca"] = request.form.get("terca")
-    lanche_db["quarta"] = request.form.get("quarta")
-    lanche_db["quinta"] = request.form.get("quinta")
-    lanche_db["sexta"] = request.form.get("sexta")
+    lanche_registro = obter_ou_criar_lanche()
+    
+    lanche_registro.segunda = request.form.get("segunda")
+    lanche_registro.terca = request.form.get("terca")
+    lanche_registro.quarta = request.form.get("quarta")
+    lanche_registro.quinta = request.form.get("quinta")
+    lanche_registro.sexta = request.form.get("sexta")
+    
+    db.session.commit()
     return redirect('/dashboard_diretor')
 
 
 # --- GERENCIAR CALENDÁRIO ---
 @app.route('/criar_evento', methods=['POST'])
 def criar_evento():
-    global proximo_evento_id
     data = request.form.get('data')
     titulo = request.form.get('titulo')
     
-    # Inverte a data padrão do HTML (AAAA-MM-DD) para o formato BR (DD/MM)
     data_br = "/".join(data.split("-")[1:3][::-1]) if data else ""
 
-    novo_evento = {
-        "id": proximo_evento_id,
-        "data": data_br,
-        "titulo": titulo
-    }
-    calendario_db.append(novo_evento)
-    proximo_evento_id += 1
+    novo_evento = Evento(data=data_br, titulo=titulo)
+    db.session.add(novo_evento)
+    db.session.commit()
     return redirect('/dashboard_diretor')
 
 @app.route('/deletar_evento/<int:id>', methods=['POST'])
 def deletar_evento(id):
-    global calendario_db
-    calendario_db = [e for e in calendario_db if e.get('id') != id]
+    evento = Evento.query.get(id)
+    if evento:
+        db.session.delete(evento)
+        db.session.commit()
     return redirect('/dashboard_diretor')
 
 
 # --- GERENCIAR AVALIAÇÕES/PROVAS ---
 @app.route('/criar_prova', methods=['POST'])
 def criar_prova():
-    global proximo_prova_id
     disciplina = request.form.get('disciplina')
     conteudo = request.form.get('conteudo')
     data = request.form.get('data')
     
     data_br = "/".join(data.split("-")[1:3][::-1]) if data else ""
 
-    nova_prova = {
-        "id": proximo_prova_id,
-        "disciplina": disciplina,
-        "conteudo": conteudo,
-        "data": data_br
-    }
-    provas_db.append(nova_prova)
-    proximo_prova_id += 1
+    nova_prova = Prova(disciplina=disciplina, conteudo=conteudo, data=data_br)
+    db.session.add(nova_prova)
+    db.session.commit()
     return redirect('/dashboard_diretor')
 
 @app.route('/deletar_prova/<int:id>', methods=['POST'])
 def deletar_prova(id):
-    global provas_db
-    provas_db = [p for p in provas_db if p.get('id') != id]
+    prova = Prova.query.get(id)
+    if prova:
+        db.session.delete(prova)
+        db.session.commit()
     return redirect('/dashboard_diretor')
 
 
@@ -193,18 +229,25 @@ def notificacoes(): return render_template('notificacoes.html')
 
 @app.route('/calendario')
 def calendario():
-    # Passa a lista dinâmica de eventos criados pelo diretor
-    return render_template('calendario.html', lista_eventos=calendario_db)
+    lista_eventos = Evento.query.all()
+    return render_template('calendario.html', lista_eventos=lista_eventos)
 
 @app.route('/avaliacoes')
 def avaliacoes():
-    # Passa a lista dinâmica de provas criadas pelo diretor
-    return render_template('avaliacoes.html', lista_provas=provas_db)
+    lista_provas = Prova.query.all()
+    return render_template('avaliacoes.html', lista_provas=lista_provas)
 
 @app.route('/lanche')
 def lanche():
-    # Passa o dicionário de cardápios dinâmicos para a tela
-    return render_template('lanche.html', lanche=lanche_db)
+    lanche_registro = obter_ou_criar_lanche()
+    lanche_dict = {
+        "segunda": lanche_registro.segunda,
+        "terca": lanche_registro.terca,
+        "quarta": lanche_registro.quarta,
+        "quinta": lanche_registro.quinta,
+        "sexta": lanche_registro.sexta
+    }
+    return render_template('lanche.html', lanche=lanche_dict)
 
 @app.route('/boletim')
 def boletim(): return render_template('boletim.html')
@@ -236,8 +279,15 @@ def faltas(): return render_template('faltas.html')
 
 @app.route('/comunicados')
 def comunicados():
-    return render_template('comunicados.html', lista_comunicados=comunicados_db)
+    lista_comunicados = Comunicado.query.order_by(Comunicado.id.desc()).all()
+    return render_template('comunicados.html', lista_comunicados=lista_comunicados)
 
+
+# ==========================================================================
+# CRIAÇÃO AUTOMÁTICA DAS TABELAS SE NÃO EXISTIREM
+# ==========================================================================
+with app.app_context():
+    db.create_all()
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
