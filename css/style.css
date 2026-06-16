@@ -28,7 +28,6 @@ body {
     flex-direction: column;
     position: relative;
     overflow-y: auto; /* Ativa a rolagem fluida e conjunta de toda a tela */
-    border-radius: 30px;
 }
 
 /* Ocultar barra de rolagem para deixar o visual mais limpo (opcional) */

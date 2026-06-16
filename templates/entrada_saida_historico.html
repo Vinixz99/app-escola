@@ -15,13 +15,11 @@
             <div style="width: 18px;"></div>
         </header>
 
-        <!-- ABAS DE NAVEGAÇÃO DO TOPO (CORRIGIDO SEM ESTILO FIXO) -->
-<!-- ABAS DE NAVEGAÇÃO DO TOPO (STATUS ATIVO) -->
-<!-- ABAS DE NAVEGAÇÃO DO TOPO (HISTÓRICO ATIVO - FORÇADO) -->
-<div class="tabs-container" style="display: flex !important; background: #fff !important; border-bottom: 1px solid #eee !important; width: 100% !important;">
-    <a href="/entrada_saida" class="tab-item" style="flex: 1 !important; text-align: center !important; padding: 15px 0 !important; text-decoration: none !important; color: #666 !important; font-weight: normal !important; font-size: 16px !important; border-bottom: 3px solid transparent !important;">Status</a>
-    <a href="/entrada_saida/historico" class="tab-item active" style="flex: 1 !important; text-align: center !important; padding: 15px 0 !important; text-decoration: none !important; color: #b30000 !important; font-weight: bold !important; border-bottom: 3px solid #b30000 !important; font-size: 16px !important; pointer-events: none !important;">Histórico</a>
-</div>
+        <!-- ABAS DE NAVEGAÇÃO DO TOPO -->
+        <div class="tabs-container" style="display: flex !important; background: #fff !important; border-bottom: 1px solid #eee !important; width: 100% !important;">
+            <a href="/entrada_saida" class="tab-item" style="flex: 1 !important; text-align: center !important; padding: 15px 0 !important; text-decoration: none !important; color: #666 !important; font-weight: normal !important; font-size: 16px !important; border-bottom: 3px solid transparent !important;">Status</a>
+            <a href="/entrada_saida/historico" class="tab-item active" style="flex: 1 !important; text-align: center !important; padding: 15px 0 !important; text-decoration: none !important; color: #b30000 !important; font-weight: bold !important; border-bottom: 3px solid #b30000 !important; font-size: 16px !important; pointer-events: none !important;">Histórico</a>
+        </div>
 
         <main class="page-content" style="padding: 20px;">
             <div class="notifications-container" style="display: flex; flex-direction: column; gap: 12px;">
@@ -68,11 +66,12 @@
             </div>
         </main>
 
+        <!-- MENU INFERIOR CORRIGIDO COM A ROTA FINAL DO HISTÓRICO -->
         <nav class="bottom-nav">
             <a href="/dashboard" class="nav-item"><i class="fas fa-home"></i><span>Início</span></a>
-            <a href="/entrada_saida" class="nav-item active" style="color: #b30000;"><i class="fas fa-history"></i><span>Histórico</span></a>
+            <a href="/entrada_saida_historico" class="nav-item active" style="color: #b30000;"><i class="fas fa-history"></i><span>Histórico</span></a>
             <a href="/qrcode" class="nav-item scan-btn"><i class="fas fa-qrcode"></i></a>
-            <a href="/perfil" class="nav-item"><i class="fas fa-user-circle"></i><span>Perfil</span></a>
+            <a href="/perfil_responsavel" class="nav-item"><i class="fas fa-user-circle"></i><span>Perfil</span></a>
             <a href="/" class="nav-item"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
         </nav>
     </div>

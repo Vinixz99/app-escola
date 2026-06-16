@@ -14,7 +14,7 @@
     <div class="app-container">
         <!-- Topo da Tela -->
         <header class="page-header">
-            <a href="dashboard" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+            <a href="/dashboard" class="back-btn"><i class="fas fa-arrow-left"></i></a>
             <h2>Carteirinha Digital</h2>
             <div style="width: 32px;"></div> <!-- Alinhamento do título -->
         </header>
@@ -40,7 +40,7 @@
                     <!-- Imagem fictícia de QR Code usando uma API pública ou ícone grande -->
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=VERD-1180" alt="QR Code Aluno" class="qr-image-code">
                 </div>
-                <!-- ID de Segurança que você idealizou -->
+                <!-- ID de Segurança -->
                 <div class="qr-code-string-id">
                     <span>ID: VERD-1180</span>
                 </div>
@@ -56,24 +56,24 @@
 
         </main>
 
-        <!-- Menu Inferior de Navegação Fixo -->
+        <!-- Menu Inferior de Navegação Corrigido para as rotas do Flask -->
         <nav class="bottom-nav">
-            <a href="dashboard.html" class="nav-item">
+            <a href="/dashboard" class="nav-item">
                 <i class="fas fa-home"></i>
                 <span>Início</span>
             </a>
-            <a href="entrada_saida.html" class="nav-item">
+            <a href="/entrada_saida_historico" class="nav-item">
                 <i class="fas fa-history"></i>
                 <span>Histórico</span>
             </a>
-            <a href="qrcode.html" class="nav-item scan-btn active">
+            <a href="/qrcode" class="nav-item scan-btn active">
                 <i class="fas fa-qrcode"></i>
             </a>
-            <a href="perfil.html" class="nav-item">
+            <a href="/perfil_responsavel" class="nav-item">
                 <i class="fas fa-user-circle"></i>
                 <span>Perfil</span>
             </a>
-            <a href="login.html" class="nav-item">
+            <a href="/" class="nav-item">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Sair</span>
             </a>
