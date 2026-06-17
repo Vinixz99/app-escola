@@ -202,63 +202,71 @@ body {
    4. BARRA DE NAVEGAÇÃO INFERIOR (Fica fixa na base do celular)
    ========================================================================== */
 .bottom-nav {
-    position: absolute; /* Mudado de fixed para absolute para alinhar perfeitamente ao container pai */
+    position: absolute;
     bottom: 0;
-    left: 0; /* Garante o alinhamento à esquerda interna */
+    left: 0;
+    right: 0;
     width: 100%;
     height: 75px;
     background-color: #ffffff;
     border-top: 1px solid #eee;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between; /* Distribui os blocos igualmente */
     align-items: center;
     z-index: 10;
-    padding-bottom: 10px;
-    border-bottom-left-radius: 30px; /* Acompanha o formato do celular */
+    padding: 0 15px 10px 15px; /* Respiro nas laterais para não colar na borda */
+    border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
 }
 
-/* Se o app rodar em tela cheia no navegador, mantemos colado na base de forma absoluta */
-@media (min-height: 841px) {
-    .bottom-nav {
-        position: absolute;
-    }
-}
-
+/* Os links normais (Início, Histórico, Perfil, Sair) */
+/* Os links normais (Início, Histórico, Perfil, Sair) */
 .nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     color: #a0a0a0;
     text-decoration: none;
-    font-size: 10px;
-    font-weight: 500;
+    font-size: 13px; /* Aumentado de 11px para 13px para dar leitura */
+    font-weight: 600; /* Deixa a fonte um pouco mais encorpada */
+    width: 65px; /* Define uma largura fixa padrão para cada bloco */
+    gap: 4px; /* Cria um espacinho perfeito entre o ícone e o texto abaixo */
 }
 
+/* Garante que o tamanho dos ícones do FontAwesome (ou a biblioteca que usar) fique destacado */
 .nav-item i {
-    font-size: 18px;
-    margin-bottom: 4px;
+    font-size: 20px; /* Tamanho ideal para visualização em telas mobile */
 }
 
+/* Força a cor vermelha específica no botão ativo/Início */
+/* Removemos o :first-child para não forçar o Início em tudo */
 .nav-item.active {
-    color: #b30000;
+    color: #cc0000; 
 }
 
-/* Botão central QR Code (Flutuante vermelho) */
-.nav-item.scan-btn {
-    background-color: #b30000;
-    color: white;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(179, 0, 0, 0.35);
-    transform: translateY(-12px);
+/* O BOTÃO CENTRAL DO QR CODE (Para garantir que ele não suma ou encolha) */
+.bottom-nav .qr-button, 
+.bottom-nav .center-btn,
+.bottom-nav a:nth-child(3) { 
+    flex: none !important; /* Impede o flex-1 de esmagar o botão */
+    width: 55px !important;
+    height: 55px !important;
+    background-color: #cc0000 !important; /* Força o fundo vermelho de volta */
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-top: -20px; /* Faz ele ficar flutuando para cima como no design */
+    box-shadow: 0 4px 10px rgba(204, 0, 0, 0.3);
+    z-index: 12;
 }
 
-.nav-item.scan-btn i {
-    font-size: 22px;
-    margin: 0;
+/* Força o ícone branco dentro do botão central */
+.bottom-nav a:nth-child(3) i,
+.bottom-nav a:nth-child(3) img {
+    color: #ffffff !important;
+    font-size: 22px !important;
 }
 
 /* ==========================================================================
