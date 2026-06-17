@@ -1708,3 +1708,24 @@ body {
     top: 30px; /* Desce para essa posição */
     opacity: 1;
 }
+
+/* Cria o espaço oval branco para a logo flutuar */
+.logo-wrapper {
+    width: 140px;          /* Largura do detalhe oval */
+    height: 55px;          /* Altura do detalhe oval */
+    background-color: #ffffff !important; /* Força o fundo branco */
+    border-radius: 50px;   /* Deixa as bordas arredondadas em formato oval */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px auto; /* Centraliza no topo e joga o texto para baixo */
+    padding: 6px;          /* Espaço interno para a logo não colar na borda */
+    overflow: hidden;      /* Garante que a imagem não saia do oval */
+}
+
+/* Garante que a imagem se ajuste perfeitamente dentro do oval branco */
+.school-big-logo {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important; /* Faz a imagem encolher proporcionalmente sem amassar */
+}
