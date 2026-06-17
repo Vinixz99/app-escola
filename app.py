@@ -69,7 +69,9 @@ def serve_static(filename):
 # ==========================================================================
 @app.route('/')
 def login():
-    return render_template('login.html')
+    # Verifica se a URL contém a marcação de erro (?erro=1)
+    erro = request.args.get('erro')
+    return render_template('login.html', erro=erro)
 
 @app.route('/login_processo', methods=['POST'])
 def login_processo():
@@ -77,12 +79,17 @@ def login_processo():
     usuario = request.form.get('username')
     senha = request.form.get('password')
 
+    # 1. TESTA SE É DIRETOR (Precisa digitar o e-mail e a senha corretos)
     if perfil == 'diretor' and usuario == 'diretor@escola.com' and senha == '1234':
         return redirect('/dashboard_diretor')
+        
+    # 2. TESTA SE É RESPONSÁVEL (Entra direto independente do que digitar, como estava no seu original)
     elif perfil == 'responsavel':
         return redirect('/dashboard')
+        
+    # 3. SE NÃO FOR NENHUM DOS DOIS OU SE O DIRETOR ERRAR A SENHA
     else:
-        return redirect('/')
+        return redirect(url_for('login', erro=1))
 
 
 # ==========================================================================
@@ -294,17 +301,24 @@ def faltas():
     return render_template('faltas.html')
 
 
-with app.app_context():
-    db.create_all()
-
-    from flask import send_from_directory
-import os
-
+# ==========================================================================
+# 6. ROTAS DE ARQUIVOS DE MÍDIA / IMAGENS
+# ==========================================================================
 # ROTA DA MARRA: Diz para o Flask entregar as imagens da pasta raiz 'img'
 @app.route('/img/<path:filename>')
 def serve_img(filename):
     root_dir = os.path.dirname(os.path.abspath(__file__))
     return send_from_directory(os.path.join(root_dir, 'img'), filename)
 
+
+# ==========================================================================
+# O CORAÇÃO DA INICIALIZAÇÃO (SEMPRE NO FINAL DO ARQUIVO)
+# ==========================================================================
 if __name__ == '__main__':
+    # 1. Garante que o banco de dados e as tabelas sejam criados antes do servidor rodar
+    with app.app_context():
+        db.create_all()
+        print("Banco de dados verificado/criado com sucesso!")
+
+    # 2. Roda o servidor Flask
     app.run(debug=True, port=5000)

@@ -47,40 +47,60 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (e) { console.log("Botões superiores do topo não encontrados."); }
 
     // ==========================================================================
-    // 3. TELA DE COMUNICADOS: FILTRO DINÂMICO POR ABAS (VISÃO DO RESPONSÁVEL)
+    // 3. TELA DE COMUNICADOS: FILTRO DINÂMICO CORRIGIDO (VISÃO DO RESPONSÁVEL)
     // ==========================================================================
     try {
         const tabButtons = document.querySelectorAll(".sub-tabs .tab-btn");
         const comunicadoCards = document.querySelectorAll(".comunicados-list .comunicado-card");
+        const emptyMessage = document.getElementById('empty-filter-message');
 
-        if (tabButtons.length > 0 && comunicadoCards.length > 0) {
+        if (tabButtons.length > 0) {
             tabButtons.forEach(tab => {
                 tab.addEventListener("click", function() {
+                    // Alterna a classe ativa nos botões da barra de abas
                     const parentContainer = this.parentElement;
                     parentContainer.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
                     this.classList.add("active");
                     
-                    const categoriaSelecionada = this.textContent.trim();
+                    const filterValue = this.getAttribute("data-filter");
+                    let visibleCardsCount = 0;
                     
                     comunicadoCards.forEach(card => {
-                        const categoriaCard = card.getAttribute("data-categoria");
-                        if (categoriaSelecionada === "Todas" || categoriaCard === categoriaSelecionada) {
+                        const cardCategory = card.getAttribute("data-category");
+
+                        let match = false;
+                        if (filterValue === "todos") {
+                            match = true;
+                        } else if (filterValue === cardCategory) {
+                            match = true;
+                        }
+
+                        if (match) {
                             card.style.display = "flex";
+                            visibleCardsCount++;
                         } else {
                             card.style.display = "none";
                         }
                     });
+
+                    // Gerencia o aviso visual de categoria sem nenhum card postado
+                    if (emptyMessage) {
+                        if (visibleCardsCount === 0 && comunicadoCards.length > 0) {
+                            emptyMessage.style.display = "block";
+                        } else {
+                            emptyMessage.style.display = "none";
+                        }
+                    }
                 });
             });
         }
-    } catch (e) { console.log("Abas de comunicados não encontradas."); }
+    } catch (e) { console.log("Abas de comunicados não encontradas ou erro no filtro:", e); }
 
 
     // ==========================================================================
     // 4. ATUALIZAÇÃO EM TEMPO REAL COM LOADING (PAINEL DO DIRETOR)
     // ==========================================================================
     
-    // Função para exibir o balão Push (Toast) corrigida
     function mostrarToast(mensagem) {
         const toast = document.getElementById('toast');
         const toastMessage = document.getElementById('toast-message');
@@ -93,7 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Função genérica para enviar formulários via AJAX com animação de Spinner
     function configurarFormularioAjax(idFormulario, rotaUrl, tipoForm) {
         const form = document.getElementById(idFormulario);
         if (!form) return; 
@@ -104,7 +123,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const botaoSubmit = form.querySelector('button[type="submit"]');
             const textoOriginalBotao = botaoSubmit.innerHTML;
             
-            // Ativa o efeito visual de carregamento no botão
             botaoSubmit.disabled = true;
             botaoSubmit.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Enviando...`;
             botaoSubmit.style.opacity = "0.7";
@@ -117,7 +135,6 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(response => response.json())
             .then(data => {
-                // Restaura o botão original após a resposta do servidor
                 botaoSubmit.disabled = false;
                 botaoSubmit.innerHTML = textoOriginalBotao;
                 botaoSubmit.style.opacity = "1";
@@ -128,7 +145,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     const idCriado = data.id || Date.now();
                     let novoItem = document.createElement('div');
                     
-                    // Configuração inicial oculta para a animação de fade-in suave
                     novoItem.style = "display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; font-size: 13px; border-left: 4px solid #b30000; opacity: 0; transform: translateY(-10px); transition: all 0.4s ease;";
                     
                     if (tipoForm === 'comunicado') {
@@ -145,7 +161,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <i class="fas fa-trash-alt"></i>
                             </a>
                         `;
-                        // Insere no topo da lista (abaixo do h5)
                         const h5Alvo = form.parentElement.querySelector('h5');
                         if (h5Alvo) h5Alvo.insertAdjacentElement('afterend', novoItem);
                     } 
@@ -177,13 +192,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         form.parentElement.appendChild(novoItem);
                     }
 
-                    // Força o navegador a processar os estilos e engatar a animação de entrada fluida
                     setTimeout(() => {
                         novoItem.style.opacity = "1";
                         novoItem.style.transform = "translateY(0)";
                     }, 50);
 
-                    form.reset(); // Limpa as caixas do formulário
+                    form.reset();
                 }
             })
             .catch(error => {
@@ -195,14 +209,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Inicializa os formulários com proteção contra erros
     try {
         configurarFormularioAjax('form-comunicado', '/criar_comunicado', 'comunicado');
         configurarFormularioAjax('form-evento', '/criar_evento', 'evento');
         configurarFormularioAjax('form-prova', '/criar_prova', 'prova');
     } catch(err) { console.log("Formulários de gerenciamento não pertencem a esta página."); }
 
-    // OUVINTE GLOBAL DAS LIXEIRAS (Para apagar na hora com efeito deslizante)
+    // OUVINTE GLOBAL DAS LIXEIRAS
     document.addEventListener('click', function(e) {
         const botaoLixeira = e.target.closest('a[href*="/deletar_"]');
         

@@ -52,9 +52,13 @@
             animation: fadeIn 0.3s ease;
         }
         
+        /* Ajustado para alinhar os itens no topo e não espalhar pela tela */
         .director-panel-block.active {
             display: flex;
             flex-direction: column;
+            justify-content: flex-start; 
+            align-items: stretch;
+            height: 100%;
         }
         
         @keyframes fadeIn {
@@ -62,9 +66,9 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Lista de itens salvos com rolagem interna magrinha */
+        /* Lista de itens salvos com tamanho inteligente e colada no conteúdo */
         .active-items-list {
-            max-height: 140px;
+            max-height: 200px;
             overflow-y: auto;
             margin-top: 10px;
             border-top: 1px dashed #ddd;
@@ -74,7 +78,6 @@
 </head>
 <body>
 
-    <!-- Notificação Push Flutuante -->
     <div id="toast" class="toast-notification">
         <i class="fas fa-check-circle"></i> <span id="toast-message">Item adicionado!</span>
     </div>
@@ -86,10 +89,8 @@
             <a href="/" class="back-btn" style="color: #fff; margin-right: 15px;"><i class="fas fa-sign-out-alt"></i></a>
         </header>
 
-        <!-- Container do conteúdo principal adaptado para esticar -->
         <main class="page-content dash-content-card" style="padding: 15px; display: flex; flex-direction: column; flex: 1; min-height: 0;">
             
-            <!-- Boas-vindas Curto -->
             <div style="background: #fff; padding: 12px 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
                 <div>
                     <h3 style="color: #333; margin: 0; font-size: 16px;">Olá, Diretor(a)!</h3>
@@ -98,7 +99,6 @@
                 <i class="fas fa-user-shield" style="color: #b30000; font-size: 20px;"></i>
             </div>
 
-            <!-- MENU DE NAVEGAÇÃO POR ABAS -->
             <nav class="director-tabs-menu" style="flex-shrink: 0;">
                 <button type="button" class="tab-btn active" onclick="switchTab('comunicados')">
                     <i class="fas fa-bullhorn"></i>Avisos
@@ -114,11 +114,9 @@
                 </button>
             </nav>
 
-            <!-- CARD BRANCO PRINCIPAL: Ele cresce até o fim da tela matando o espaço cinza -->
-            <div style="background: #fff; padding: 20px 15px; border-radius: 12px 12px 0 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.02); flex: 1; display: flex; flex-direction: column; min-height: 0;">
+            <div style="background: #fff; padding: 20px 15px; border-radius: 12px 12px 0 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.02); flex: 1; display: flex; flex-direction: column; justify-content: flex-start; min-height: 0;">
                 
-                <!-- ABA 1: NOVO COMUNICADO -->
-                <div id="tab-comunicados" class="director-panel-block active" style="flex: 1; min-height: 0;">
+                <div id="tab-comunicados" class="director-panel-block active" style="min-height: 0;">
                     <form id="form-comunicado" action="/criar_comunicado" method="POST" style="flex-shrink: 0;">
                         <h4 style="color: #b30000; margin: 0 0 12px 0; font-size: 15px;"><i class="fas fa-bullhorn"></i> Disparar Comunicado</h4>
                         <div style="margin-bottom: 10px;">
@@ -138,7 +136,7 @@
                     </form>
 
                     <h5 style="margin: 15px 0 5px 0; color: #555; font-size: 13px; flex-shrink: 0;">Comunicados Ativos:</h5>
-                    <div class="active-items-list" style="flex: 1; overflow-y: auto;">
+                    <div class="active-items-list">
                         {% for c in lista_comunicados %}
                         <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 12px;">
                             <span><strong>[{{ c.badge_texto }}]</strong> {{ c.titulo }}</span>
@@ -148,8 +146,7 @@
                     </div>
                 </div>
 
-                <!-- ABA 2: CARDÁPIO SEMANAL -->
-                <div id="tab-cardapio" class="director-panel-block" style="flex: 1; overflow-y: auto;">
+                <div id="tab-cardapio" class="director-panel-block" style="overflow-y: auto;">
                     <h4 style="color: #2e7d32; margin: 0 0 12px 0; font-size: 15px;"><i class="fas fa-utensils"></i> Cardápio Escolar</h4>
                     <form action="/atualizar_lanche" method="POST">
                         <div style="margin-bottom: 8px; font-size: 12px;">
@@ -176,8 +173,7 @@
                     </form>
                 </div>
 
-                <!-- ABA 3: CALENDÁRIO DE EVENTOS -->
-                <div id="tab-calendario" class="director-panel-block" style="flex: 1; min-height: 0;">
+                <div id="tab-calendario" class="director-panel-block" style="min-height: 0;">
                     <form id="form-evento" action="/criar_evento" method="POST" style="flex-shrink: 0;">
                         <h4 style="color: #b30000; margin: 0 0 12px 0; font-size: 15px;"><i class="fas fa-calendar-alt"></i> Adicionar Evento</h4>
                         <div style="margin-bottom: 10px;">
@@ -190,7 +186,7 @@
                     </form>
 
                     <h5 style="margin: 15px 0 5px 0; color: #555; font-size: 13px; flex-shrink: 0;">Eventos Cadastrados:</h5>
-                    <div class="active-items-list" style="flex: 1; overflow-y: auto;">
+                    <div class="active-items-list">
                         {% for e in lista_eventos %}
                         <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 12px;">
                             <span><strong>{{ e.data }}</strong> - {{ e.titulo }}</span>
@@ -200,8 +196,7 @@
                     </div>
                 </div>
 
-                <!-- ABA 4: CRONOGRAMA DE PROVAS -->
-                <div id="tab-provas" class="director-panel-block" style="flex: 1; min-height: 0;">
+                <div id="tab-provas" class="director-panel-block" style="min-height: 0;">
                     <form id="form-prova" action="/criar_prova" method="POST" style="flex-shrink: 0;">
                         <h4 style="color: #b30000; margin: 0 0 12px 0; font-size: 15px;"><i class="fas fa-file-signature"></i> Agendar Avaliação</h4>
                         <div style="margin-bottom: 10px;">
@@ -217,7 +212,7 @@
                     </form>
 
                     <h5 style="margin: 15px 0 5px 0; color: #555; font-size: 13px; flex-shrink: 0;">Cronograma Atual:</h5>
-                    <div class="active-items-list" style="flex: 1; overflow-y: auto;">
+                    <div class="active-items-list">
                         {% for p in lista_provas %}
                         <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 12px;">
                             <span><strong>{{ p.data }}</strong> - {{ p.disciplina }}</span>
@@ -227,40 +222,28 @@
                     </div>
                 </div>
 
-            </div> <!-- FIM DO CONTAINER CENTRAL -->
-
-        </main>
+            </div> </main>
     </div>
 
-    <!-- Script para Alternar as Abas de Forma Fluida -->
     <script>
         function switchTab(tabId) {
-            // Desativa visualmente todos os botões das abas
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            // Oculta completamente todos os blocos de painel
             document.querySelectorAll('.director-panel-block').forEach(block => {
                 block.classList.remove('active');
                 block.style.display = 'none';
             });
             
-            // Adiciona a classe active no botão clicado
             const targetBtn = document.querySelector(`[onclick="switchTab('${tabId}')"]`);
             if (targetBtn) targetBtn.classList.add('active');
             
-            // Exibe o bloco correspondente com a estrutura correta
             const targetBlock = document.getElementById(`tab-${tabId}`);
             targetBlock.classList.add('active');
             
-            if (tabId === 'cardapio') {
-                targetBlock.style.display = 'block'; // O cardápio rola a estrutura inteira de campos
-            } else {
-                targetBlock.style.display = 'flex'; // Avisos, Agenda e Provas usam flex para fixar formulário e rolar a lista embaixo
-            }
+            // Agora todas as abas usam flex alinhando os itens de cima para baixo
+            targetBlock.style.display = 'flex';
         }
     </script>
 
-    <!-- Vínculo com seu arquivo JS unificado -->
     <script src="../js/script.js"></script>
 </body>
 </html>

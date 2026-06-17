@@ -6,17 +6,83 @@
     <title>Comunicados - Escola Benedito</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ==========================================================================
+           CORES EXCLUSIVAS MAPEADAS PELO TIPO DO BANCO
+           ========================================================================== */
+        
+        /* 1. Estilo para AVISOS (Azul) */
+        .comunicado-card.aviso-style .comunicado-icon-box {
+            background-color: #e3f2fd !important;
+            color: #1976d2 !important;
+        }
+        .comunicado-card.aviso-style .badge-tipo {
+            background-color: #e3f2fd !important;
+            color: #1976d2 !important;
+        }
+
+        /* 2. Estilo para REUNIÕES (Roxo) */
+        .comunicado-card.reuniao-style .comunicado-icon-box {
+            background-color: #f3e5f5 !important;
+            color: #7b1fa2 !important;
+        }
+        .comunicado-card.reuniao-style .badge-tipo {
+            background-color: #f3e5f5 !important;
+            color: #7b1fa2 !important;
+        }
+
+        /* 3. Estilo para AVALIAÇÕES / PROVAS (Vermelho) */
+        .comunicado-card.prova-style .comunicado-icon-box {
+            background-color: #ffebee !important;
+            color: #c62828 !important;
+        }
+        .comunicado-card.prova-style .badge-tipo {
+            background-color: #ffebee !important;
+            color: #c62828 !important;
+        }
+
+        /* Estilização padrão das Badges e Ícones */
+        .badge-tipo {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .comunicado-card {
+            display: flex;
+            background: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            align-items: center;
+            gap: 15px;
+        }
+
+        .comunicado-icon-box {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+    </style>
 </head>
 <body>
 
     <div class="app-container">
 
-        <header class="page-header">
-            <a href="/dashboard" class="back-btn">
+        <header class="page-header" style="background: #b30000;">
+            <a href="/dashboard" class="back-btn" style="color: #fff;">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <h2>Comunicados</h2>
-            <button class="filter-top-btn">
+            <h2 style="color: #fff;">Comunicados</h2>
+            <button class="filter-top-btn" style="background: transparent; border: none; color: #fff;">
                 <i class="fas fa-filter"></i>
             </button>
         </header>
@@ -32,31 +98,43 @@
             <div class="comunicados-list">
                 
                 {% for comunicado in lista_comunicados %}
-                <div class="comunicado-card" data-category="{{ comunicado.categoria|default('aviso') }}">
+                
+                {# Tratando o comunicado.tipo que vem do banco para gerar filtros limpos #}
+                {% set tipo_limpo = comunicado.tipo|default('Avisos')|lower %}
+                {% if 'reuniao' in tipo_limpo or 'reuniõe' in tipo_limpo or 'reunioes' in tipo_limpo %}
+                    {% set categoria_filtro = 'reuniao' %}
+                    {% set estilo_card = 'reuniao-style' %}
+                {% elif 'prova' in tipo_limpo or 'avalia' in tipo_limpo %}
+                    {% set categoria_filtro = 'prova' %}
+                    {% set estilo_card = 'prova-style' %}
+                {% else %}
+                    {% set categoria_filtro = 'aviso' %}
+                    {% set estilo_card = 'aviso-style' %}
+                {% endif %}
+
+                <div class="comunicado-card {{ estilo_card }}" data-category="{{ categoria_filtro }}">
                     
-                    <div class="comunicado-icon-box {{ comunicado.categoria|default('aviso') }}">
-                        {% if comunicado.categoria == 'reuniao' %}
+                    <div class="comunicado-icon-box">
+                        {% if categoria_filtro == 'reuniao' %}
                             <i class="fas fa-users"></i>
-                        {% elif comunicado.categoria == 'prova' %}
+                        {% elif categoria_filtro == 'prova' %}
                             <i class="fas fa-file-alt"></i>
-                        {% elif comunicado.categoria == 'boletim' %}
-                            <i class="fas fa-graduation-cap"></i>
                         {% else %}
                             <i class="fas fa-bullhorn"></i>
                         {% endif %}
                     </div>
 
                     <div class="comunicado-body">
-                        <div class="comunicado-meta">
-                            <span class="badge-tipo tipo-{{ comunicado.categoria|default('aviso') }}">
-                                {{ comunicado.tipo|default('Aviso Geral') }}
+                        <div class="comunicado-meta" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                            <span class="badge-tipo">
+                                {{ comunicado.badge_texto|default('Aviso Geral') }}
                             </span>
-                            <span class="comunicado-time">
-                                {{ comunicado.data|default('Agora') }}
+                            <span class="comunicado-time" style="color: #999; font-size: 11px;">
+                                {{ comunicado.tempo|default('Agora') }}
                             </span>
                         </div>
-                        <h3>{{ comunicado.titulo }}</h3>
-                        <p>{{ comunicado.conteudo }}</p>
+                        <h3 style="margin: 5px 0; font-size: 14px; color: #333;">{{ comunicado.titulo }}</h3>
+                        <p style="margin: 0; font-size: 13px; color: #666; line-height: 1.4;">{{ comunicado.mensagem }}</p>
                     </div>
 
                 </div>
@@ -99,44 +177,6 @@
 
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabs = document.querySelectorAll('.tab-btn');
-            const cards = document.querySelectorAll('.comunicado-card');
-            const emptyMessage = document.getElementById('empty-filter-message');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // 1. Remove o estado ativo de todos os botões e adiciona no clicado
-                    tabs.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-
-                    // 2. Pega o tipo de filtro selecionado (todos, aviso, reuniao, prova)
-                    const filterValue = this.getAttribute('data-filter');
-                    let visibleCardsCount = 0;
-
-                    // 3. Mostra ou esconde os cards baseado na categoria
-                    cards.forEach(card => {
-                        const cardCategory = card.getAttribute('data-category');
-
-                        if (filterValue === 'todos' || cardCategory === filterValue) {
-                            card.style.display = 'flex'; // Volta a exibir o card de forma bonita
-                            visibleCardsCount++;
-                        } else {
-                            card.style.style.display = 'none'; // Esconde os outros
-                        }
-                    });
-
-                    // 4. Se a categoria selecionada estiver vazia, exibe um aviso amigável
-                    if (visibleCardsCount === 0 && cards.length > 0) {
-                        emptyMessage.style.display = 'block';
-                    } else {
-                        emptyMessage.style.display = 'none';
-                    }
-                });
-            });
-        });
-    </script>
-
+    <script src="../js/script.js"></script>
 </body>
 </html>

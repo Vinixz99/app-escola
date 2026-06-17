@@ -6,6 +6,27 @@
     <title>Login - Escola Benedito Oliveira</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .alert-error-box {
+            background-color: #ffe3e3;
+            border-left: 5px solid #e74c3c;
+            color: #c0392b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: shake 0.3s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+    </style>
 </head>
 <body>
 
@@ -13,12 +34,21 @@
         <main class="login-container">
             
             <div class="login-header">
-                <img src="../img/logo.png" alt="Escola Benedito Oliveira" class="login-logo">
+                <div class="logo-wrapper">
+                    <img src="/img/logo-escola.png" alt="Escudo Escola" class="school-big-logo">
+                </div>
                 <h2>Escola Benedito Oliveira</h2>
                 <p>Faça login para continuar</p>
             </div>
 
             <form action="/login_processo" method="POST" class="login-form">
+
+                {% if erro %}
+                <div class="alert-error-box">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Usuário, senha ou perfil incorretos!</span>
+                </div>
+                {% endif %}
 
                 <div class="profile-selector-box">
                     <label class="input-label">Selecione seu perfil</label>
