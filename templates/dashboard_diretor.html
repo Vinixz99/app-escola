@@ -6,6 +6,71 @@
     <title>Painel do Diretor - Escola Benedito Oliveira</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Estilos do Menu de Abas */
+        .director-tabs-menu {
+            display: flex;
+            background: #fff;
+            padding: 8px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            gap: 5px;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px 5px;
+            border-radius: 8px;
+            color: #666;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+        }
+        
+        .tab-btn i {
+            font-size: 16px;
+        }
+        
+        /* Aba Ativa */
+        .tab-btn.active {
+            background: #b30000;
+            color: #fff;
+        }
+        
+        /* Controla a exibição dos blocos de formulário */
+        .director-panel-block {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .director-panel-block.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Lista de itens salvos com rolagem interna magrinha */
+        .active-items-list {
+            max-height: 140px;
+            overflow-y: auto;
+            margin-top: 10px;
+            border-top: 1px dashed #ddd;
+            padding-top: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -21,127 +86,181 @@
             <a href="/" class="back-btn" style="color: #fff; margin-right: 15px;"><i class="fas fa-sign-out-alt"></i></a>
         </header>
 
-        <main class="page-content" style="padding: 20px;">
+        <!-- Container do conteúdo principal adaptado para esticar -->
+        <main class="page-content dash-content-card" style="padding: 15px; display: flex; flex-direction: column; flex: 1; min-height: 0;">
             
-            <div style="background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px;">
-                <h3 style="color: #333; margin-bottom: 5px;">Olá, Diretor(a)!</h3>
-                <p style="color: #666; font-size: 14px;">Gerencie todas as áreas do aplicativo da escola por aqui.</p>
-            </div>
-
-            <!-- BLOCO 1: NOVO COMUNICADO -->
-            <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px;">
-                <h4 style="color: #b30000; margin-bottom: 15px;"><i class="fas fa-bullhorn"></i> Novo Comunicado</h4>
-                <form id="form-comunicado" action="/criar_comunicado" method="POST">
-                    <div style="margin-bottom: 10px;">
-                        <select name="tipo" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;" required>
-                            <option value="Avisos">Aviso Geral</option>
-                            <option value="Reuniões">Reunião de Pais</option>
-                            <option value="Avaliações">Avaliação / Prova</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <input type="text" name="titulo" placeholder="Título do Comunicado" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <textarea name="mensagem" rows="2" placeholder="Mensagem..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; resize: none;" required></textarea>
-                    </div>
-                    <button type="submit" style="width: 100%; background: #b30000; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Disparar Comunicado</button>
-                </form>
-
-                <h5 style="margin: 15px 0 10px 0; color: #555;">Comunicados Ativos:</h5>
-                {% for c in lista_comunicados %}
-                <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 13px;">
-                    <span><strong>[{{ c.badge_texto }}]</strong> {{ c.titulo }}</span>
-                    <a href="/deletar_comunicado/{{ c.id }}" style="background:transparent; border:none; color:red; cursor:pointer; text-decoration: none;">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
+            <!-- Boas-vindas Curto -->
+            <div style="background: #fff; padding: 12px 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
+                <div>
+                    <h3 style="color: #333; margin: 0; font-size: 16px;">Olá, Diretor(a)!</h3>
+                    <p style="color: #777; font-size: 12px; margin: 2px 0 0 0;">Escolha uma ferramenta abaixo:</p>
                 </div>
-                {% endfor %}
+                <i class="fas fa-user-shield" style="color: #b30000; font-size: 20px;"></i>
             </div>
 
-            <!-- BLOCO 2: CARDÁPIO SEMANAL -->
-            <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px;">
-                <h4 style="color: #b30000; margin-bottom: 15px;"><i class="fas fa-utensils"></i> Cardápio Semanal do Lanche</h4>
-                <form action="/atualizar_lanche" method="POST">
-                    <div style="margin-bottom: 8px; font-size: 13px;">
-                        <label>Segunda-feira:</label>
-                        <input type="text" name="segunda" value="{{ lanche.segunda }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                    </div>
-                    <div style="margin-bottom: 8px; font-size: 13px;">
-                        <label>Terça-feira:</label>
-                        <input type="text" name="terca" value="{{ lanche.terca }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                    </div>
-                    <div style="margin-bottom: 8px; font-size: 13px;">
-                        <label>Quarta-feira:</label>
-                        <input type="text" name="quarta" value="{{ lanche.quarta }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                    </div>
-                    <div style="margin-bottom: 8px; font-size: 13px;">
-                        <label>Quinta-feira:</label>
-                        <input type="text" name="quinta" value="{{ lanche.quinta }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                    </div>
-                    <div style="margin-bottom: 12px; font-size: 13px;">
-                        <label>Sexta-feira:</label>
-                        <input type="text" name="sexta" value="{{ lanche.sexta }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                    </div>
-                    <button type="submit" style="width: 100%; background: #2e7d32; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Salvar Cardápio</button>
-                </form>
-            </div>
+            <!-- MENU DE NAVEGAÇÃO POR ABAS -->
+            <nav class="director-tabs-menu" style="flex-shrink: 0;">
+                <button type="button" class="tab-btn active" onclick="switchTab('comunicados')">
+                    <i class="fas fa-bullhorn"></i>Avisos
+                </button>
+                <button type="button" class="tab-btn" onclick="switchTab('cardapio')">
+                    <i class="fas fa-utensils"></i>Cardápio
+                </button>
+                <button type="button" class="tab-btn" onclick="switchTab('calendario')">
+                    <i class="fas fa-calendar-alt"></i>Agenda
+                </button>
+                <button type="button" class="tab-btn" onclick="switchTab('provas')">
+                    <i class="fas fa-file-signature"></i>Provas
+                </button>
+            </nav>
 
-            <!-- BLOCO 3: CALENDÁRIO DE EVENTOS -->
-            <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px;">
-                <h4 style="color: #b30000; margin-bottom: 15px;"><i class="fas fa-calendar-alt"></i> Calendário de Eventos</h4>
-                <form id="form-evento" action="/criar_evento" method="POST">
-                    <div style="margin-bottom: 10px;">
-                        <input type="date" name="data" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <input type="text" name="titulo" placeholder="Nome do Evento (Ex: Feriado de São João)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
-                    </div>
-                    <button type="submit" style="width: 100%; background: #b30000; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Adicionar ao Calendário</button>
-                </form>
+            <!-- CARD BRANCO PRINCIPAL: Ele cresce até o fim da tela matando o espaço cinza -->
+            <div style="background: #fff; padding: 20px 15px; border-radius: 12px 12px 0 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.02); flex: 1; display: flex; flex-direction: column; min-height: 0;">
+                
+                <!-- ABA 1: NOVO COMUNICADO -->
+                <div id="tab-comunicados" class="director-panel-block active" style="flex: 1; min-height: 0;">
+                    <form id="form-comunicado" action="/criar_comunicado" method="POST" style="flex-shrink: 0;">
+                        <h4 style="color: #b30000; margin: 0 0 12px 0; font-size: 15px;"><i class="fas fa-bullhorn"></i> Disparar Comunicado</h4>
+                        <div style="margin-bottom: 10px;">
+                            <select name="tipo" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;" required>
+                                <option value="Avisos">Aviso Geral</option>
+                                <option value="Reuniões">Reunião de Pais</option>
+                                <option value="Avaliações">Avaliação / Prova</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <input type="text" name="titulo" placeholder="Título do Comunicado" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <textarea name="mensagem" rows="3" placeholder="Mensagem para os responsáveis..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; resize: none;" required></textarea>
+                        </div>
+                        <button type="submit" style="width: 100%; background: #b30000; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Enviar Agora</button>
+                    </form>
 
-                <h5 style="margin: 15px 0 10px 0; color: #555;">Eventos Ativos:</h5>
-                {% for e in lista_eventos %}
-                <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 13px;">
-                    <span><strong>{{ e.data }}</strong> - {{ e.titulo }}</span>
-                    <a href="/deletar_evento/{{ e.id }}" style="background:transparent; border:none; color:red; cursor:pointer; text-decoration: none;">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
+                    <h5 style="margin: 15px 0 5px 0; color: #555; font-size: 13px; flex-shrink: 0;">Comunicados Ativos:</h5>
+                    <div class="active-items-list" style="flex: 1; overflow-y: auto;">
+                        {% for c in lista_comunicados %}
+                        <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 12px;">
+                            <span><strong>[{{ c.badge_texto }}]</strong> {{ c.titulo }}</span>
+                            <a href="/deletar_comunicado/{{ c.id }}" style="color:red; text-decoration: none;"><i class="fas fa-trash-alt"></i></a>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
-                {% endfor %}
-            </div>
 
-            <!-- BLOCO 4: CRONOGRAMA DE PROVAS -->
-            <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px;">
-                <h4 style="color: #b30000; margin-bottom: 15px;"><i class="fas fa-file-signature"></i> Marcar Cronograma de Provas</h4>
-                <form id="form-prova" action="/criar_prova" method="POST">
-                    <div style="margin-bottom: 10px;">
-                        <input type="text" name="disciplina" placeholder="Matéria (Ex: História)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <input type="text" name="conteudo" placeholder="Conteúdo (Ex: Capítulos 1 e 2)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <input type="date" name="data" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
-                    </div>
-                    <button type="submit" style="width: 100%; background: #b30000; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Agendar Prova</button>
-                </form>
-
-                <h5 style="margin: 15px 0 10px 0; color: #555;">Provas Agendadas:</h5>
-                {% for p in lista_provas %}
-                <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 13px;">
-                    <span><strong>{{ p.data }}</strong> - {{ p.disciplina }} ({{ p.conteudo }})</span>
-                    <a href="/deletar_prova/{{ p.id }}" style="background:transparent; border:none; color:red; cursor:pointer; text-decoration: none;">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
+                <!-- ABA 2: CARDÁPIO SEMANAL -->
+                <div id="tab-cardapio" class="director-panel-block" style="flex: 1; overflow-y: auto;">
+                    <h4 style="color: #2e7d32; margin: 0 0 12px 0; font-size: 15px;"><i class="fas fa-utensils"></i> Cardápio Escolar</h4>
+                    <form action="/atualizar_lanche" method="POST">
+                        <div style="margin-bottom: 8px; font-size: 12px;">
+                            <label style="font-weight: bold; color: #555;">Segunda-feira:</label>
+                            <input type="text" name="segunda" value="{{ lanche.segunda }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                        </div>
+                        <div style="margin-bottom: 8px; font-size: 12px;">
+                            <label style="font-weight: bold; color: #555;">Terça-feira:</label>
+                            <input type="text" name="terca" value="{{ lanche.terca }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                        </div>
+                        <div style="margin-bottom: 8px; font-size: 12px;">
+                            <label style="font-weight: bold; color: #555;">Quarta-feira:</label>
+                            <input type="text" name="quarta" value="{{ lanche.quarta }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                        </div>
+                        <div style="margin-bottom: 8px; font-size: 12px;">
+                            <label style="font-weight: bold; color: #555;">Quinta-feira:</label>
+                            <input type="text" name="quinta" value="{{ lanche.quinta }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                        </div>
+                        <div style="margin-bottom: 12px; font-size: 12px;">
+                            <label style="font-weight: bold; color: #555;">Sexta-feira:</label>
+                            <input type="text" name="sexta" value="{{ lanche.sexta }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
+                        </div>
+                        <button type="submit" style="width: 100%; background: #2e7d32; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Salvar Alterações</button>
+                    </form>
                 </div>
-                {% endfor %}
-            </div>
+
+                <!-- ABA 3: CALENDÁRIO DE EVENTOS -->
+                <div id="tab-calendario" class="director-panel-block" style="flex: 1; min-height: 0;">
+                    <form id="form-evento" action="/criar_evento" method="POST" style="flex-shrink: 0;">
+                        <h4 style="color: #b30000; margin: 0 0 12px 0; font-size: 15px;"><i class="fas fa-calendar-alt"></i> Adicionar Evento</h4>
+                        <div style="margin-bottom: 10px;">
+                            <input type="date" name="data" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <input type="text" name="titulo" placeholder="Descrição (Ex: Recesso Escolar)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                        </div>
+                        <button type="submit" style="width: 100%; background: #b30000; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Publicar Evento</button>
+                    </form>
+
+                    <h5 style="margin: 15px 0 5px 0; color: #555; font-size: 13px; flex-shrink: 0;">Eventos Cadastrados:</h5>
+                    <div class="active-items-list" style="flex: 1; overflow-y: auto;">
+                        {% for e in lista_eventos %}
+                        <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 12px;">
+                            <span><strong>{{ e.data }}</strong> - {{ e.titulo }}</span>
+                            <a href="/deletar_evento/{{ e.id }}" style="color:red; text-decoration: none;"><i class="fas fa-trash-alt"></i></a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- ABA 4: CRONOGRAMA DE PROVAS -->
+                <div id="tab-provas" class="director-panel-block" style="flex: 1; min-height: 0;">
+                    <form id="form-prova" action="/criar_prova" method="POST" style="flex-shrink: 0;">
+                        <h4 style="color: #b30000; margin: 0 0 12px 0; font-size: 15px;"><i class="fas fa-file-signature"></i> Agendar Avaliação</h4>
+                        <div style="margin-bottom: 10px;">
+                            <input type="text" name="disciplina" placeholder="Disciplina (Ex: Matemática)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <input type="text" name="conteudo" placeholder="Conteúdo Cobrado" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <input type="date" name="data" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                        </div>
+                        <button type="submit" style="width: 100%; background: #b30000; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Salvar no Cronograma</button>
+                    </form>
+
+                    <h5 style="margin: 15px 0 5px 0; color: #555; font-size: 13px; flex-shrink: 0;">Cronograma Atual:</h5>
+                    <div class="active-items-list" style="flex: 1; overflow-y: auto;">
+                        {% for p in lista_provas %}
+                        <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 12px;">
+                            <span><strong>{{ p.data }}</strong> - {{ p.disciplina }}</span>
+                            <a href="/deletar_prova/{{ p.id }}" style="color:red; text-decoration: none;"><i class="fas fa-trash-alt"></i></a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div> <!-- FIM DO CONTAINER CENTRAL -->
 
         </main>
     </div>
 
+    <!-- Script para Alternar as Abas de Forma Fluida -->
+    <script>
+        function switchTab(tabId) {
+            // Desativa visualmente todos os botões das abas
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Oculta completamente todos os blocos de painel
+            document.querySelectorAll('.director-panel-block').forEach(block => {
+                block.classList.remove('active');
+                block.style.display = 'none';
+            });
+            
+            // Adiciona a classe active no botão clicado
+            const targetBtn = document.querySelector(`[onclick="switchTab('${tabId}')"]`);
+            if (targetBtn) targetBtn.classList.add('active');
+            
+            // Exibe o bloco correspondente com a estrutura correta
+            const targetBlock = document.getElementById(`tab-${tabId}`);
+            targetBlock.classList.add('active');
+            
+            if (tabId === 'cardapio') {
+                targetBlock.style.display = 'block'; // O cardápio rola a estrutura inteira de campos
+            } else {
+                targetBlock.style.display = 'flex'; // Avisos, Agenda e Provas usam flex para fixar formulário e rolar a lista embaixo
+            }
+        }
+    </script>
+
     <!-- Vínculo com seu arquivo JS unificado -->
     <script src="../js/script.js"></script>
 </body>
-</html>''
+</html>
