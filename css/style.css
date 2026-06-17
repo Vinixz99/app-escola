@@ -9,7 +9,7 @@
 }
 
 body {
-    background-color: #f0f2f5;
+    background-color: #f0f2f5; /* ISSO AQUI: muda o branco das laterais para o cinza do app */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -202,10 +202,10 @@ body {
    4. BARRA DE NAVEGAÇÃO INFERIOR (Fica fixa na base do celular)
    ========================================================================== */
 .bottom-nav {
-    position: fixed; /* Mantém a barra travada embaixo enquanto o resto rola */
+    position: absolute; /* Mudado de fixed para absolute para alinhar perfeitamente ao container pai */
     bottom: 0;
+    left: 0; /* Garante o alinhamento à esquerda interna */
     width: 100%;
-    max-width: 410px; /* Segue o tamanho limite do celular fictício */
     height: 75px;
     background-color: #ffffff;
     border-top: 1px solid #eee;
@@ -218,7 +218,7 @@ body {
     border-bottom-right-radius: 30px;
 }
 
-/* Se o app rodar em tela cheia no navegador, ajustamos a posição para colar na base do container */
+/* Se o app rodar em tela cheia no navegador, mantemos colado na base de forma absoluta */
 @media (min-height: 841px) {
     .bottom-nav {
         position: absolute;
@@ -1673,4 +1673,30 @@ body {
 .menu-section-card .arrow-go {
     color: #ccc;
     font-size: 14px;
+}
+
+/* Balão de Notificação Push */
+.toast-notification {
+    position: fixed;
+    top: -100px; /* Começa escondido acima da tela */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2e7d32; /* Verde bonito de sucesso */
+    color: white;
+    padding: 14px 24px;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 9999;
+    transition: top 0.4s ease, opacity 0.4s ease;
+    opacity: 0;
+}
+
+.toast-notification.show {
+    top: 30px; /* Desce para essa posição */
+    opacity: 1;
 }

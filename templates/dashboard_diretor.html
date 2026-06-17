@@ -9,6 +9,11 @@
 </head>
 <body>
 
+    <!-- Notificação Push Flutuante -->
+    <div id="toast" class="toast-notification">
+        <i class="fas fa-check-circle"></i> <span id="toast-message">Item adicionado!</span>
+    </div>
+
     <div class="app-container">
         <header class="page-header" style="background: #b30000;">
             <div style="width: 32px;"></div>
@@ -23,9 +28,10 @@
                 <p style="color: #666; font-size: 14px;">Gerencie todas as áreas do aplicativo da escola por aqui.</p>
             </div>
 
+            <!-- BLOCO 1: NOVO COMUNICADO -->
             <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px;">
                 <h4 style="color: #b30000; margin-bottom: 15px;"><i class="fas fa-bullhorn"></i> Novo Comunicado</h4>
-                <form action="/criar_comunicado" method="POST">
+                <form id="form-comunicado" action="/criar_comunicado" method="POST">
                     <div style="margin-bottom: 10px;">
                         <select name="tipo" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;" required>
                             <option value="Avisos">Aviso Geral</option>
@@ -46,11 +52,14 @@
                 {% for c in lista_comunicados %}
                 <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 13px;">
                     <span><strong>[{{ c.badge_texto }}]</strong> {{ c.titulo }}</span>
-                    <form action="/deletar_comunicado/{{ c.id }}" method="POST" style="margin:0;"><button type="submit" style="background:transparent; border:none; color:red; cursor:pointer;"><i class="fas fa-trash-alt"></i></button></form>
+                    <a href="/deletar_comunicado/{{ c.id }}" style="background:transparent; border:none; color:red; cursor:pointer; text-decoration: none;">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
                 </div>
                 {% endfor %}
             </div>
 
+            <!-- BLOCO 2: CARDÁPIO SEMANAL -->
             <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px;">
                 <h4 style="color: #b30000; margin-bottom: 15px;"><i class="fas fa-utensils"></i> Cardápio Semanal do Lanche</h4>
                 <form action="/atualizar_lanche" method="POST">
@@ -78,9 +87,10 @@
                 </form>
             </div>
 
+            <!-- BLOCO 3: CALENDÁRIO DE EVENTOS -->
             <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px;">
                 <h4 style="color: #b30000; margin-bottom: 15px;"><i class="fas fa-calendar-alt"></i> Calendário de Eventos</h4>
-                <form action="/criar_evento" method="POST">
+                <form id="form-evento" action="/criar_evento" method="POST">
                     <div style="margin-bottom: 10px;">
                         <input type="date" name="data" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
                     </div>
@@ -94,19 +104,22 @@
                 {% for e in lista_eventos %}
                 <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 13px;">
                     <span><strong>{{ e.data }}</strong> - {{ e.titulo }}</span>
-                    <form action="/deletar_evento/{{ e.id }}" method="POST" style="margin:0;"><button type="submit" style="background:transparent; border:none; color:red; cursor:pointer;"><i class="fas fa-trash-alt"></i></button></form>
+                    <a href="/deletar_evento/{{ e.id }}" style="background:transparent; border:none; color:red; cursor:pointer; text-decoration: none;">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
                 </div>
                 {% endfor %}
             </div>
 
+            <!-- BLOCO 4: CRONOGRAMA DE PROVAS -->
             <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px;">
                 <h4 style="color: #b30000; margin-bottom: 15px;"><i class="fas fa-file-signature"></i> Marcar Cronograma de Provas</h4>
-                <form action="/criar_prova" method="POST">
+                <form id="form-prova" action="/criar_prova" method="POST">
                     <div style="margin-bottom: 10px;">
                         <input type="text" name="disciplina" placeholder="Matéria (Ex: História)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
                     </div>
                     <div style="margin-bottom: 10px;">
-                        <input type="text" name="conteudo" placeholder="Conteúdo (Ex: Capítulos 1 e 2 - Descobrimento)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                        <input type="text" name="conteudo" placeholder="Conteúdo (Ex: Capítulos 1 e 2)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
                     </div>
                     <div style="margin-bottom: 10px;">
                         <input type="date" name="data" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
@@ -118,7 +131,9 @@
                 {% for p in lista_provas %}
                 <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 13px;">
                     <span><strong>{{ p.data }}</strong> - {{ p.disciplina }} ({{ p.conteudo }})</span>
-                    <form action="/deletar_prova/{{ p.id }}" method="POST" style="margin:0;"><button type="submit" style="background:transparent; border:none; color:red; cursor:pointer;"><i class="fas fa-trash-alt"></i></button></form>
+                    <a href="/deletar_prova/{{ p.id }}" style="background:transparent; border:none; color:red; cursor:pointer; text-decoration: none;">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
                 </div>
                 {% endfor %}
             </div>
@@ -126,5 +141,7 @@
         </main>
     </div>
 
+    <!-- Vínculo com seu arquivo JS unificado -->
+    <script src="../js/script.js"></script>
 </body>
-</html>
+</html>''

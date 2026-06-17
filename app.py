@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_from_directory, redirect, url_for
+from flask import Flask, render_template, request, send_from_directory, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import os
 
@@ -94,13 +94,11 @@ def dashboard():
 
 @app.route('/dashboard_diretor')
 def dashboard_diretor():
-    # Puxa todas as informações armazenadas no Banco de Dados
     lista_comunicados = Comunicado.query.order_by(Comunicado.id.desc()).all()
     lanche_registro = obter_ou_criar_lanche()
     lista_eventos = Evento.query.all()
     lista_provas = Prova.query.all()
 
-    # Transforma o lanche em dicionário para manter a compatibilidade com o seu HTML anterior
     lanche_dict = {
         "segunda": lanche_registro.segunda,
         "terca": lanche_registro.terca,
@@ -119,7 +117,7 @@ def dashboard_diretor():
 
 
 # ==========================================================================
-# 3. AÇÕES DO DIRETOR (GERENCIAMENTO NO BANCO DE DADOS)
+# 3. AÇÕES DO DIRETOR (GERENCIAMENTO FLUIDO VIA AJAX)
 # ==========================================================================
 
 # --- GERENCIAR COMUNICADOS ---
@@ -147,15 +145,16 @@ def criar_comunicado():
     )
     db.session.add(novo_comunicado)
     db.session.commit()
-    return redirect('/dashboard_diretor')
+    
+    return jsonify({"status": "sucesso", "id": novo_comunicado.id, "mensagem": "Comunicado enviado com sucesso!"})
 
-@app.route('/deletar_comunicado/<int:id>', methods=['POST'])
+@app.route('/deletar_comunicado/<int:id>')
 def deletar_comunicado(id):
     comunicado = Comunicado.query.get(id)
     if comunicado:
         db.session.delete(comunicado)
         db.session.commit()
-    return redirect('/dashboard_diretor')
+    return jsonify({"status": "sucesso", "mensagem": "Comunicado removido!"})
 
 
 # --- GERENCIAR LANCHE ESCOLAR ---
@@ -184,15 +183,16 @@ def criar_evento():
     novo_evento = Evento(data=data_br, titulo=titulo)
     db.session.add(novo_evento)
     db.session.commit()
-    return redirect('/dashboard_diretor')
+    
+    return jsonify({"status": "sucesso", "id": novo_evento.id, "mensagem": "Evento adicionado ao calendário!"})
 
-@app.route('/deletar_evento/<int:id>', methods=['POST'])
+@app.route('/deletar_evento/<int:id>')
 def deletar_evento(id):
     evento = Evento.query.get(id)
     if evento:
         db.session.delete(evento)
         db.session.commit()
-    return redirect('/dashboard_diretor')
+    return jsonify({"status": "sucesso", "mensagem": "Evento removido!"})
 
 
 # --- GERENCIAR AVALIAÇÕES/PROVAS ---
@@ -207,25 +207,33 @@ def criar_prova():
     nova_prova = Prova(disciplina=disciplina, conteudo=conteudo, data=data_br)
     db.session.add(nova_prova)
     db.session.commit()
-    return redirect('/dashboard_diretor')
+    
+    return jsonify({"status": "sucesso", "id": nova_prova.id, "mensagem": "Prova agendada com sucesso!"})
 
-@app.route('/deletar_prova/<int:id>', methods=['POST'])
+@app.route('/deletar_prova/<int:id>')
 def deletar_prova(id):
     prova = Prova.query.get(id)
     if prova:
         db.session.delete(prova)
         db.session.commit()
-    return redirect('/dashboard_diretor')
+    return jsonify({"status": "sucesso", "mensagem": "Prova removida!"})
 
 
 # ==========================================================================
-# 4. ROTAS DO TOPO & FUNCIONALIDADES GERENCIAIS (CONTEÚDO DINÂMICO DOS PAIS)
+# 4. ROTAS DO TOPO & CONTEÚDO DINÂMICO DOS PAIS (RESPONSÁVEIS)
 # ==========================================================================
 @app.route('/mais')
-def mais(): return render_template('mais.html')
+def mais(): 
+    return render_template('mais.html')
 
 @app.route('/notificacoes')
-def notificacoes(): return render_template('notificacoes.html')
+def notificacoes(): 
+    return render_template('notificacoes.html')
+
+@app.route('/comunicados')
+def comunicados():
+    lista_comunicados = Comunicado.query.order_by(Comunicado.id.desc()).all()
+    return render_template('comunicados.html', lista_comunicados=lista_comunicados)
 
 @app.route('/calendario')
 def calendario():
@@ -250,42 +258,42 @@ def lanche():
     return render_template('lanche.html', lanche=lanche_dict)
 
 @app.route('/boletim')
-def boletim(): return render_template('boletim.html')
+def boletim(): 
+    return render_template('boletim.html')
 
 
 # ==========================================================================
 # 5. OUTRAS ROTAS PADRÃO
 # ==========================================================================
 @app.route('/entrada_saida')
-def entrada_saida(): return render_template('entrada_saida.html')
+def entrada_saida(): 
+    return render_template('entrada_saida.html')
 
 @app.route('/entrada_saida_historico')
-def entrada_saida_historico(): return render_template('entrada_saida_historico.html')
+def entrada_saida_historico(): 
+    return render_template('entrada_saida_historico.html')
 
 @app.route('/qrcode')
-def qrcode(): return render_template('qrcode.html')
+def qrcode(): 
+    return render_template('qrcode.html')
 
 @app.route('/perfil')
-def perfil(): return render_template('perfil.html')
+def perfil(): 
+    return render_template('perfil.html')
 
 @app.route('/perfil_responsavel')
-def perfil_responsavel(): return render_template('perfil_responsavel.html')
+def perfil_responsavel(): 
+    return render_template('perfil_responsavel.html')
 
 @app.route('/notas')
-def notas(): return render_template('notas.html')
+def notas(): 
+    return render_template('notas.html')
 
 @app.route('/faltas')
-def faltas(): return render_template('faltas.html')
-
-@app.route('/comunicados')
-def comunicados():
-    lista_comunicados = Comunicado.query.order_by(Comunicado.id.desc()).all()
-    return render_template('comunicados.html', lista_comunicados=lista_comunicados)
+def faltas(): 
+    return render_template('faltas.html')
 
 
-# ==========================================================================
-# CRIAÇÃO AUTOMÁTICA DAS TABELAS SE NÃO EXISTIREM
-# ==========================================================================
 with app.app_context():
     db.create_all()
 

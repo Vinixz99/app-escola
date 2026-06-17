@@ -3,71 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comunicados - Escola Benedito Oliveira</title>
+    <title>Comunicados - Escola Benedito</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
     <div class="app-container">
+
         <header class="page-header">
-            <a href="/dashboard" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+            <a href="/dashboard" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+            </a>
             <h2>Comunicados</h2>
-            <button class="filter-top-btn"><i class="fas fa-filter"></i></button>
+            <button class="filter-top-btn">
+                <i class="fas fa-filter"></i>
+            </button>
         </header>
 
         <div class="sub-tabs">
-            <button class="tab-btn active">Todas</button>
-            <button class="tab-btn">Avisos</button>
-            <button class="tab-btn">Reuniões</button>
-            <button class="tab-btn">Avaliações</button>
+            <button class="tab-btn active" data-filter="todos">Todas</button>
+            <button class="tab-btn" data-filter="aviso">Avisos</button>
+            <button class="tab-btn" data-filter="reuniao">Reuniões</button>
+            <button class="tab-btn" data-filter="prova">Avaliações</button>
         </div>
 
         <main class="page-content">
-            
             <div class="comunicados-list">
                 
                 {% for comunicado in lista_comunicados %}
-                <div class="comunicado-card" data-categoria="{{ comunicado.tipo }}">
+                <div class="comunicado-card" data-category="{{ comunicado.categoria|default('aviso') }}">
                     
-                    <div class="comunicado-icon-box 
-                        {% if comunicado.tipo == 'Avisos' %}aviso
-                        {% elif comunicado.tipo == 'Reuniões' %}reuniao
-                        {% elif comunicado.tipo == 'Avaliações' %}prova
-                        {% else %}boletim{% endif %}">
-                        
-                        <i class="fas 
-                            {% if comunicado.tipo == 'Avisos' %}fa-bullhorn
-                            {% elif comunicado.tipo == 'Reuniões' %}fa-users
-                            {% elif comunicado.tipo == 'Avaliações' %}fa-file-signature
-                            {% else %}fa-graduation-cap{% endif %}">
-                        </i>
+                    <div class="comunicado-icon-box {{ comunicado.categoria|default('aviso') }}">
+                        {% if comunicado.categoria == 'reuniao' %}
+                            <i class="fas fa-users"></i>
+                        {% elif comunicado.categoria == 'prova' %}
+                            <i class="fas fa-file-alt"></i>
+                        {% elif comunicado.categoria == 'boletim' %}
+                            <i class="fas fa-graduation-cap"></i>
+                        {% else %}
+                            <i class="fas fa-bullhorn"></i>
+                        {% endif %}
                     </div>
 
                     <div class="comunicado-body">
                         <div class="comunicado-meta">
-                            <span class="badge-tipo {{ comunicado.badge_classe }}">{{ comunicado.badge_texto }}</span>
-                            <span class="comunicado-time">{{ comunicado.tempo }}</span>
+                            <span class="badge-tipo tipo-{{ comunicado.categoria|default('aviso') }}">
+                                {{ comunicado.tipo|default('Aviso Geral') }}
+                            </span>
+                            <span class="comunicado-time">
+                                {{ comunicado.data|default('Agora') }}
+                            </span>
                         </div>
                         <h3>{{ comunicado.titulo }}</h3>
-                        <p>{{ comunicado.mensagem }}</p>
+                        <p>{{ comunicado.conteudo }}</p>
                     </div>
+
+                </div>
+                {% else %}
+                <div id="no-data-message" style="text-align: center; padding: 40px 20px; color: #777;">
+                    <i class="fas fa-envelope-open" style="font-size: 32px; margin-bottom: 10px; color: #ccc;"></i>
+                    <p style="font-size: 14px;">Nenhum comunicado encontrado por enquanto.</p>
                 </div>
                 {% endfor %}
 
-            </div>
+                <div id="empty-filter-message" style="text-align: center; padding: 40px 20px; color: #777; display: none;">
+                    <i class="fas fa-search" style="font-size: 32px; margin-bottom: 10px; color: #ccc;"></i>
+                    <p style="font-size: 14px;">Nenhum item nesta categoria.</p>
+                </div>
 
+            </div>
         </main>
 
         <nav class="bottom-nav">
-            <a href="/dashboard" class="nav-item"><i class="fas fa-home"></i><span>Início</span></a>
-            <a href="/entrada_saida_historico" class="nav-item"><i class="fas fa-history"></i><span>Histórico</span></a>
-            <a href="/qrcode" class="nav-item scan-btn"><i class="fas fa-qrcode"></i></a>
-            <a href="/perfil_responsavel" class="nav-item"><i class="fas fa-user-circle"></i><span>Perfil</span></a>
-            <a href="/" class="nav-item"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
+            <a href="/" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Início</span>
+            </a>
+            <a href="/historico" class="nav-item">
+                <i class="fas fa-history"></i>
+                <span>Histórico</span>
+            </a>
+            <a href="/qrcode" class="nav-item scan-btn">
+                <i class="fas fa-qrcode"></i>
+            </a>
+            <a href="/perfil" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Perfil</span>
+            </a>
+            <a href="/sair" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sair</span>
+            </a>
         </nav>
+
     </div>
 
-    <script src="../js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const cards = document.querySelectorAll('.comunicado-card');
+            const emptyMessage = document.getElementById('empty-filter-message');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 1. Remove o estado ativo de todos os botões e adiciona no clicado
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // 2. Pega o tipo de filtro selecionado (todos, aviso, reuniao, prova)
+                    const filterValue = this.getAttribute('data-filter');
+                    let visibleCardsCount = 0;
+
+                    // 3. Mostra ou esconde os cards baseado na categoria
+                    cards.forEach(card => {
+                        const cardCategory = card.getAttribute('data-category');
+
+                        if (filterValue === 'todos' || cardCategory === filterValue) {
+                            card.style.display = 'flex'; // Volta a exibir o card de forma bonita
+                            visibleCardsCount++;
+                        } else {
+                            card.style.style.display = 'none'; // Esconde os outros
+                        }
+                    });
+
+                    // 4. Se a categoria selecionada estiver vazia, exibe um aviso amigável
+                    if (visibleCardsCount === 0 && cards.length > 0) {
+                        emptyMessage.style.display = 'block';
+                    } else {
+                        emptyMessage.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>

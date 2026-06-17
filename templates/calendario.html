@@ -18,27 +18,22 @@
 
         <main class="page-content">
             
-            <div class="calendar-list" style="padding: 20px;">
-                
-                {% if not lista_eventos %}
-                    <div style="text-align: center; color: #999; padding: 40px 20px;">
-                        <i class="fas fa-calendar-day" style="font-size: 48px; margin-bottom: 15px; color: #ccc;"></i>
-                        <p>Nenhum evento letivo ou feriado programado no momento.</p>
-                    </div>
-                {% else %}
-                    {% for evento in lista_eventos %}
-                    <div class="calendar-card" style="display: flex; background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 12px; align-items: center;">
+            <div class="eventos-list" style="padding: 10px;">
+                {% if lista_eventos %}
+                    {% for e in lista_eventos %}
+                    <div class="calendar-card" style="display: flex; background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 12px; align-items: center; border-left: 4px solid #1e88e5;">
                         <div class="calendar-date-box" style="background: #e3f2fd; color: #1e88e5; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; min-width: 60px; margin-right: 15px;">
-                            <span style="font-size: 16px; display: block;">{{ evento.data }}</span>
+                            <span style="font-size: 16px; display: block;">{{ e.data }}</span>
                         </div>
                         <div class="calendar-details">
-                            <h3 style="margin: 0; color: #333; font-size: 16px;">{{ evento.titulo }}</h3>
+                            <h3 style="margin: 0; color: #333; font-size: 16px;">{{ e.titulo }}</h3>
                             <p style="margin: 3px 0 0 0; color: #777; font-size: 13px;">Evento Escolar</p>
                         </div>
                     </div>
                     {% endfor %}
+                {% else %}
+                    <p style="text-align: center; color: #999; margin-top: 20px;">Nenhum evento agendado no calendário.</p>
                 {% endif %}
-
             </div>
 
         </main>
