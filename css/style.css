@@ -117,11 +117,9 @@ html, body {
    ========================================================================== */
 .dash-content-card {
     flex: 1;
-    overflow-y: auto !important;
+    overflow-y: auto !important;       /* Permite a rolagem principal da página branca */
+    overflow-x: hidden !important;     /* Evita que a tela dance para os lados */
     -webkit-overflow-scrolling: touch;
-    padding: 20px;
-    padding-bottom: 80px;
-    background-color: #ffffff;
 }
 
 /* --- EFEITO ARREDONDADO NA DASHBOARD DO RESPONSÁVEL (TOPO HERÓI) --- */
@@ -1133,13 +1131,21 @@ html, body {
     align-items: center;
 }
 
+/* ==========================================================================
+   CORREÇÃO DO BUG DE ROLAGEM E ENCAVALAMENTO DE CARDS
+   ========================================================================== */
+
+/* 1. Garante que a lista de comunicados cresça livremente sem travar tamanho */
 .comunicados-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;                      /* Espaçamento idêntico e limpo entre os cards */
+    width: 100%;
+    height: auto !important;        /* NÃO deixa a lista ter tamanho fixo */
+    overflow: visible !important;   /* Mata aquela barra de rolagem cinza interna horrorosa */
 }
 
-/* Estrutura do Card de Aviso */
+/* 2. Corrige o comportamento de cada card individual */
 .comunicado-card {
     background-color: white;
     border-radius: 16px;
@@ -1148,6 +1154,12 @@ html, body {
     gap: 15px;
     border: 1px solid #f0f0f0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    
+    /* --- CORREÇÃO DO ENCAVALAMENTO --- */
+    position: relative !important;  /* Força o card a respeitar o fluxo normal do HTML */
+    float: none !important;         /* Limpa qualquer flutuação antiga */
+    clear: both;                    /* Impede que elementos fiquem grudados nas laterais */
+    width: 100%;                    /* Ocupa a largura certa do container */
 }
 
 /* Quadrado do ícone com cores suaves baseadas na categoria */
