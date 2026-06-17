@@ -8,6 +8,19 @@
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
 }
 
+/* ==========================================================================
+   REMOVER O EFEITO AZUL DE CLIQUE (PADRÃO DE SITE)
+   ========================================================================== */
+button, a, .tab-btn, .menu-item, .nav-item {
+    -webkit-tap-highlight-color: transparent !important; /* Remove o flash azul no celular (Android/iOS) */
+    outline: none !important;                            /* Remove a borda azul de foco no computador */
+}
+
+button:focus, a:focus, .tab-btn:focus {
+    outline: none !important;                            /* Garante que o foco não crie caixas azuis */
+    box-shadow: none !important;                         /* Remove sombras indesejadas de foco */
+}
+
 /* O corpo do app continua fixo para o fundo não dançar */
 html, body {
     margin: 0;
