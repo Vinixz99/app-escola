@@ -297,5 +297,14 @@ def faltas():
 with app.app_context():
     db.create_all()
 
+    from flask import send_from_directory
+import os
+
+# ROTA DA MARRA: Diz para o Flask entregar as imagens da pasta raiz 'img'
+@app.route('/img/<path:filename>')
+def serve_img(filename):
+    root_dir = os.path.dirname(os.path.abspath(__file__))
+    return send_from_directory(os.path.join(root_dir, 'img'), filename)
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
