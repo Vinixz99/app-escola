@@ -177,7 +177,13 @@
                     <form id="form-evento" action="/criar_evento" method="POST" style="flex-shrink: 0;">
                         <h4 style="color: #b30000; margin: 0 0 12px 0; font-size: 15px;"><i class="fas fa-calendar-alt"></i> Adicionar Evento</h4>
                         <div style="margin-bottom: 10px;">
-                            <input type="date" name="data" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                            <input type="text" 
+                                   name="data" 
+                                   id="event-date" 
+                                   class="input-field" 
+                                   placeholder="Selecione a data do evento" 
+                                   onfocus="(this.type='date')" 
+                                   onblur="if(!this.value)this.type='text'">
                         </div>
                         <div style="margin-bottom: 10px;">
                             <input type="text" name="titulo" placeholder="Descrição (Ex: Recesso Escolar)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
@@ -206,7 +212,13 @@
                             <input type="text" name="conteudo" placeholder="Conteúdo Cobrado" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
                         </div>
                         <div style="margin-bottom: 10px;">
-                            <input type="date" name="data" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
+                            <input type="text" 
+                                   name="data" 
+                                   id="event-date" 
+                                   class="input-field" 
+                                   placeholder="Selecione a data do evento" 
+                                   onfocus="(this.type='date')" 
+                                   onblur="if(!this.value)this.type='text'">
                         </div>
                         <button type="submit" style="width: 100%; background: #b30000; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Salvar no Cronograma</button>
                     </form>
