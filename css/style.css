@@ -100,25 +100,63 @@ html, body {
 }
 
 /* ==========================================================================
-   3. PARTE BRANCA (CARD SOBREPOSTO)
-   ========================================================================== */
-/* ==========================================================================
-   3. PARTE BRANCA (CARD SOBREPOSTO CORRIGIDO)
+   3. PARTE BRANCA (CARD SOBREPOSTO - TOTALMENTE UNIFICADO)
    ========================================================================== */
 .dash-content-card {
     flex: 1;
-    overflow-y: auto !important; /* Permite rolar para baixo se o conteúdo sumir da tela */
-    -webkit-overflow-scrolling: touch; /* Deixa a rolagem lisinha no iPhone/Android */
-    padding: 20px; /* Adiciona um respiro interno geral para os elementos */
-    padding-bottom: 80px; /* Garante que o último botão não fique escondido atrás do menu de baixo */
-    
-    /* --- EFEITO DOS CANTOS ARREDONDADOS FLUTUANDO NO TOPO VERMELHO --- */
-    background-color: #ffffff;        /* Força o fundo a ser totalmente branco */
-    border-top-left-radius: 28px;     /* Arredonda o canto superior esquerdo */
-    border-top-right-radius: 28px;    /* Arredonda o canto superior direito */
-    margin-top: -30px;                /* Puxa o bloco para cima, cobrindo o início do vermelho */
-    position: relative;               /* Ativa o controle de camadas */
-    z-index: 5;                       /* Garante que ficará por cima do fundo vermelho */
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px;
+    padding-bottom: 80px;
+    background-color: #ffffff;
+}
+
+/* --- EFEITO ARREDONDADO NA DASHBOARD DO RESPONSÁVEL (TOPO HERÓI) --- */
+.dash-hero + .dash-content-card {
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
+    margin-top: -30px;
+    position: relative;
+    z-index: 5;
+}
+
+/* --- EFEITO ARREDONDADO IGUAL NO PAINEL DO DIRETOR (PAGE HEADER) --- */
+.page-header + .dash-content-card,
+.page-header + .page-content {
+    border-top-left-radius: 28px !important;    /* Arredonda o canto esquerdo no Diretor */
+    border-top-right-radius: 28px !important;   /* Arredonda o canto direito no Diretor */
+    margin-top: -25px !important;               /* Faz a parte branca subir sobre a barra vermelha */
+    position: relative;
+    z-index: 5;
+}
+
+/* ==========================================================================
+   FORÇA O ARREDONDAMENTO NO PAINEL DO DIRETOR (AGORA VAI!)
+   ========================================================================== */
+
+/* 1. Primeiro expandimos o topo vermelho para dar espaço para a subida */
+.page-header {
+    background-color: #b30000 !important;
+    color: white !important;
+    padding-top: 35px !important;    /* Respiro para o título não colar no teto */
+    padding-bottom: 50px !important; /* Espaço extra para o card branco cobrir */
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* 2. Forçamos QUALQUER área de conteúdo que venha após o header a arredondar e subir */
+.page-header + .dash-content-card,
+.page-header + .page-content,
+.page-header + div {
+    border-top-left-radius: 30px !important;  /* Cantos bem arredondados */
+    border-top-right-radius: 30px !important;
+    margin-top: -30px !important;              /* Força a subida por cima do vermelho */
+    background-color: #ffffff !important;      /* Garante fundo branco puro */
+    position: relative !important;
+    z-index: 10 !important;                     /* Fica por cima do vermelho */
 }
 
 /* Caixa de Boas-vindas ao Usuário */
