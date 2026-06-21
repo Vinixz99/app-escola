@@ -52,13 +52,14 @@
             animation: fadeIn 0.3s ease;
         }
         
-        /* Ajustado para alinhar os itens no topo e não espalhar pela tela */
+        /* CORREÇÃO: Removido height: 100% para não esmagar os elementos */
         .director-panel-block.active {
             display: flex;
             flex-direction: column;
             justify-content: flex-start; 
             align-items: stretch;
-            height: 100%;
+            height: auto !important; /* Permite crescer verticalmente */
+            flex: 1;
         }
         
         @keyframes fadeIn {
@@ -66,13 +67,16 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Lista de itens salvos com tamanho inteligente e colada no conteúdo */
+        /* CORREÇÃO DA LISTA: Liberada para crescer e rolar junto com a página */
         .active-items-list {
-            max-height: 200px;
-            overflow-y: auto;
+            height: auto !important;
+            max-height: none !important; /* Remove o teto de 200px que cortava os itens */
             margin-top: 10px;
             border-top: 1px dashed #ddd;
             padding-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
     </style>
 </head>
@@ -84,6 +88,7 @@
 
     <div class="app-container">
         <header class="page-header" style="background: #b30000;">
+            
             <div style="width: 32px;"></div>
             <h2 style="color: #fff;">Painel do Diretor</h2>
             <a href="/" class="back-btn" style="color: #fff; margin-right: 15px;"><i class="fas fa-sign-out-alt"></i></a>

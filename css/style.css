@@ -37,6 +37,7 @@ html, body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    position: relative;
 }
 
 /* Container que simula o Celular com Rolagem Geral */
@@ -116,11 +117,21 @@ html, body {
    3. PARTE BRANCA (CARD SOBREPOSTO - TOTALMENTE UNIFICADO)
    ========================================================================== */
 .dash-content-card {
-    flex: 1;
-    overflow-y: auto !important;       /* Permite a rolagem principal da página branca */
-    overflow-x: hidden !important;     /* Evita que a tela dance para os lados */
-    -webkit-overflow-scrolling: touch;
+    flex: 1 !important;
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    border-top-left-radius: 30px !important;
+    border-top-right-radius: 30px !important;
+    margin-top: -25px !important;
+    position: relative !important;
+    z-index: 10 !important;
+    overflow-y: auto !important;         /* Ativa a rolagem vertical de forma independente */
+    overflow-x: hidden !important;       /* Trava para a tela não balançar pros lados */
+    -webkit-overflow-scrolling: touch;  /* Deixa a rolagem lisinha no celular */
+    padding: 30px 20px 110px 20px !important; /* Respiro embaixo para o menu não tampar o conteúdo */
 }
+
+
 
 /* --- EFEITO ARREDONDADO NA DASHBOARD DO RESPONSÁVEL (TOPO HERÓI) --- */
 .dash-hero + .dash-content-card {
@@ -139,6 +150,12 @@ html, body {
     margin-top: -25px !important;               /* Faz a parte branca subir sobre a barra vermelha */
     position: relative;
     z-index: 5;
+}
+
+.page-content, .dash-content-card {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important; /* Alinha tudo no topo e empurra o resto para baixo */
 }
 
 /* ==========================================================================
@@ -253,6 +270,8 @@ html, body {
     color: #444;
     line-height: 1.2;
 }
+
+
 
 /* ==========================================================================
    4. BARRA DE NAVEGAÇÃO INFERIOR (Fica fixa na base do celular)
@@ -1823,4 +1842,75 @@ html, body {
 input[type="date"]::-webkit-calendar-picker-indicator {
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%23b30000"><path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>');
     cursor: pointer;
+}
+
+/* 1. FORÇA AS ESTRUTURAS DE FUNDO A ACEITAREM CRESCIMENTO VERTICAL */
+html, body {
+    height: 100% !important;
+    min-height: 100% !important;
+    overflow: hidden; /* Evita que o body crie uma segunda barra de rolagem */
+}
+
+/* 2. CONFIGURAÇÃO DA ÁREA DO ALUNO PARA EMPURRAR O CONTEÚDO */
+/* Substitua pelos nomes exatos das classes que você usou para os dados do aluno */
+.student-data-container, 
+.student-profile-section, 
+.card-dados-aluno {
+    height: auto !important;         /* Cancela qualquer altura fixa antiga */
+    min-height: min-content !important; 
+    flex-shrink: 0 !important;       /* Impede terminantemente o flexbox de achatar a área */
+    display: block !important;       /* Garante comportamento de bloco para empurrar o que vem abaixo */
+    margin-bottom: 25px !important;  /* Margem para desgrudar do elemento de baixo */
+}
+
+/* 3. ASSEGURA QUE O CONTAINER DE ROLAGEM EXPANDA ATÉ O FIM */
+.page-content, .dash-content-card {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;         /* Ocupa o espaço total disponível */
+    overflow-y: auto !important;     /* Ativa o scroll se o conteúdo passar do limite */
+}
+
+
+
+/* ==========================================================================
+   AJUSTE DA ALTURA DO TOPO (EXCLUSIVO PARA CORREÇÃO DE TAMANHO)
+   ========================================================================= */
+
+.page-header {
+    height: 130px !important; /* Aumentado para dar o tamanho real e imponente do topo vermelho */
+    display: flex !important;
+    justify-content: center !important; /* Garante centralização horizontal absoluta */
+    align-items: center !important; /* Centraliza verticalmente o conteúdo */
+    position: relative !important;
+    padding: 0 20px !important;
+}
+
+/* Mantém o título estático no centro sem se mover 1mm para os lados */
+.page-header h2 {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+}
+
+/* Garante que o botão de voltar acompanhe o meio da nova altura */
+.back-btn {
+    position: absolute !important;
+    left: 20px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important; /* Centralização vertical perfeita */
+    margin: 0 !important;
+}
+
+
+
+/* Correção definitiva para o container do Diretor respirar e criar scroll nativo */
+.app-container main.dash-content-card {
+    height: auto !important;
+    min-height: calc(100vh - 100px) !important;
+    overflow-y: auto !important;
+    padding-bottom: 50px !important; /* Garante que os últimos itens não sumam na base */
 }
