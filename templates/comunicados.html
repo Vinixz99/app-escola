@@ -32,16 +32,6 @@
             color: #7b1fa2 !important;
         }
 
-        /* 3. Estilo para AVALIAÇÕES / PROVAS (Vermelho) */
-        .comunicado-card.prova-style .comunicado-icon-box {
-            background-color: #ffebee !important;
-            color: #c62828 !important;
-        }
-        .comunicado-card.prova-style .badge-tipo {
-            background-color: #ffebee !important;
-            color: #c62828 !important;
-        }
-
         /* Estilização padrão das Badges e Ícones */
         .badge-tipo {
             padding: 4px 8px;
@@ -82,14 +72,12 @@
                 <i class="fas fa-arrow-left"></i>
             </a>
             <h2 style="color: #fff;">Comunicados</h2>
-            </button>
         </header>
 
         <div class="sub-tabs">
             <button class="tab-btn active" data-filter="todos">Todas</button>
             <button class="tab-btn" data-filter="aviso">Avisos</button>
             <button class="tab-btn" data-filter="reuniao">Reuniões</button>
-            <button class="tab-btn" data-filter="prova">Avaliações</button>
         </div>
 
         <main class="page-content">
@@ -102,9 +90,6 @@
                 {% if 'reuniao' in tipo_limpo or 'reuniõe' in tipo_limpo or 'reunioes' in tipo_limpo %}
                     {% set categoria_filtro = 'reuniao' %}
                     {% set estilo_card = 'reuniao-style' %}
-                {% elif 'prova' in tipo_limpo or 'avalia' in tipo_limpo %}
-                    {% set categoria_filtro = 'prova' %}
-                    {% set estilo_card = 'prova-style' %}
                 {% else %}
                     {% set categoria_filtro = 'aviso' %}
                     {% set estilo_card = 'aviso-style' %}
@@ -115,8 +100,6 @@
                     <div class="comunicado-icon-box">
                         {% if categoria_filtro == 'reuniao' %}
                             <i class="fas fa-users"></i>
-                        {% elif categoria_filtro == 'prova' %}
-                            <i class="fas fa-file-alt"></i>
                         {% else %}
                             <i class="fas fa-bullhorn"></i>
                         {% endif %}
@@ -164,7 +147,7 @@
                 <i class="fas fa-qrcode"></i>
             </a>
             <a href="/perfil" class="nav-item">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-user-circle"></i>
                 <span>Perfil</span>
             </a>
             <a href="/sair" class="nav-item">

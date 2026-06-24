@@ -26,6 +26,48 @@
             25% { transform: translateX(-5px); }
             75% { transform: translateX(5px); }
         }
+
+        /* Ajuste fino para acomodar perfeitamente os 3 botões lado a lado */
+        .profile-selector-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .profile-buttons-container {
+            display: flex;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .profile-buttons-container .profile-btn {
+            flex: 1;
+            padding: 10px 4px;
+            font-size: 11px; /* Um pouco menor para caber perfeitamente no mobile */
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.2s ease;
+        }
+
+        .profile-buttons-container .profile-btn i {
+            font-size: 16px;
+        }
+
+        .profile-buttons-container .profile-btn.active {
+            background: #b30000;
+            color: #fff;
+            border-color: #b30000;
+        }
     </style>
 </head>
 <body>
@@ -50,18 +92,23 @@
                 </div>
                 {% endif %}
 
-               <div class="profile-selector-box">
-    <label class="input-label">Selecione seu perfil</label>
-    
-    <button type="button" class="profile-btn" data-perfil="diretor">
-        <i class="fas fa-user-shield"></i> Diretor / Coordenação
-    </button>
-    
-    <button type="button" class="profile-btn active" data-perfil="responsavel">
-        <i class="fas fa-user-friends"></i> Responsável
-    </button>
-
-    </div>
+                <div class="profile-selector-box">
+                    <label class="input-label">Selecione seu perfil</label>
+                    
+                    <div class="profile-buttons-container">
+                        <button type="button" class="profile-btn" data-perfil="diretor">
+                            <i class="fas fa-user-shield"></i> Diretor
+                        </button>
+                        
+                        <button type="button" class="profile-btn" data-perfil="professor">
+                            <i class="fas fa-chalkboard-teacher"></i> Professor
+                        </button>
+                        
+                        <button type="button" class="profile-btn active" data-perfil="responsavel">
+                            <i class="fas fa-user-friends"></i> Responsável
+                        </button>
+                    </div>
+                </div>
 
                 <input type="hidden" id="perfil_selecionado" name="perfil" value="responsavel">
                 
@@ -74,7 +121,7 @@
                     <label for="password" class="input-label">Senha</label>
                     <div class="password-wrapper">
                         <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
-                        <button type="button" class="toggle-password-btn"><i class="fas fa-eye"></i></button>
+                        <button type="button" class="toggle-password-btn" id="btn-toggle-pass"><i class="fas fa-eye"></i></button>
                     </div>
                 </div>
 
@@ -91,5 +138,34 @@
     </div>
 
     <script src="../js/script.js"></script>
+    <script>
+        // Lógica local para garantir o clique correto nos perfis e o funcionamento do olho da senha
+        document.querySelectorAll('.profile-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.profile-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const perfil = this.getAttribute('data-perfil');
+                document.getElementById('perfil_selecionado').value = perfil;
+            });
+        });
+
+        const togglePassBtn = document.getElementById('btn-toggle-pass');
+        if (togglePassBtn) {
+            togglePassBtn.addEventListener('click', function() {
+                const passInput = document.getElementById('password');
+                const icon = this.querySelector('i');
+                if (passInput.type === 'password') {
+                    passInput.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passInput.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        }
+    </script>
 </body>
 </html>

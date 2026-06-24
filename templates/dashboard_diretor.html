@@ -33,171 +33,177 @@
             flex-direction: column;
             align-items: center;
             gap: 5px;
-            transition: all 0.2s ease;
         }
         
-        .tab-btn i {
-            font-size: 16px;
-        }
-        
-        /* Aba Ativa */
         .tab-btn.active {
             background: #b30000;
             color: #fff;
         }
         
-        /* Controla a exibição dos blocos de formulário */
+        /* Blocos de Conteúdo das Abas */
         .director-panel-block {
-            display: none;
-            animation: fadeIn 0.3s ease;
+            display: none; /* Escondido por padrão */
+            flex-direction: column;
+            width: 100%;
         }
         
-        /* CORREÇÃO: Removido height: 100% para não esmagar os elementos */
         .director-panel-block.active {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start; 
-            align-items: stretch;
-            height: auto !important; /* Permite crescer verticalmente */
-            flex: 1;
+            display: flex; /* Exibe apenas a aba ativa */
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Formulários Internos */
+        .panel-form {
+            background: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
         }
         
-        /* CORREÇÃO DA LISTA: Liberada para crescer e rolar junto com a página */
-        .active-items-list {
-            height: auto !important;
-            max-height: none !important; /* Remove o teto de 200px que cortava os itens */
-            margin-top: 10px;
-            border-top: 1px dashed #ddd;
-            padding-top: 10px;
+        .form-group {
+            margin-bottom: 12px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+        }
+        
+        .form-group label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            width: 100%;
+        }
+        
+        .submit-panel-btn {
+            background: #b30000;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        /* Container de Upload do CSV */
+        .csv-upload-container {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px dashed #ccc;
+            text-align: center;
+            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
 
-    <div id="toast" class="toast-notification">
-        <i class="fas fa-check-circle"></i> <span id="toast-message">Item adicionado!</span>
-    </div>
-
     <div class="app-container">
-        <header class="page-header" style="background: #b30000;">
-            
-            <div style="width: 32px;"></div>
-            <h2 style="color: #fff;">Painel do Diretor</h2>
-            <a href="/" class="back-btn" style="color: #fff; margin-right: 15px;"><i class="fas fa-sign-out-alt"></i></a>
+        <header class="page-header" style="background-color: #b30000; color: white; height: 100px !important;">
+            <h2 style="color: white;">Painel do Diretor</h2>
+            <a href="/" class="back-btn" style="color: white; right: 20px; left: auto;"><i class="fas fa-sign-out-alt"></i></a>
         </header>
 
-        <main class="page-content dash-content-card" style="padding: 15px; display: flex; flex-direction: column; flex: 1; min-height: 0;">
+        <main class="dash-content-card" style="flex: 1; overflow-y: auto; padding: 15px; background: #f5f5f5;">
             
-            <div style="background: #fff; padding: 12px 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
-                <div>
-                    <h3 style="color: #333; margin: 0; font-size: 16px;">Olá, Diretor(a)!</h3>
-                    <p style="color: #777; font-size: 12px; margin: 2px 0 0 0;">Escolha uma ferramenta abaixo:</p>
-                </div>
-                <i class="fas fa-user-shield" style="color: #b30000; font-size: 20px;"></i>
-            </div>
+           <div class="welcome-user-box" style="margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 15px;">
+    <h3 style="margin: 0 0 6px 0; font-size: 20px; font-weight: 700; color: #333;">Olá, Diretor(a)</h3>
+    <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.4; max-width: 280px;">
+        Gerencie os comunicados, alimentação, agenda global e o banco de dados dos alunos.
+    </p>
+</div>
 
             <nav class="director-tabs-menu" style="flex-shrink: 0;">
-                <button type="button" class="tab-btn active" onclick="switchTab('comunicados')">
+                <button type="button" class="tab-btn active" onclick="switchTab('avisos')">
                     <i class="fas fa-bullhorn"></i>Avisos
                 </button>
                 <button type="button" class="tab-btn" onclick="switchTab('cardapio')">
                     <i class="fas fa-utensils"></i>Cardápio
                 </button>
-                <button type="button" class="tab-btn" onclick="switchTab('calendario')">
+                <button type="button" class="tab-btn" onclick="switchTab('agenda')">
                     <i class="fas fa-calendar-alt"></i>Agenda
                 </button>
-                <button type="button" class="tab-btn" onclick="switchTab('provas')">
-                    <i class="fas fa-file-signature"></i>Provas
+                <button type="button" class="tab-btn" onclick="switchTab('alunos')">
+                    <i class="fas fa-user-graduate"></i>Alunos
                 </button>
             </nav>
 
-            <div style="background: #fff; padding: 20px 15px; border-radius: 12px 12px 0 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.02); flex: 1; display: flex; flex-direction: column; justify-content: flex-start; min-height: 0;">
+            <div id="tab-avisos" class="director-panel-block active">
+                <h4 style="color: #b30000; margin: 0 0 12px 0; font-size: 14px;"><i class="fas fa-plus-circle"></i> Criar Novo Comunicado</h4>
                 
-                <div id="tab-comunicados" class="director-panel-block active" style="min-height: 0;">
-                    <form id="form-comunicado" action="/criar_comunicado" method="POST" style="flex-shrink: 0;">
-                        <h4 style="color: #b30000; margin: 0 0 12px 0; font-size: 15px;"><i class="fas fa-bullhorn"></i> Disparar Comunicado</h4>
-                        <div style="margin-bottom: 10px;">
-                            <select name="tipo" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;" required>
-                                <option value="Avisos">Aviso Geral</option>
-                                <option value="Reuniões">Reunião de Pais</option>
-                                <option value="Avaliações">Avaliação / Prova</option>
-                            </select>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <input type="text" name="titulo" placeholder="Título do Comunicado" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <textarea name="mensagem" rows="3" placeholder="Mensagem para os responsáveis..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; resize: none;" required></textarea>
-                        </div>
-                        <button type="submit" style="width: 100%; background: #b30000; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Enviar Agora</button>
-                    </form>
+                <form action="/criar_comunicado" method="POST" class="panel-form">
+                    <div class="form-group">
+                        <label for="titulo-aviso">Título do Comunicado</label>
+                        <input type="text" id="titulo-aviso" name="titulo" placeholder="Ex: Reunião de Pais e Mestres" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo-aviso">Categoria</label>
+                        <select id="tipo-aviso" name="tipo">
+                            <option value="aviso">Aviso Geral (Azul)</option>
+                            <option value="reuniao">Reunião (Roxo)</option>
+                            <option value="urgente">Urgente / Alerta (Vermelho)</option>
+                            <option value="evento">Evento / Festa (Verde)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="conteudo-aviso">Mensagem / Conteúdo</label>
+                        <textarea id="conteudo-aviso" name="conteudo" rows="3" placeholder="Digite os detalhes do comunicado..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-panel-btn">Postar Comunicado</button>
+                </form>
 
-                    <h5 style="margin: 15px 0 5px 0; color: #555; font-size: 13px; flex-shrink: 0;">Comunicados Ativos:</h5>
-                    <div class="active-items-list">
+                <div class="panel-form" style="margin-top: 10px;">
+                    <h4 style="font-size: 13px; color: #555; margin-bottom: 10px;"><i class="fas fa-list"></i> Comunicados Ativos</h4>
+                    <div style="max-height: 150px; overflow-y: auto;">
                         {% for c in lista_comunicados %}
                         <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 12px;">
-                            <span><strong>[{{ c.badge_texto }}]</strong> {{ c.titulo }}</span>
+                            <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%;"><strong>[{{ c.tipo }}]</strong> {{ c.titulo }}</span>
                             <a href="/deletar_comunicado/{{ c.id }}" style="color:red; text-decoration: none;"><i class="fas fa-trash-alt"></i></a>
                         </div>
                         {% endfor %}
                     </div>
                 </div>
+            </div>
 
-                <div id="tab-cardapio" class="director-panel-block" style="overflow-y: auto;">
-                    <h4 style="color: #2e7d32; margin: 0 0 12px 0; font-size: 15px;"><i class="fas fa-utensils"></i> Cardápio Escolar</h4>
-                    <form action="/atualizar_lanche" method="POST">
-                        <div style="margin-bottom: 8px; font-size: 12px;">
-                            <label style="font-weight: bold; color: #555;">Segunda-feira:</label>
-                            <input type="text" name="segunda" value="{{ lanche.segunda }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                        </div>
-                        <div style="margin-bottom: 8px; font-size: 12px;">
-                            <label style="font-weight: bold; color: #555;">Terça-feira:</label>
-                            <input type="text" name="terca" value="{{ lanche.terca }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                        </div>
-                        <div style="margin-bottom: 8px; font-size: 12px;">
-                            <label style="font-weight: bold; color: #555;">Quarta-feira:</label>
-                            <input type="text" name="quarta" value="{{ lanche.quarta }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                        </div>
-                        <div style="margin-bottom: 8px; font-size: 12px;">
-                            <label style="font-weight: bold; color: #555;">Quinta-feira:</label>
-                            <input type="text" name="quinta" value="{{ lanche.quinta }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                        </div>
-                        <div style="margin-bottom: 12px; font-size: 12px;">
-                            <label style="font-weight: bold; color: #555;">Sexta-feira:</label>
-                            <input type="text" name="sexta" value="{{ lanche.sexta }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;">
-                        </div>
-                        <button type="submit" style="width: 100%; background: #2e7d32; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Salvar Alterações</button>
-                    </form>
-                </div>
+            <div id="tab-cardapio" class="director-panel-block">
+                <h4 style="color: #b30000; margin: 0 0 12px 0; font-size: 14px;"><i class="fas fa-utensils"></i> Atualizar Cardápio da Semana</h4>
+                
+                <form action="/atualizar_cardapio" method="POST" class="panel-form">
+                    <div class="form-group"><label>Segunda-feira</label><input type="text" name="segunda" value="{{ lanche.segunda }}" required></div>
+                    <div class="form-group"><label>Terça-feira</label><input type="text" name="terca" value="{{ lanche.terca }}" required></div>
+                    <div class="form-group"><label>Quarta-feira</label><input type="text" name="quarta" value="{{ lanche.quarta }}" required></div>
+                    <div class="form-group"><label>Quinta-feira</label><input type="text" name="quinta" value="{{ lanche.quinta }}" required></div>
+                    <div class="form-group"><label>Sexta-feira</label><input type="text" name="sexta" value="{{ lanche.sexta }}" required></div>
+                    <button type="submit" class="submit-panel-btn">Salvar Alterações</button>
+                </form>
+            </div>
 
-                <div id="tab-calendario" class="director-panel-block" style="min-height: 0;">
-                    <form id="form-evento" action="/criar_evento" method="POST" style="flex-shrink: 0;">
-                        <h4 style="color: #b30000; margin: 0 0 12px 0; font-size: 15px;"><i class="fas fa-calendar-alt"></i> Adicionar Evento</h4>
-                        <div style="margin-bottom: 10px;">
-                            <input type="text" 
-                                   name="data" 
-                                   id="event-date" 
-                                   class="input-field" 
-                                   placeholder="Selecione a data do evento" 
-                                   onfocus="(this.type='date')" 
-                                   onblur="if(!this.value)this.type='text'">
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <input type="text" name="titulo" placeholder="Descrição (Ex: Recesso Escolar)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
-                        </div>
-                        <button type="submit" style="width: 100%; background: #b30000; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Publicar Evento</button>
-                    </form>
+            <div id="tab-agenda" class="director-panel-block">
+                <h4 style="color: #b30000; margin: 0 0 12px 0; font-size: 14px;"><i class="fas fa-calendar-plus"></i> Inserir Evento no Calendário</h4>
+                
+                <form action="/criar_evento" method="POST" class="panel-form">
+                    <div class="form-group">
+                        <label for="data-evento">Data do Evento</label>
+                        <input type="text" id="data-evento" name="data" placeholder="Ex: 15 Jun" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="titulo-evento">Nome do Evento</label>
+                        <input type="text" id="titulo-evento" name="titulo" placeholder="Ex: Início das Férias Escolares" required>
+                    </div>
+                    <button type="submit" class="submit-panel-btn">Agendar Evento</button>
+                </form>
 
-                    <h5 style="margin: 15px 0 5px 0; color: #555; font-size: 13px; flex-shrink: 0;">Eventos Cadastrados:</h5>
-                    <div class="active-items-list">
+                <div class="panel-form" style="margin-top: 10px;">
+                    <h4 style="font-size: 13px; color: #555; margin-bottom: 10px;"><i class="fas fa-list"></i> Eventos Agendados</h4>
+                    <div style="max-height: 150px; overflow-y: auto;">
                         {% for e in lista_eventos %}
                         <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 12px;">
                             <span><strong>{{ e.data }}</strong> - {{ e.titulo }}</span>
@@ -206,40 +212,31 @@
                         {% endfor %}
                     </div>
                 </div>
+            </div>
 
-                <div id="tab-provas" class="director-panel-block" style="min-height: 0;">
-                    <form id="form-prova" action="/criar_prova" method="POST" style="flex-shrink: 0;">
-                        <h4 style="color: #b30000; margin: 0 0 12px 0; font-size: 15px;"><i class="fas fa-file-signature"></i> Agendar Avaliação</h4>
-                        <div style="margin-bottom: 10px;">
-                            <input type="text" name="disciplina" placeholder="Disciplina (Ex: Matemática)" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <input type="text" name="conteudo" placeholder="Conteúdo Cobrado" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;" required>
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <input type="text" 
-                                   name="data" 
-                                   id="event-date" 
-                                   class="input-field" 
-                                   placeholder="Selecione a data do evento" 
-                                   onfocus="(this.type='date')" 
-                                   onblur="if(!this.value)this.type='text'">
-                        </div>
-                        <button type="submit" style="width: 100%; background: #b30000; color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Salvar no Cronograma</button>
-                    </form>
-
-                    <h5 style="margin: 15px 0 5px 0; color: #555; font-size: 13px; flex-shrink: 0;">Cronograma Atual:</h5>
-                    <div class="active-items-list">
-                        {% for p in lista_provas %}
-                        <div style="display: flex; justify-content: space-between; background: #f9f9f9; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 12px;">
-                            <span><strong>{{ p.data }}</strong> - {{ p.disciplina }}</span>
-                            <a href="/deletar_prova/{{ p.id }}" style="color:red; text-decoration: none;"><i class="fas fa-trash-alt"></i></a>
-                        </div>
-                        {% endfor %}
+            <div id="tab-alunos" class="director-panel-block">
+                <h4 style="color: #b30000; margin: 0 0 12px 0; font-size: 14px;">
+                    <i class="fas fa-file-upload"></i> Importar Lista de Alunos (.CSV)
+                </h4>
+                
+                <div class="panel-form">
+                    <div class="csv-upload-container">
+                        <i class="fas fa-cloud-upload-alt" style="font-size: 36px; color: #b30000; margin-bottom: 10px;"></i>
+                        <p style="font-size: 13px; color: #555; margin: 0 0 12px 0;">Selecione a planilha de matrículas gerada pela secretaria</p>
+                        <input type="file" id="csv-file" accept=".csv" style="font-size: 12px; width: auto; max-width: 100%;">
                     </div>
+                    
+                    <p style="font-size: 11px; color: #777; margin-bottom: 15px; line-height: 1.4;">
+                        <i class="fas fa-info-circle"></i> O arquivo deve conter os campos correspondentes a: <strong>matrícula, nome, turma, data_nascimento, cor_saida</strong> e <strong>horario_liberacao</strong>.
+                    </p>
+                    
+                    <button type="button" id="btn-importar" class="submit-panel-btn">
+                        Processar e Sincronizar com o Banco
+                    </button>
                 </div>
+            </div>
 
-            </div> </main>
+        </main>
     </div>
 
     <script>
@@ -250,13 +247,13 @@
                 block.style.display = 'none';
             });
             
-            const targetBtn = document.querySelector(`[onclick="switchTab('${tabId}')"]`);
+            const targetBtn = document.querySelector(`[onclick="switchTab('${tabId}')\"]`);
             if (targetBtn) targetBtn.classList.add('active');
             
             const targetBlock = document.getElementById(`tab-${tabId}`);
             targetBlock.classList.add('active');
             
-            // Agora todas as abas usam flex alinhando os itens de cima para baixo
+            // Alinhamento dinâmico flex nativo
             targetBlock.style.display = 'flex';
         }
     </script>

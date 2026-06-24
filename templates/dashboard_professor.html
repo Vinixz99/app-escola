@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Professor - Escola Benedito Oliveira</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .professor-tabs-menu {
+            display: flex;
+            background: #fff;
+            padding: 8px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            gap: 5px;
+        }
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px 5px;
+            border-radius: 8px;
+            color: #666;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .tab-btn.active {
+            background: #b30000;
+            color: #fff;
+        }
+        .panel-block {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+        }
+        .panel-block.active {
+            display: flex;
+        }
+        .form-group {
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .item-agendado-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 8px;
+        }
+        /* Novas classes criadas para acalmar o validador de CSS do VS Code */
+        .borda-atividade {
+            border-left: 4px solid #2e7d32;
+        }
+        .borda-prova {
+            border-left: 4px solid #b30000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="page-header" style="background-color: #b30000; color: white; height: 100px !important;">
+            <h2 style="color: white;">Painel do Professor</h2>
+            <a href="/" class="back-btn" style="color: white; right: 20px; left: auto;"><i class="fas fa-sign-out-alt"></i></a>
+        </header>
+
+        <main class="dash-content-card" style="flex: 1; overflow-y: auto; padding: 15px; background: #f5f5f5;">
+            
+            <div class="welcome-user-box" style="margin-bottom: 15px;">
+                <h3>Olá, Prof. {{ nome_professor }}</h3>
+                <p>Gerencie as atividades e avaliações das suas turmas.</p>
+            </div>
+
+            <nav class="professor-tabs-menu">
+                <button type="button" class="tab-btn active" onclick="switchProfTab('minhas-turmas')">
+                    <i class="fas fa-users"></i>Turmas / Posts
+                </button>
+                <button type="button" class="tab-btn" onclick="switchProfTab('nova-prova')">
+                    <i class="fas fa-file-signature"></i>Nova Prova
+                </button>
+                <button type="button" class="tab-btn" onclick="switchProfTab('nova-atividade')">
+                    <i class="fas fa-book-open"></i>Nova Atividade
+                </button>
+            </nav>
+
+            <div id="tab-minhas-turmas" class="panel-block active">
+                <h4 style="color: #333; margin-bottom: 10px; font-size: 14px;">Minhas Turmas e Disciplinas</h4>
+                
+                <div style="background: #fff; padding: 12px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 15px; border-left: 4px solid #b30000;">
+                    <span style="font-weight: bold; color: #333; font-size: 14px;">8º Ano B e 9º Ano A</span>
+                    <p style="margin: 3px 0 0 0; color: #666; font-size: 12px;">Disciplina: Matemática</p>
+                </div>
+
+                <h4 style="color: #333; margin-top: 10px; margin-bottom: 10px; font-size: 14px;">Postagens Agendadas</h4>
+                <div class="lista-itens-professor">
+                    {% if not lista_provas %}
+                        <p style="font-size: 13px; color: #999; text-align: center; padding: 20px;">Nenhuma prova ou atividade criada ainda.</p>
+                    {% else %}
+                        {% for p in lista_provas %}
+                        
+                        <div class="item-agendado-card {% if 'Atividade' in p.disciplina %}borda-atividade{% else %}borda-prova{% endif %}">
+                            <div>
+                                <span style="font-weight: bold; font-size: 13px; color: #333;">{{ p.disciplina }}</span>
+                                <p style="margin: 2px 0 0 0; font-size: 12px; color: #555;"><strong>Data:</strong> {{ p.data }}</p>
+                                <p style="margin: 2px 0 0 0; font-size: 12px; color: #777;">{{ p.conteudo }}</p>
+                            </div>
+                            <a href="/deletar_prova/{{ p.id }}" style="color: #d32f2f; padding: 10px; font-size: 16px; text-decoration: none;">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </div>
+                        
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div id="tab-nova-prova" class="panel-block">
+                <h4 style="color: #b30000; margin-bottom: 12px; font-size: 14px;"><i class="fas fa-file-signature"></i> Agendar Avaliação / Prova</h4>
+                
+                <form action="/criar_prova" method="POST" style="background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <div class="form-group">
+                        <label for="prova-disciplina">Turma</label>
+                        <select id="prova-disciplina" name="disciplina" required>
+                            <option value="Prova de Matemática (8º Ano B)">Matemática - 8º Ano B</option>
+                            <option value="Prova de Matemática (9º Ano A)">Matemática - 9º Ano A</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prova-data">Data da Prova</label>
+                        <input type="date" id="prova-data" name="data" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prova-conteudo">Conteúdo da Avaliação</label>
+                        <textarea id="prova-conteudo" name="conteudo" rows="3" placeholder="Ex: Equações do 2º Grau..." required></textarea>
+                    </div>
+
+                    <button type="submit" style="width: 100%; background: #b30000; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 5px;">
+                        Agendar Prova
+                    </button>
+                </form>
+            </div>
+
+            <div id="tab-nova-atividade" class="panel-block">
+                <h4 style="color: #2e7d32; margin-bottom: 12px; font-size: 14px;"><i class="fas fa-book-open"></i> Passar Atividade / Dever de Casa</h4>
+                
+                <form action="/criar_prova" method="POST" style="background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <div class="form-group">
+                        <label for="ativ-turma">Turma</label>
+                        <select id="ativ-turma" name="disciplina" required>
+                            <option value="Atividade de Matemática (8º Ano B)">Matemática - 8º Ano B</option>
+                            <option value="Atividade de Matemática (9º Ano A)">Matemática - 9º Ano A</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ativ-data">Data de Entrega</label>
+                        <input type="date" id="ativ-data" name="data" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ativ-conteudo">Descrição / Instruções do Dever</label>
+                        <textarea id="ativ-conteudo" name="conteudo" rows="3" placeholder="Ex: Responder as questões..." required></textarea>
+                    </div>
+
+                    <button type="submit" style="width: 100%; background: #2e7d32; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 5px;">
+                        Postar Atividade
+                    </button>
+                </form>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function switchProfTab(tabId) {
+            const buttons = document.querySelectorAll('.tab-btn');
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+
+            const blocks = document.querySelectorAll('.panel-block');
+            for (let i = 0; i < blocks.length; i++) {
+                blocks[i].classList.remove('active');
+                blocks[i].style.display = 'none';
+            }
+            
+            const targetBtn = document.querySelector(".tab-btn[onclick=\"switchProfTab('" + tabId + "')\"]");
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
+            
+            const targetBlock = document.getElementById('tab-' + tabId);
+            if (targetBlock) {
+                targetBlock.classList.add('active');
+                targetBlock.style.display = 'flex';
+            }
+        }
+    </script>
+</body>
+</html>

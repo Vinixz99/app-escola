@@ -69,7 +69,6 @@ def serve_static(filename):
 # ==========================================================================
 @app.route('/')
 def login():
-    # Verifica se a URL contém a marcação de erro (?erro=1)
     erro = request.args.get('erro')
     return render_template('login.html', erro=erro)
 
@@ -83,11 +82,15 @@ def login_processo():
     if perfil == 'diretor' and usuario == 'diretor@escola.com' and senha == '1234':
         return redirect('/dashboard_diretor')
         
-    # 2. TESTA SE É RESPONSÁVEL (Entra direto independente do que digitar, como estava no seu original)
+    # 2. TESTA SE É PROFESSOR (Validação dedicada)
+    elif perfil == 'professor' and usuario == 'professor@escola.com' and senha == '1234':
+        return redirect('/dashboard_professor')
+        
+    # 3. TESTA SE É RESPONSÁVEL (Entra direto independente das credenciais)
     elif perfil == 'responsavel':
         return redirect('/dashboard')
         
-    # 3. SE NÃO FOR NENHUM DOS DOIS OU SE O DIRETOR ERRAR A SENHA
+    # 4. SE ERRAR OU NÃO SE ENCAIXAR EM NENHUM
     else:
         return redirect(url_for('login', erro=1))
 
@@ -98,6 +101,11 @@ def login_processo():
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
+
+@app.route('/dashboard_professor')
+def dashboard_professor():
+    lista_provas = Prova.query.order_by(Prova.id.desc()).all()
+    return render_template('dashboard_professor.html', lista_provas=lista_provas)
 
 @app.route('/dashboard_diretor')
 def dashboard_diretor():
@@ -124,7 +132,7 @@ def dashboard_diretor():
 
 
 # ==========================================================================
-# 3. AÇÕES DO DIRETOR (GERENCIAMENTO FLUIDO VIA AJAX)
+# 3. AÇÕES DO DIRETOR E PROFESSOR (GERENCIAMENTO VIA AJAX / FORM)
 # ==========================================================================
 
 # --- GERENCIAR COMUNICADOS ---
@@ -132,16 +140,19 @@ def dashboard_diretor():
 def criar_comunicado():
     tipo = request.form.get('tipo')
     titulo = request.form.get('titulo')
-    mensagem = request.form.get('mensagem')
+    mensagem = request.form.get('conteudo')  # Ajustado de 'mensagem' para 'conteudo' combinando com o name do HTML
 
     badge_classe = "tipo-aviso"
     badge_texto = "Aviso Geral"
-    if tipo == "Reuniões":
+    if tipo == "reuniao":
         badge_classe = "tipo-reuniao"
         badge_texto = "Reunião de Pais"
-    elif tipo == "Avaliações":
-        badge_classe = "tipo-prova"
-        badge_texto = "Avaliação / Prova"
+    elif tipo == "urgente":
+        badge_classe = "tipo-urgente"
+        badge_texto = "Urgente / Alerta"
+    elif tipo == "evento":
+        badge_classe = "tipo-evento"
+        badge_texto = "Evento / Festa"
 
     novo_comunicado = Comunicado(
         tipo=tipo,
@@ -153,7 +164,7 @@ def criar_comunicado():
     db.session.add(novo_comunicado)
     db.session.commit()
     
-    return jsonify({"status": "sucesso", "id": novo_comunicado.id, "mensagem": "Comunicado enviado com sucesso!"})
+    return redirect('/dashboard_diretor')
 
 @app.route('/deletar_comunicado/<int:id>')
 def deletar_comunicado(id):
@@ -161,12 +172,12 @@ def deletar_comunicado(id):
     if comunicado:
         db.session.delete(comunicado)
         db.session.commit()
-    return jsonify({"status": "sucesso", "mensagem": "Comunicado removido!"})
+    return redirect('/dashboard_diretor')
 
 
 # --- GERENCIAR LANCHE ESCOLAR ---
-@app.route('/atualizar_lanche', methods=['POST'])
-def atualizar_lanche():
+@app.route('/atualizar_cardapio', methods=['POST'])
+def atualizar_cardapio():
     lanche_registro = obter_ou_criar_lanche()
     
     lanche_registro.segunda = request.form.get("segunda")
@@ -184,14 +195,12 @@ def atualizar_lanche():
 def criar_evento():
     data = request.form.get('data')
     titulo = request.form.get('titulo')
-    
-    data_br = "/".join(data.split("-")[1:3][::-1]) if data else ""
 
-    novo_evento = Evento(data=data_br, titulo=titulo)
+    novo_evento = Evento(data=data, titulo=titulo)
     db.session.add(novo_evento)
     db.session.commit()
     
-    return jsonify({"status": "sucesso", "id": novo_evento.id, "mensagem": "Evento adicionado ao calendário!"})
+    return redirect('/dashboard_diretor')
 
 @app.route('/deletar_evento/<int:id>')
 def deletar_evento(id):
@@ -199,23 +208,21 @@ def deletar_evento(id):
     if evento:
         db.session.delete(evento)
         db.session.commit()
-    return jsonify({"status": "sucesso", "mensagem": "Evento removido!"})
+    return redirect('/dashboard_diretor')
 
 
-# --- GERENCIAR AVALIAÇÕES/PROVAS ---
+# --- GERENCIAR AVALIAÇÕES/PROVAS (Ações do Professor) ---
 @app.route('/criar_prova', methods=['POST'])
 def criar_prova():
     disciplina = request.form.get('disciplina')
     conteudo = request.form.get('conteudo')
     data = request.form.get('data')
-    
-    data_br = "/".join(data.split("-")[1:3][::-1]) if data else ""
 
-    nova_prova = Prova(disciplina=disciplina, conteudo=conteudo, data=data_br)
+    nova_prova = Prova(disciplina=disciplina, conteudo=conteudo, data=data)
     db.session.add(nova_prova)
     db.session.commit()
     
-    return jsonify({"status": "sucesso", "id": nova_prova.id, "mensagem": "Prova agendada com sucesso!"})
+    return redirect('/dashboard_professor')
 
 @app.route('/deletar_prova/<int:id>')
 def deletar_prova(id):
@@ -223,7 +230,7 @@ def deletar_prova(id):
     if prova:
         db.session.delete(prova)
         db.session.commit()
-    return jsonify({"status": "sucesso", "mensagem": "Prova removida!"})
+    return redirect('/dashboard_professor')
 
 
 # ==========================================================================
@@ -249,7 +256,7 @@ def calendario():
 
 @app.route('/avaliacoes')
 def avaliacoes():
-    lista_provas = Prova.query.all()
+    lista_provas = Prova.query.order_by(Prova.id.desc()).all()
     return render_template('avaliacoes.html', lista_provas=lista_provas)
 
 @app.route('/lanche')
@@ -304,7 +311,6 @@ def faltas():
 # ==========================================================================
 # 6. ROTAS DE ARQUIVOS DE MÍDIA / IMAGENS
 # ==========================================================================
-# ROTA DA MARRA: Diz para o Flask entregar as imagens da pasta raiz 'img'
 @app.route('/img/<path:filename>')
 def serve_img(filename):
     root_dir = os.path.dirname(os.path.abspath(__file__))
@@ -312,13 +318,11 @@ def serve_img(filename):
 
 
 # ==========================================================================
-# O CORAÇÃO DA INICIALIZAÇÃO (SEMPRE NO FINAL DO ARQUIVO)
+# O CORAÇÃO DA INICIALIZAÇÃO
 # ==========================================================================
 if __name__ == '__main__':
-    # 1. Garante que o banco de dados e as tabelas sejam criados antes do servidor rodar
     with app.app_context():
         db.create_all()
         print("Banco de dados verificado/criado com sucesso!")
 
-    # 2. Roda o servidor Flask
     app.run(debug=True, port=5000)

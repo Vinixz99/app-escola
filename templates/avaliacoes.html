@@ -6,6 +6,32 @@
     <title>Avaliações - Escola Benedito Oliveira</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Estilos base dos cards */
+        .prova-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 12px;
+        }
+
+        /* Cores dinâmicas para separar Provas e Atividades */
+        .card-prova {
+            border-left: 5px solid #1e88e5;
+        }
+        .card-prova .titulo-disciplina {
+            color: #1e88e5;
+        }
+
+        .card-atividade {
+            border-left: 5px solid #2e7d32;
+        }
+        .card-atividade .titulo-disciplina {
+            color: #2e7d32;
+        }
+    </style>
 </head>
 <body>
 
@@ -27,13 +53,24 @@
                     </div>
                 {% else %}
                     {% for prova in lista_provas %}
-                    <div class="prova-card" style="background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 12px; border-left: 5px solid #1e88e5;">
+                    
+                    {# Define a classe de estilo baseada no nome da disciplina #}
+                    {% set classe_estilo = 'card-atividade' if 'Atividade' in prova.disciplina else 'card-prova' %}
+                    
+                    <div class="prova-card {{ classe_estilo }}">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px; align-items: center;">
-                            <span style="font-weight: bold; color: #1e88e5; font-size: 16px;">{{ prova.disciplina }}</span>
-                            <span style="font-size: 12px; background: #f5f5f5; color: #666; padding: 3px 8px; border-radius: 4px; font-weight: bold;"><i class="far fa-calendar-alt"></i> Data: {{ prova.data }}</span>
+                            <span class="titulo-disciplina" style="font-weight: bold; font-size: 16px;">
+                                {{ prova.disciplina }}
+                            </span>
+                            <span style="font-size: 12px; background: #f5f5f5; color: #666; padding: 3px 8px; border-radius: 4px; font-weight: bold;">
+                                <i class="far fa-calendar-alt"></i> Data: {{ prova.data }}
+                            </span>
                         </div>
-                        <p style="margin: 0; color: #444; font-size: 14px; line-height: 1.4;"><strong>Conteúdo:</strong> {{ prova.conteudo }}</p>
+                        <p style="margin: 0; color: #444; font-size: 14px; line-height: 1.4;">
+                            <strong>Conteúdo:</strong> {{ prova.conteudo }}
+                        </p>
                     </div>
+                    
                     {% endfor %}
                 {% endif %}
 
