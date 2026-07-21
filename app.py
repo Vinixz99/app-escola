@@ -16,7 +16,6 @@ db = SQLAlchemy(app)
 # ==========================================================================
 # MODELOS DO BANCO DE DADOS (TABELAS)
 # ==========================================================================
-
 class Comunicado(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tipo = db.Column(db.String(50), nullable=False)
@@ -45,8 +44,6 @@ class Prova(db.Model):
     conteudo = db.Column(db.Text, nullable=False)
     data = db.Column(db.String(20), nullable=False)
 
-
-# Helper function para garantir que o lanche da semana sempre exista no banco
 def obter_ou_criar_lanche():
     lanche = LancheSemana.query.first()
     if not lanche:
@@ -55,14 +52,12 @@ def obter_ou_criar_lanche():
         db.session.commit()
     return lanche
 
-
 # ==========================================================================
 # 0. ARQUIVOS ESTÁTICOS
 # ==========================================================================
 @app.route('/<path:filename>')
 def serve_static(filename):
     return send_from_directory('.', filename)
-
 
 # ==========================================================================
 # 1. FLUXO DE AUTENTICAÇÃO (LOGIN)
@@ -78,22 +73,14 @@ def login_processo():
     usuario = request.form.get('username')
     senha = request.form.get('password')
 
-    # 1. TESTA SE É DIRETOR (Precisa digitar o e-mail e a senha corretos)
     if perfil == 'diretor' and usuario == 'diretor@escola.com' and senha == '1234':
         return redirect('/dashboard_diretor')
-        
-    # 2. TESTA SE É PROFESSOR (Validação dedicada)
     elif perfil == 'professor' and usuario == 'professor@escola.com' and senha == '1234':
         return redirect('/dashboard_professor')
-        
-    # 3. TESTA SE É RESPONSÁVEL (Entra direto independente das credenciais)
     elif perfil == 'responsavel':
         return redirect('/dashboard')
-        
-    # 4. SE ERRAR OU NÃO SE ENCAIXAR EM NENHUM
     else:
         return redirect(url_for('login', erro=1))
-
 
 # ==========================================================================
 # 2. DASHBOARDS PRINCIPAIS
@@ -130,17 +117,14 @@ def dashboard_diretor():
         lista_provas=lista_provas
     )
 
-
 # ==========================================================================
 # 3. AÇÕES DO DIRETOR E PROFESSOR (GERENCIAMENTO VIA AJAX / FORM)
 # ==========================================================================
-
-# --- GERENCIAR COMUNICADOS ---
 @app.route('/criar_comunicado', methods=['POST'])
 def criar_comunicado():
     tipo = request.form.get('tipo')
     titulo = request.form.get('titulo')
-    mensagem = request.form.get('conteudo')  # Ajustado de 'mensagem' para 'conteudo' combinando com o name do HTML
+    mensagem = request.form.get('conteudo') 
 
     badge_classe = "tipo-aviso"
     badge_texto = "Aviso Geral"
@@ -164,7 +148,7 @@ def criar_comunicado():
     db.session.add(novo_comunicado)
     db.session.commit()
     
-    return redirect('/dashboard_diretor')
+    return jsonify({'status': 'sucesso', 'mensagem': 'Comunicado postado com sucesso!', 'id': novo_comunicado.id})
 
 @app.route('/deletar_comunicado/<int:id>')
 def deletar_comunicado(id):
@@ -174,23 +158,17 @@ def deletar_comunicado(id):
         db.session.commit()
     return redirect('/dashboard_diretor')
 
-
-# --- GERENCIAR LANCHE ESCOLAR ---
 @app.route('/atualizar_cardapio', methods=['POST'])
 def atualizar_cardapio():
     lanche_registro = obter_ou_criar_lanche()
-    
     lanche_registro.segunda = request.form.get("segunda")
     lanche_registro.terca = request.form.get("terca")
     lanche_registro.quarta = request.form.get("quarta")
     lanche_registro.quinta = request.form.get("quinta")
     lanche_registro.sexta = request.form.get("sexta")
-    
     db.session.commit()
     return redirect('/dashboard_diretor')
 
-
-# --- GERENCIAR CALENDÁRIO ---
 @app.route('/criar_evento', methods=['POST'])
 def criar_evento():
     data = request.form.get('data')
@@ -200,7 +178,7 @@ def criar_evento():
     db.session.add(novo_evento)
     db.session.commit()
     
-    return redirect('/dashboard_diretor')
+    return jsonify({'status': 'sucesso', 'mensagem': 'Evento adicionado ao calendário!', 'id': novo_evento.id})
 
 @app.route('/deletar_evento/<int:id>')
 def deletar_evento(id):
@@ -210,8 +188,6 @@ def deletar_evento(id):
         db.session.commit()
     return redirect('/dashboard_diretor')
 
-
-# --- GERENCIAR AVALIAÇÕES/PROVAS (Ações do Professor) ---
 @app.route('/criar_prova', methods=['POST'])
 def criar_prova():
     disciplina = request.form.get('disciplina')
@@ -222,7 +198,7 @@ def criar_prova():
     db.session.add(nova_prova)
     db.session.commit()
     
-    return redirect('/dashboard_professor')
+    return jsonify({'status': 'sucesso', 'mensagem': 'Prova agendada com sucesso!', 'id': nova_prova.id})
 
 @app.route('/deletar_prova/<int:id>')
 def deletar_prova(id):
@@ -232,17 +208,13 @@ def deletar_prova(id):
         db.session.commit()
     return redirect('/dashboard_professor')
 
-
 # ==========================================================================
 # 4. ROTAS DO TOPO & CONTEÚDO DINÂMICO DOS PAIS (RESPONSÁVEIS)
 # ==========================================================================
 @app.route('/mais')
-def mais(): 
-    return render_template('mais.html')
-
+def mais(): return render_template('mais.html')
 @app.route('/notificacoes')
-def notificacoes(): 
-    return render_template('notificacoes.html')
+def notificacoes(): return render_template('notificacoes.html')
 
 @app.route('/comunicados')
 def comunicados():
@@ -272,41 +244,25 @@ def lanche():
     return render_template('lanche.html', lanche=lanche_dict)
 
 @app.route('/boletim')
-def boletim(): 
-    return render_template('boletim.html')
-
+def boletim(): return render_template('boletim.html')
 
 # ==========================================================================
 # 5. OUTRAS ROTAS PADRÃO
 # ==========================================================================
 @app.route('/entrada_saida')
-def entrada_saida(): 
-    return render_template('entrada_saida.html')
-
+def entrada_saida(): return render_template('entrada_saida.html')
 @app.route('/entrada_saida_historico')
-def entrada_saida_historico(): 
-    return render_template('entrada_saida_historico.html')
-
+def entrada_saida_historico(): return render_template('entrada_saida_historico.html')
 @app.route('/qrcode')
-def qrcode(): 
-    return render_template('qrcode.html')
-
+def qrcode(): return render_template('qrcode.html')
 @app.route('/perfil')
-def perfil(): 
-    return render_template('perfil.html')
-
+def perfil(): return render_template('perfil.html')
 @app.route('/perfil_responsavel')
-def perfil_responsavel(): 
-    return render_template('perfil_responsavel.html')
-
+def perfil_responsavel(): return render_template('perfil_responsavel.html')
 @app.route('/notas')
-def notas(): 
-    return render_template('notas.html')
-
+def notas(): return render_template('notas.html')
 @app.route('/faltas')
-def faltas(): 
-    return render_template('faltas.html')
-
+def faltas(): return render_template('faltas.html')
 
 # ==========================================================================
 # 6. ROTAS DE ARQUIVOS DE MÍDIA / IMAGENS
@@ -316,13 +272,8 @@ def serve_img(filename):
     root_dir = os.path.dirname(os.path.abspath(__file__))
     return send_from_directory(os.path.join(root_dir, 'img'), filename)
 
-
-# ==========================================================================
-# O CORAÇÃO DA INICIALIZAÇÃO
-# ==========================================================================
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         print("Banco de dados verificado/criado com sucesso!")
-
     app.run(debug=True, port=5000)

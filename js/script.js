@@ -57,7 +57,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (tabButtons.length > 0) {
             tabButtons.forEach(tab => {
                 tab.addEventListener("click", function() {
-                    // Alterna a classe ativa nos botões da barra de abas
                     const parentContainer = this.parentElement;
                     parentContainer.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
                     this.classList.add("active");
@@ -83,7 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     });
 
-                    // Gerencia o aviso visual de categoria sem nenhum card postado
                     if (emptyMessage) {
                         if (visibleCardsCount === 0 && comunicadoCards.length > 0) {
                             emptyMessage.style.display = "block";
@@ -100,7 +98,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // ==========================================================================
     // 4. ATUALIZAÇÃO EM TEMPO REAL COM LOADING (PAINEL DO DIRETOR)
     // ==========================================================================
-    
     function mostrarToast(mensagem) {
         const toast = document.getElementById('toast');
         const toastMessage = document.getElementById('toast-message');
