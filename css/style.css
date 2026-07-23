@@ -1,7 +1,13 @@
 /* ==========================================================================
     1. RESET E CONFIGURAÇÕES GERAIS
    ========================================================================== */
-* {
+
+*, *:focus, *:active {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+}
+
+   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -29,6 +35,8 @@ html, body {
     width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
+    overscroll-behavior-y: none; /* <--- Remove o efeito de puxar a tela */
+    -webkit-overflow-scrolling: touch;
 }
 
 /* O container principal ocupa a tela toda com suporte a toque/rolagem */
