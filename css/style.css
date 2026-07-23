@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. RESET E CONFIGURAÇÕES GERAIS
+    1. RESET E CONFIGURAÇÕES GERAIS
    ========================================================================== */
 * {
     margin: 0;
@@ -9,57 +9,63 @@
 }
 
 /* ==========================================================================
-   REMOVER O EFEITO AZUL DE CLIQUE (PADRÃO DE SITE)
+    REMOVER O EFEITO AZUL DE CLIQUE (PADRÃO DE SITE)
    ========================================================================== */
 button, a, .tab-btn, .menu-item, .nav-item {
-    -webkit-tap-highlight-color: transparent !important; /* Remove o flash azul no celular (Android/iOS) */
-    outline: none !important;                            /* Remove a borda azul de foco no computador */
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
 }
 
 button:focus, a:focus, .tab-btn:focus {
-    outline: none !important;                            /* Garante que o foco não crie caixas azuis */
-    box-shadow: none !important;                         /* Remove sombras indesejadas de foco */
+    outline: none !important;
+    box-shadow: none !important;
 }
 
-/* O corpo do app continua fixo para o fundo não dançar */
+/* Correção definitiva de scroll e altura para evitar travamentos */
 html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%;
-    overflow: hidden; 
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-/* O container principal ocupa a tela toda */
+/* O container principal ocupa a tela toda com suporte a toque/rolagem */
 .app-container {
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     position: relative;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
-/* Container que simula o Celular com Rolagem Geral */
+.app-container h2 {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+    margin-right: 38px;
+    color: white;
+    font-size: 18px;
+}
 
-
-/* Ocultar barra de rolagem para deixar o visual mais limpo (opcional) */
 .app-container::-webkit-scrollbar {
     width: 0px;
 }
 
 /* ==========================================================================
-   2. TOPO VERMELHO INSTITUCIONAL (Se move junto na rolagem)
+    2. TOPO VERMELHO INSTITUCIONAL
    ========================================================================== */
 .dash-hero {
-    background: linear-gradient(180deg, #990000 0%, #cc0000 100%);
+    background: linear-gradient(180deg, #700000 0%, #b30000 100%);
     padding: 20px;
-    padding-bottom: 60px; /* Espaço para o card branco sobrepor elegantemente */
+    padding-bottom: 60px;
     text-align: center;
     color: white;
 }
 
-/* Botões superiores (Menu Hamburguer e Notificação) */
 .hero-header-actions {
     display: flex;
     justify-content: space-between;
@@ -81,7 +87,6 @@ html, body {
     align-items: center;
 }
 
-/* Conteúdo de Destaque (Escudo e Mensagem) */
 .school-big-logo {
     width: 90px;
     height: 90px;
@@ -114,7 +119,7 @@ html, body {
 }
 
 /* ==========================================================================
-   3. PARTE BRANCA (CARD SOBREPOSTO - TOTALMENTE UNIFICADO)
+    3. PARTE BRANCA E CARDS SOBREPOSTOS
    ========================================================================== */
 .dash-content-card {
     flex: 1 !important;
@@ -125,15 +130,11 @@ html, body {
     margin-top: -25px !important;
     position: relative !important;
     z-index: 10 !important;
-    overflow-y: auto !important;         /* Ativa a rolagem vertical de forma independente */
-    overflow-x: hidden !important;       /* Trava para a tela não balançar pros lados */
-    -webkit-overflow-scrolling: touch;  /* Deixa a rolagem lisinha no celular */
-    padding: 30px 20px 110px 20px !important; /* Respiro embaixo para o menu não tampar o conteúdo */
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    padding: 30px 20px 110px 20px !important;
 }
 
-
-
-/* --- EFEITO ARREDONDADO NA DASHBOARD DO RESPONSÁVEL (TOPO HERÓI) --- */
 .dash-hero + .dash-content-card {
     border-top-left-radius: 28px;
     border-top-right-radius: 28px;
@@ -142,32 +143,28 @@ html, body {
     z-index: 5;
 }
 
-/* --- EFEITO ARREDONDADO IGUAL NO PAINEL DO DIRETOR (PAGE HEADER) --- */
 .page-header + .dash-content-card,
 .page-header + .page-content {
-    border-top-left-radius: 28px !important;    /* Arredonda o canto esquerdo no Diretor */
-    border-top-right-radius: 28px !important;   /* Arredonda o canto direito no Diretor */
-    margin-top: -25px !important;               /* Faz a parte branca subir sobre a barra vermelha */
+    border-top-left-radius: 28px !important;
+    border-top-right-radius: 28px !important;
+    margin-top: -25px !important;
     position: relative;
     z-index: 5;
 }
 
 .page-content, .dash-content-card {
+    flex: 1 !important;
+    padding: 20px 20px 120px 20px !important; /* <--- Aumentado de 95px/110px para 120px */
     display: flex !important;
     flex-direction: column !important;
-    justify-content: flex-start !important; /* Alinha tudo no topo e empurra o resto para baixo */
+    justify-content: flex-start !important;
 }
 
-/* ==========================================================================
-   FORÇA O ARREDONDAMENTO NO PAINEL DO DIRETOR (AGORA VAI!)
-   ========================================================================== */
-
-/* 1. Primeiro expandimos o topo vermelho para dar espaço para a subida */
 .page-header {
     background-color: #b30000 !important;
     color: white !important;
-    padding-top: 35px !important;    /* Respiro para o título não colar no teto */
-    padding-bottom: 50px !important; /* Espaço extra para o card branco cobrir */
+    padding-top: 35px !important;
+    padding-bottom: 50px !important;
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
@@ -175,19 +172,17 @@ html, body {
     z-index: 1 !important;
 }
 
-/* 2. Forçamos QUALQUER área de conteúdo que venha após o header a arredondar e subir */
 .page-header + .dash-content-card,
 .page-header + .page-content,
 .page-header + div {
-    border-top-left-radius: 30px !important;  /* Cantos bem arredondados */
+    border-top-left-radius: 30px !important;
     border-top-right-radius: 30px !important;
-    margin-top: -30px !important;              /* Força a subida por cima do vermelho */
-    background-color: #ffffff !important;      /* Garante fundo branco puro */
+    margin-top: -30px !important;
+    background-color: #ffffff !important;
     position: relative !important;
-    z-index: 10 !important;                     /* Fica por cima do vermelho */
+    z-index: 10 !important;
 }
 
-/* Caixa de Boas-vindas ao Usuário */
 .welcome-user-box {
     background-color: white;
     border-radius: 18px;
@@ -222,7 +217,6 @@ html, body {
     color: #777;
 }
 
-/* Grid de Botões (3 colunas iguais) */
 .dash-menu-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -250,7 +244,6 @@ html, body {
     background-color: #fafafa;
 }
 
-/* Ícones Circulares Vermelhos */
 .icon-box {
     width: 48px;
     height: 48px;
@@ -271,13 +264,11 @@ html, body {
     line-height: 1.2;
 }
 
-
-
 /* ==========================================================================
-   4. BARRA DE NAVEGAÇÃO INFERIOR (Fica fixa na base do celular)
+    4. BARRA DE NAVEGAÇÃO INFERIOR
    ========================================================================== */
 .bottom-nav {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
@@ -286,16 +277,12 @@ html, body {
     background-color: #ffffff;
     border-top: 1px solid #eee;
     display: flex;
-    justify-content: space-between; /* Distribui os blocos igualmente */
+    justify-content: space-between;
     align-items: center;
-    z-index: 10;
-    padding: 0 15px 10px 15px; /* Respiro nas laterais para não colar na borda */
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px;
+    z-index: 1000;
+    padding: 0 15px 10px 15px;
 }
 
-/* Os links normais (Início, Histórico, Perfil, Sair) */
-/* Os links normais (Início, Histórico, Perfil, Sair) */
 .nav-item {
     display: flex;
     flex-direction: column;
@@ -303,41 +290,36 @@ html, body {
     justify-content: center;
     color: #a0a0a0;
     text-decoration: none;
-    font-size: 13px; /* Aumentado de 11px para 13px para dar leitura */
-    font-weight: 600; /* Deixa a fonte um pouco mais encorpada */
-    width: 65px; /* Define uma largura fixa padrão para cada bloco */
-    gap: 4px; /* Cria um espacinho perfeito entre o ícone e o texto abaixo */
+    font-size: 13px;
+    font-weight: 600;
+    width: 65px;
+    gap: 4px;
 }
 
-/* Garante que o tamanho dos ícones do FontAwesome (ou a biblioteca que usar) fique destacado */
 .nav-item i {
-    font-size: 20px; /* Tamanho ideal para visualização em telas mobile */
+    font-size: 20px;
 }
 
-/* Força a cor vermelha específica no botão ativo/Início */
-/* Removemos o :first-child para não forçar o Início em tudo */
 .nav-item.active {
     color: #cc0000; 
 }
 
-/* O BOTÃO CENTRAL DO QR CODE (Para garantir que ele não suma ou encolha) */
 .bottom-nav .qr-button, 
 .bottom-nav .center-btn,
 .bottom-nav a:nth-child(3) { 
-    flex: none !important; /* Impede o flex-1 de esmagar o botão */
+    flex: none !important;
     width: 55px !important;
     height: 55px !important;
-    background-color: #cc0000 !important; /* Força o fundo vermelho de volta */
+    background-color: #cc0000 !important;
     border-radius: 50% !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    margin-top: -20px; /* Faz ele ficar flutuando para cima como no design */
+    margin-top: -20px;
     box-shadow: 0 4px 10px rgba(204, 0, 0, 0.3);
     z-index: 12;
 }
 
-/* Força o ícone branco dentro do botão central */
 .bottom-nav a:nth-child(3) i,
 .bottom-nav a:nth-child(3) img {
     color: #ffffff !important;
@@ -345,28 +327,20 @@ html, body {
 }
 
 /* ==========================================================================
-   5. TELA DE ENTRADA E SAÍDA E COMPONENTES
+    5. TELA DE ENTRADA, SAÍDA E COMPONENTES GERAIS
    ========================================================================== */
-
-/* Header padrão para subpáginas */
-.page-header {
-    background-color: #b30000;
-    color: white;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .back-btn {
     color: white;
     font-size: 18px;
     text-decoration: none;
-    width: 32px;
-    height: 32px;
+    width: 38px;
+    height: 38px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
 }
 
 .page-header h2 {
@@ -374,7 +348,6 @@ html, body {
     font-weight: 600;
 }
 
-/* Abas (Tabs) superiores */
 .sub-tabs {
     display: flex;
     background-color: white;
@@ -399,14 +372,12 @@ html, body {
     border-bottom-color: #b30000;
 }
 
-/* Área de conteúdo interno */
 .page-content {
     flex: 1;
     padding: 20px;
-    padding-bottom: 95px; /* Margem para o menu inferior fixo */
+    padding-bottom: 95px;
 }
 
-/* Card de Mensagem de Sucesso */
 .status-card-box {
     background-color: white;
     border-radius: 16px;
@@ -426,7 +397,7 @@ html, body {
 }
 
 .status-badge.success {
-    color: #2e7d32; /* Verde para sucesso */
+    color: #2e7d32;
 }
 
 .status-time-info h3 {
@@ -440,7 +411,6 @@ html, body {
     color: #777;
 }
 
-/* Card Dinâmico do Aluno baseado no Sistema de Cores */
 .student-release-card {
     border-radius: 20px;
     padding: 20px;
@@ -449,18 +419,9 @@ html, body {
     margin-bottom: 25px;
 }
 
-/* Variações das cores do seu projeto de cartões */
-.card-verde {
-    background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
-}
-
-.card-amarelo {
-    background: linear-gradient(135deg, #f57f17 0%, #fbc02d 100%);
-}
-
-.card-vermelho {
-    background: linear-gradient(135deg, #c62828 0%, #e53935 100%);
-}
+.card-verde { background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%); }
+.card-amarelo { background: linear-gradient(135deg, #f57f17 0%, #fbc02d 100%); }
+.card-vermelho { background: linear-gradient(135deg, #c62828 0%, #e53935 100%); }
 
 .student-info-flex {
     display: flex;
@@ -468,7 +429,6 @@ html, body {
     gap: 15px;
     margin-bottom: 15px;
 }
-
 
 .student-details h4 {
     font-size: 16px;
@@ -485,7 +445,6 @@ html, body {
     opacity: 0.7;
 }
 
-/* Tag de Status de Saída destacada dentro do card */
 .release-status-tag {
     background-color: rgba(255, 255, 255, 0.15);
     padding: 8px 12px;
@@ -506,7 +465,6 @@ html, body {
     opacity: 0.9;
 }
 
-/* Seção do Passo a Passo */
 .how-it-works-section h3 {
     font-size: 14px;
     color: #555;
@@ -543,10 +501,8 @@ html, body {
 }
 
 /* ==========================================================================
-   6. TELA DE LANCHE ESCOLAR (MERENDA)
+    6. TELA DE LANCHE ESCOLAR (MERENDA)
    ========================================================================== */
-
-/* Card de Status do Lanche */
 .meal-status-card {
     background-color: white;
     border-radius: 20px;
@@ -565,9 +521,7 @@ html, body {
     margin-bottom: 10px;
 }
 
-.meal-badge.success {
-    color: #2e7d32; /* Verde institucional de sucesso */
-}
+.meal-badge.success { color: #2e7d32; }
 
 .meal-time-info h3 {
     font-size: 18px;
@@ -581,7 +535,6 @@ html, body {
     margin-bottom: 15px;
 }
 
-/* Detalhes do Cardápio do Dia dentro do card */
 .meal-menu-today {
     background-color: #f4fbf4;
     border-left: 4px solid #4caf50;
@@ -611,7 +564,6 @@ html, body {
     line-height: 1.4;
 }
 
-/* Bloco do Perfil do Aluno no Lanche */
 .student-meal-profile {
     background-color: white;
     border-radius: 16px;
@@ -658,7 +610,6 @@ html, body {
     display: inline-block;
 }
 
-/* Botão de Histórico */
 .view-history-btn {
     display: flex;
     justify-content: center;
@@ -682,10 +633,8 @@ html, body {
 }
 
 /* ==========================================================================
-   7. TELA DO QR CODE (CARTEIRINHA DIGITAL)
+    7. TELA DO QR CODE (CARTEIRINHA DIGITAL)
    ========================================================================== */
-
-/* Alinhamento vertical focado no centro da tela */
 .qr-page-align {
     display: flex;
     flex-direction: column;
@@ -694,12 +643,10 @@ html, body {
     padding: 20px;
 }
 
-/* Cabeçalho do Aluno na Tela do QR Code */
 .qr-student-header {
     text-align: center;
     margin-bottom: 20px;
 }
-
 
 .qr-student-header h3 {
     font-size: 18px;
@@ -719,7 +666,6 @@ html, body {
     margin-top: 2px;
 }
 
-/* Moldura e Box do QR Code */
 .qr-code-outer-box {
     background-color: white;
     padding: 25px;
@@ -744,7 +690,6 @@ html, body {
     background-color: #fafafa;
 }
 
-/* Linha verde de efeito scanner idêntica ao mockup */
 .scanner-line {
     position: absolute;
     width: 90%;
@@ -768,7 +713,6 @@ html, body {
     object-fit: contain;
 }
 
-/* Exibição do ID textual formatado */
 .qr-code-string-id {
     margin-top: 15px;
     background-color: #f5f5f5;
@@ -786,7 +730,6 @@ html, body {
     letter-spacing: 1px;
 }
 
-/* Instruções e Botão de Atualizar Token */
 .qr-instructions {
     text-align: center;
     max-width: 300px;
@@ -823,10 +766,8 @@ html, body {
 }
 
 /* ==========================================================================
-   8. TELA DO BOLETIM ESCOLAR
+    8. TELA DO BOLETIM ESCOLAR
    ========================================================================== */
-
-/* Card de Resumo Superior */
 .boletim-summary-card {
     background-color: white;
     border-radius: 18px;
@@ -877,7 +818,6 @@ html, body {
     background-color: #eee;
 }
 
-/* Tabela de Notas customizada para Mobile */
 .grades-container {
     background-color: white;
     border-radius: 18px;
@@ -924,7 +864,6 @@ html, body {
     color: #333;
 }
 
-/* Ícones coloridinhos para as matérias */
 .subject-icon {
     width: 32px;
     height: 32px;
@@ -940,7 +879,6 @@ html, body {
 .subject-icon.geo { background-color: #fff3e0; color: #fb8c00; }
 .subject-icon.edf { background-color: #f3e5f5; color: #8e24aa; }
 
-/* Valores das notas com cores dinâmicas */
 .grade-value {
     flex: 1;
     text-align: center;
@@ -948,8 +886,8 @@ html, body {
     font-weight: 700;
 }
 
-.grade-value.positive { color: #2e7d32; }  /* Azul/Verde para nota boa */
-.grade-value.warning { color: #c62828; }   /* Vermelho para nota baixa */
+.grade-value.positive { color: #2e7d32; } 
+.grade-value.warning { color: #c62828; } 
 
 .absences-value {
     flex: 1;
@@ -959,10 +897,8 @@ html, body {
 }
 
 /* ==========================================================================
-   9. TELA DE LOGIN
+    9. TELA DE LOGIN
    ========================================================================== */
-
-/* Fundo cinza suave específico para a página de login */
 .login-page-bg {
     background-color: #ffffff;
     justify-content: flex-start;
@@ -976,7 +912,6 @@ html, body {
     overflow-y: auto;
 }
 
-/* Cabeçalho do Login */
 .login-header {
     text-align: center;
     margin-top: 20px;
@@ -1001,7 +936,6 @@ html, body {
     margin-top: 2px;
 }
 
-/* Seletor de Perfis */
 .profile-selector-box {
     display: flex;
     flex-direction: column;
@@ -1030,9 +964,9 @@ html, body {
     align-items: center;
     gap: 12px;
     transition: all 0.2s ease;
+    text-align: left;
 }
 
-/* Destaque para o perfil selecionado (Vermelho como no Mockup) */
 .profile-btn.active {
     background-color: #b30000;
     color: white;
@@ -1040,7 +974,6 @@ html, body {
     box-shadow: 0 4px 10px rgba(179, 0, 0, 0.2);
 }
 
-/* Campos de Input */
 .login-form {
     display: flex;
     flex-direction: column;
@@ -1069,7 +1002,6 @@ html, body {
     background-color: #fff;
 }
 
-/* Password wrapper para o botão do olho de mostrar senha */
 .password-wrapper {
     position: relative;
     display: flex;
@@ -1099,7 +1031,6 @@ html, body {
     text-decoration: underline;
 }
 
-/* Botão Entrar */
 .submit-login-btn {
     background-color: #b30000;
     color: white;
@@ -1118,7 +1049,6 @@ html, body {
     background-color: #8c0000;
 }
 
-/* Rodapé do Login */
 .login-footer {
     text-align: center;
     margin-top: 25px;
@@ -1133,10 +1063,8 @@ html, body {
 }
 
 /* ==========================================================================
-   10. TELA DE COMUNICADOS (AVISOS)
+    10. TELA DE COMUNICADOS (AVISOS)
    ========================================================================== */
-
-/* Botão de filtro no topo direito do header */
 .filter-top-btn {
     background: transparent;
     border: none;
@@ -1150,21 +1078,15 @@ html, body {
     align-items: center;
 }
 
-/* ==========================================================================
-   CORREÇÃO DO BUG DE ROLAGEM E ENCAVALAMENTO DE CARDS
-   ========================================================================== */
-
-/* 1. Garante que a lista de comunicados cresça livremente sem travar tamanho */
 .comunicados-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;                      /* Espaçamento idêntico e limpo entre os cards */
+    gap: 12px;
     width: 100%;
-    height: auto !important;        /* NÃO deixa a lista ter tamanho fixo */
-    overflow: visible !important;   /* Mata aquela barra de rolagem cinza interna horrorosa */
+    height: auto !important;
+    overflow: visible !important;
 }
 
-/* 2. Corrige o comportamento de cada card individual */
 .comunicado-card {
     background-color: white;
     border-radius: 16px;
@@ -1173,15 +1095,12 @@ html, body {
     gap: 15px;
     border: 1px solid #f0f0f0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-    
-    /* --- CORREÇÃO DO ENCAVALAMENTO --- */
-    position: relative !important;  /* Força o card a respeitar o fluxo normal do HTML */
-    float: none !important;         /* Limpa qualquer flutuação antiga */
-    clear: both;                    /* Impede que elementos fiquem grudados nas laterais */
-    width: 100%;                    /* Ocupa a largura certa do container */
+    position: relative !important;
+    float: none !important;
+    clear: both;
+    width: 100%;
 }
 
-/* Quadrado do ícone com cores suaves baseadas na categoria */
 .comunicado-icon-box {
     width: 44px;
     height: 44px;
@@ -1198,7 +1117,6 @@ html, body {
 .comunicado-icon-box.prova { background-color: #fde8e8; color: #e53935; }
 .comunicado-icon-box.boletim { background-color: #e8f5e9; color: #2e7d32; }
 
-/* Corpo de texto do aviso */
 .comunicado-body {
     flex: 1;
 }
@@ -1210,7 +1128,6 @@ html, body {
     margin-bottom: 5px;
 }
 
-/* Tags de identificação de texto */
 .badge-tipo {
     font-size: 11px;
     font-weight: 700;
@@ -1241,10 +1158,8 @@ html, body {
 }
 
 /* ==========================================================================
-   11. TELA DE CALENDÁRIO ESCOLAR
+    11. TELA DE CALENDÁRIO ESCOLAR
    ========================================================================== */
-
-/* Seletor do Mês */
 .calendar-month-selector {
     display: flex;
     justify-content: space-between;
@@ -1271,7 +1186,6 @@ html, body {
     padding: 5px 10px;
 }
 
-/* Caixa da Grade do Calendário */
 .calendar-grid-box {
     background-color: white;
     border-radius: 20px;
@@ -1281,7 +1195,6 @@ html, body {
     margin-bottom: 25px;
 }
 
-/* Dias da semana (D, S, T...) */
 .week-days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -1292,7 +1205,6 @@ html, body {
     margin-bottom: 15px;
 }
 
-/* Dias do mês */
 .month-days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -1317,7 +1229,6 @@ html, body {
     visibility: hidden;
 }
 
-/* Indicadores coloridos para os dias com eventos na grade */
 .event-day {
     color: white !important;
 }
@@ -1325,7 +1236,6 @@ html, body {
 .event-day.badge-recesso { background-color: #e53935; }
 .event-day.badge-evento { background-color: #fb8c00; }
 
-/* Lista de Eventos Abaixo */
 .events-list-section h3 {
     font-size: 14px;
     color: #555;
@@ -1346,12 +1256,10 @@ html, body {
     border-left: 4px solid #ccc;
 }
 
-/* Bordas laterais dinâmicas dos cards */
 .border-reuniao { border-left-color: #9c27b0; }
 .border-recesso { border-left-color: #e53935; }
 .border-evento { border-left-color: #fb8c00; }
 
-/* Badge da Data dentro do card */
 .event-date-badge {
     width: 46px;
     height: 46px;
@@ -1380,7 +1288,6 @@ html, body {
     opacity: 0.9;
 }
 
-/* Texto descritivo do evento */
 .event-info-text h4 {
     font-size: 14px;
     color: #222;
@@ -1393,292 +1300,147 @@ html, body {
     color: #666;
 }
 
-.event-info-text i {
-    font-size: 11px;
-    color: #999;
-}
-
 /* ==========================================================================
-   12. TELA DE AVALIAÇÕES (AGENDA DE PROVAS/TRABALHOS)
+    12. COMPONENTES DE PERFIL, DADOS DO ALUNO E NOTIFICAÇÕES
    ========================================================================== */
-
-.avaliacoes-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-/* Card Principal da Avaliação */
-.avaliacao-card {
-    background-color: white;
-    border-radius: 16px;
-    padding: 16px;
-    border: 1px solid #eee;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    border-left: 5px solid #ccc;
-}
-
-/* Cores das bordas laterais por urgência/status */
-.avaliacao-card.status-pendente { border-left-color: #fb8c00; } /* Laranja */
-.avaliacao-card.status-aviso { border-left-color: #1e88e5; }    /* Azul */
-
-/* Cabeçalho do Card */
-.av-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* Badges de Tipo de Avaliação */
-.av-badge {
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 20px;
-    text-transform: uppercase;
-}
-
-.badge-trabalho { background-color: #fff3e0; color: #fb8c00; }
-.badge-prova { background-color: #ffebee; color: #e53935; }
-.badge-simulado { background-color: #e3f2fd; color: #1e88e5; }
-
-.av-date {
-    font-size: 12px;
-    color: #777;
-    font-weight: 500;
-}
-
-.av-date i {
-    margin-right: 4px;
-    color: #999;
-}
-
-/* Corpo do texto do Card */
-.av-body h3 {
-    font-size: 15px;
-    color: #222;
-    font-weight: 700;
-    margin-bottom: 3px;
-}
-
-.av-subject {
-    font-size: 12px;
-    font-weight: 600;
-    color: #b30000; /* Vermelho institucional para a matéria */
-    margin-bottom: 8px;
-}
-
-.av-desc {
-    font-size: 13px;
-    color: #555;
-    line-height: 1.4;
-}
-
-/* Rodapé do Card */
-.av-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 10px;
-    border-top: 1px dashed #eee;
-    font-size: 12px;
-    color: #666;
-}
-
-.av-footer strong {
-    color: #222;
-}
-
-/* Indicador textual do canto inferior direito */
-.status-indicator {
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 10px;
-    letter-spacing: 0.5px;
-}
-
-.status-pendente .status-indicator { color: #fb8c00; }
-.status-aviso .status-indicator { color: #1e88e5; }
-
-/* ==========================================================================
-   13. TELA DE NOTIFICAÇÕES (ALERTAS PUSH EM TEMPO REAL)
-   ========================================================================== */
-
-/* Botão de limpar no topo direito */
-.clear-all-btn {
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
 .notifications-timeline {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding: 4px 0;
 }
 
-/* Estrutura do Item de Notificação */
 .notification-item {
-    background-color: white;
-    border-radius: 14px;
-    padding: 14px;
     display: flex;
+    align-items: flex-start;
     gap: 14px;
-    border: 1px solid #f2f2f2;
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     position: relative;
-    transition: background 0.2s;
+    transition: all 0.2s ease;
 }
 
-/* Efeito visual para mensagens não lidas (pontinho vermelho ou fundo suave) */
 .notification-item.unread {
-    background-color: #fff9f9;
-    border-color: #ffebed;
+    background: #fdf8f8;
+    border-left: 4px solid #b30000;
 }
 
-.notification-item.unread::after {
-    content: '';
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 7px;
-    height: 7px;
-    background-color: #b30000;
-    border-radius: 50%;
-}
-
-/* Ícones redondos com cores temáticas de evento */
 .noti-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-size: 15px;
+    justify-content: center;
+    font-size: 16px;
     flex-shrink: 0;
 }
 
-.noti-icon.enter { background-color: #e8f5e9; color: #2e7d32; } /* Verde para Entrada */
-.noti-icon.leave { background-color: #fff3e0; color: #ef6c00; } /* Laranja para Saída */
-.noti-icon.meal { background-color: #e3f2fd; color: #1565c0; }  /* Azul para Lanche */
-.noti-icon.alert { background-color: #ffebee; color: #c62828; } /* Vermelho para Avisos */
+.noti-icon.enter { background: #e6f4ea; color: #137333; }
+.noti-icon.meal { background: #eef0fd; color: #3f51b5; }
+.noti-icon.leave { background: #fce8e6; color: #c5221f; }
+.noti-icon.alert { background: #fef7e0; color: #b06000; }
 
-/* Alinhamento do conteúdo de texto */
 .noti-content {
     flex: 1;
-    padding-right: 10px;
+    min-width: 0;
 }
 
 .noti-header {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     margin-bottom: 4px;
 }
 
 .noti-header h4 {
-    font-size: 13px;
-    color: #222;
-    font-weight: 700;
+    font-size: 15px;
+    font-weight: 600;
+    color: #202124;
+    margin: 0;
 }
 
 .noti-time {
-    font-size: 11px;
-    color: #999;
-    font-weight: 500;
+    font-size: 12px;
+    color: #5f6368;
+    white-space: nowrap;
 }
 
 .noti-content p {
-    font-size: 12.5px;
-    color: #555;
+    font-size: 13px;
+    color: #4c4c4c;
+    margin: 0;
     line-height: 1.4;
 }
 
-.noti-content strong {
-    color: #222;
-    font-weight: 600;
-}
-
-/* ==========================================================================
-   14. TELA DE DADOS DO ALUNO / PERFIL
-   ========================================================================== */
-
-/* Card de Destaque Superior do Perfil */
+/* Dados do Aluno e Perfil Cards */
 .profile-main-card {
-    background-color: white;
-    border-radius: 20px;
-    padding: 25px 20px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px 20px;
     text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
     border: 1px solid #f0f0f0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
     margin-bottom: 20px;
 }
 
 .profile-avatar-large {
-    width: 75px;
-    height: 75px;
-    background-color: #fff1f1;
+    width: 70px;
+    height: 70px;
+    background: #fdf2f2;
     color: #b30000;
+    font-size: 28px;
     border-radius: 50%;
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-size: 32px;
+    justify-content: center;
     margin: 0 auto 12px auto;
-    box-shadow: 0 4px 10px rgba(179, 0, 0, 0.1);
+    border: 2px solid rgba(179, 0, 0, 0.1);
 }
 
 .profile-main-card h3 {
     font-size: 18px;
-    color: #222;
     font-weight: 700;
-    margin-bottom: 6px;
+    color: #202124;
+    margin: 0 0 6px 0;
 }
 
 .profile-status-tag-active {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    font-size: 11px;
-    font-weight: 700;
+    display: inline-block;
+    background: #e6f4ea;
+    color: #137333;
+    font-size: 12px;
+    font-weight: 600;
     padding: 4px 12px;
     border-radius: 20px;
-    text-transform: uppercase;
-    display: inline-block;
 }
 
-/* Blocos de Seções Cadastrais */
 .info-section-box {
-    background-color: white;
+    background: #ffffff;
     border-radius: 16px;
-    padding: 16px;
-    border: 1px solid #eee;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    border: 1px solid #f0f0f0;
+    margin-bottom: 16px;
 }
 
-.section-title {
-    font-size: 13px;
-    color: #b30000; /* Vermelho institucional da escola */
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 14px;
+.info-section-box .section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #b30000;
+    margin: 0 0 16px 0;
     display: flex;
     align-items: center;
     gap: 8px;
     border-bottom: 1px solid #f5f5f5;
-    padding-bottom: 6px;
+    padding-bottom: 10px;
 }
 
-/* Campos de Ficha Técnica */
 .info-field-item {
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 
 .info-field-item:last-child {
@@ -1686,61 +1448,64 @@ html, body {
 }
 
 .info-field-item label {
-    font-size: 11px;
-    color: #888;
-    font-weight: 600;
     display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #5f6368;
     margin-bottom: 2px;
+    font-weight: 600;
 }
 
 .info-field-item p {
     font-size: 14px;
-    color: #333;
-    font-weight: 600;
+    color: #202124;
+    font-weight: 500;
+    margin: 0;
 }
 
-/* Alerta médico destacado */
 .medical-alert {
-    color: #c62828 !important; /* Vermelho forte para chamar atenção da cantina/professores */
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background-color: #ffebee;
-    padding: 6px 10px;
+    color: #c5221f !important;
+    background: #fce8e6;
+    padding: 8px 12px;
     border-radius: 8px;
-    margin-top: 2px;
-    font-size: 13px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600 !important;
+    margin-top: 4px !important;
 }
 
-/* ESTILOS ESPECÍFICOS DA TELA DE MENU (HAMBÚRGUER) */
+/* Secretaria Virtual / Menu Cards */
 .menu-sections-container {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding-top: 10px;
 }
 
 .menu-section-card {
-    background: white;
-    border-radius: 16px;
-    padding: 16px;
     display: flex;
     align-items: center;
-    gap: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    transition: all 0.2s ease;
     cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s;
+    text-decoration: none;
+    color: inherit;
 }
 
-.menu-section-card:active {
-    transform: scale(0.98);
-    background-color: #fcfcfc;
+.menu-section-card:hover {
+    border-color: #b30000;
+    transform: translateY(-2px);
 }
 
-.menu-section-card .section-icon-box {
-    width: 42px;
-    height: 42px;
-    background: #ffebee;
+.section-icon-box {
+    width: 44px;
+    height: 44px;
+    background: #fdf2f2;
     color: #b30000;
     border-radius: 12px;
     display: flex;
@@ -1748,216 +1513,31 @@ html, body {
     justify-content: center;
     font-size: 18px;
     flex-shrink: 0;
+    margin-right: 14px;
 }
 
-.menu-section-card .section-info {
+.section-info {
     flex: 1;
+    min-width: 0;
 }
 
-.menu-section-card .section-info h3 {
+.section-info h3 {
     font-size: 15px;
     font-weight: 600;
-    color: #111;
-    margin-bottom: 3px;
+    color: #202124;
+    margin: 0 0 4px 0;
 }
 
-.menu-section-card .section-info p {
+.section-info p {
     font-size: 12px;
-    color: #666;
+    color: #5f6368;
+    margin: 0;
     line-height: 1.3;
 }
 
-.menu-section-card .arrow-go {
-    color: #ccc;
+.arrow-go {
     font-size: 14px;
-}
-
-/* Balão de Notificação Push */
-.toast-notification {
-    position: fixed;
-    top: -100px; /* Começa escondido acima da tela */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #2e7d32; /* Verde bonito de sucesso */
-    color: white;
-    padding: 14px 24px;
-    border-radius: 30px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    font-weight: 600;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 9999;
-    transition: top 0.4s ease, opacity 0.4s ease;
-    opacity: 0;
-}
-
-.toast-notification.show {
-    top: 30px; /* Desce para essa posição */
-    opacity: 1;
-}
-
-
-
-/* Removemos o balão branco e deixamos apenas o container invisível para a logo */
-.logo-wrapper {
-    width: 90px;           /* Ajuste a largura ideal para a logo solta */
-    height: 90px;          /* Ajuste a altura ideal para ficar proporcional */
-    background-color: transparent !important; /* SUMIU O BALÃO BRANCO! */
-    border-radius: 0 !important;              /* Remove as bordas arredondadas */
-    box-shadow: none !important;              /* Remove a sombra do balão */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 15px auto; /* Mantém centralizado e com espaço para o texto abaixo */
-    padding: 0 !important;
-    overflow: visible;     /* Permite que a logo apareça sem cortes */
-}
-
-/* Garante que a imagem solta fique nítida e no tamanho certo */
-.school-big-logo {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain !important; /* Mantém a proporção perfeita do escudo */
-}
-
-/* ==========================================================================
-   ESTILIZAÇÃO DO INPUT DE DATA (REMOCÃO DO VAZIO E CORES)
-   ========================================================================== */
-
-/* Garante o visual padrão do input */
-.input-field {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background-color: #ffffff;
-    color: #333333;
-    font-size: 16px;
-    box-sizing: border-box;
-}
-
-/* Força uma cor avermelhada/escura suave nos controles internos do calendário (no PC) */
-input[type="date"]::-webkit-calendar-picker-indicator {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%23b30000"><path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>');
-    cursor: pointer;
-}
-
-/* 1. FORÇA AS ESTRUTURAS DE FUNDO A ACEITAREM CRESCIMENTO VERTICAL */
-html, body {
-    height: 100% !important;
-    min-height: 100% !important;
-    overflow: hidden; /* Evita que o body crie uma segunda barra de rolagem */
-}
-
-/* 2. CONFIGURAÇÃO DA ÁREA DO ALUNO PARA EMPURRAR O CONTEÚDO */
-/* Substitua pelos nomes exatos das classes que você usou para os dados do aluno */
-.student-data-container, 
-.student-profile-section, 
-.card-dados-aluno {
-    height: auto !important;         /* Cancela qualquer altura fixa antiga */
-    min-height: min-content !important; 
-    flex-shrink: 0 !important;       /* Impede terminantemente o flexbox de achatar a área */
-    display: block !important;       /* Garante comportamento de bloco para empurrar o que vem abaixo */
-    margin-bottom: 25px !important;  /* Margem para desgrudar do elemento de baixo */
-}
-
-/* 3. ASSEGURA QUE O CONTAINER DE ROLAGEM EXPANDA ATÉ O FIM */
-.page-content, .dash-content-card {
-    display: flex !important;
-    flex-direction: column !important;
-    height: 100% !important;         /* Ocupa o espaço total disponível */
-    overflow-y: auto !important;     /* Ativa o scroll se o conteúdo passar do limite */
-}
-
-
-
-/* ==========================================================================
-   AJUSTE DA ALTURA DO TOPO (EXCLUSIVO PARA CORREÇÃO DE TAMANHO)
-   ========================================================================= */
-
-.page-header {
-    height: 130px !important; /* Aumentado para dar o tamanho real e imponente do topo vermelho */
-    display: flex !important;
-    justify-content: center !important; /* Garante centralização horizontal absoluta */
-    align-items: center !important; /* Centraliza verticalmente o conteúdo */
-    position: relative !important;
-    padding: 0 20px !important;
-}
-
-/* Mantém o título estático no centro sem se mover 1mm para os lados */
-.page-header h2 {
-    position: absolute !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    margin: 0 !important;
-    white-space: nowrap !important;
-    text-align: center !important;
-}
-
-/* Garante que o botão de voltar acompanhe o meio da nova altura */
-.back-btn {
-    position: absolute !important;
-    left: 20px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important; /* Centralização vertical perfeita */
-    margin: 0 !important;
-}
-
-
-
-/* Correção definitiva para o container do Diretor respirar e criar scroll nativo */
-.app-container main.dash-content-card {
-    height: auto !important;
-    min-height: calc(100vh - 100px) !important;
-    overflow-y: auto !important;
-    padding-bottom: 50px !important; /* Garante que os últimos itens não sumam na base */
-}
-
-
-
-/* ==========================================================================
-   CORREÇÃO: CABEÇALHO DO DIRETOR (MOBILE E BORDAS LATERAIS)
-   ========================================================================== */
-.page-header {
-    background-color: #b30000 !important;
-    color: white !important;
-    /* Aumentamos as margens para não sumir no navegador do celular (Topo, Direita, Baixo, Esquerda) */
-    padding: 45px 25px 50px 25px !important; 
-    display: flex !important;
-    flex-direction: row !important; /* Força ficar na mesma linha sempre */
-    justify-content: space-between !important; 
-    align-items: center !important;
-    position: relative !important;
-    z-index: 1 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-/* Força o título a ter um respiro extra na esquerda */
-.page-header h1,
-.page-header h2 {
-    margin: 0 !important;
-    padding-left: 10px !important;
-    font-size: 22px !important;
-    font-weight: 700 !important;
-    white-space: nowrap !important; /* Impede o texto de cair por cima do ícone */
-}
-
-/* Força o botão de sair a ter um respiro extra na direita */
-.page-header a,
-.page-header button,
-.page-header .back-btn {
-    margin: 0 !important;
-    padding-right: 10px !important;
-    color: white !important;
-    font-size: 24px !important;
-    text-decoration: none !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background: transparent !important;
-    border: none !important;
-    flex-shrink: 0 !important; /* Impede o ícone de ser esmagado pelo título */
+    color: #9aa0a6;
+    margin-left: 10px;
+    flex-shrink: 0;
 }
