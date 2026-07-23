@@ -15,11 +15,17 @@
 }
 
 /* ==========================================================================
-    REMOVER O EFEITO AZUL DE CLIQUE (PADRÃO DE SITE)
+    REMOVER O EFEITO AZUL DE CLIQUE E MENU DE TOQUE LONGO
    ========================================================================== */
 button, a, .tab-btn, .menu-item, .nav-item {
     -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important; /* Desativa o menu de segurar o dedo */
     outline: none !important;
+}
+
+button:focus, a:focus, .tab-btn:focus {
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 /* Ao clicar em qualquer botão ou card, ele diminui levemente e fica com fundo suave */
