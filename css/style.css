@@ -22,9 +22,11 @@ button, a, .tab-btn, .menu-item, .nav-item {
     outline: none !important;
 }
 
-button:focus, a:focus, .tab-btn:focus {
-    outline: none !important;
-    box-shadow: none !important;
+/* Ao clicar em qualquer botão ou card, ele diminui levemente e fica com fundo suave */
+button:active, .menu-section-card:active, .menu-item:active {
+    transform: scale(0.98); /* Dá um efeito de afundar de leve */
+    background-color: rgba(179, 0, 0, 0.05) !important; /* Um leve tom avermelhado transparente */
+    transition: transform 0.1s ease, background-color 0.1s ease;
 }
 
 /* Correção definitiva de scroll e altura para evitar travamentos */
